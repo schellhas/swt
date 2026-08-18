@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>09 Architektur</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def { background: #f3f3f3; border-left: 3px solid #888; padding: .5rem .8rem; margin: .5rem 0; }
+  .src { color: #777; font-size: .85rem; }
+  .todo { background: #fff3cd; border-left: 3px solid #d4a017; padding: .5rem .8rem; margin: 1.5rem 0; }
+  table { border-collapse: collapse; margin: .5rem 0; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+</style>
+</head>
+<body>
+
+<h1>09 Architektur &amp; Modularisierung</h1>
+<p class="src">Quelle: vl/09_Architektur.pdf + other/The_41_View_Model_of_Architecture.pdf — relevant für ub/07_ub_architektur.pdf und fabiuebersicht.txt (Zeilen 41, 49, 116-124, 282, 285-290)</p>
+
+<div class="todo">
+Übung 7-1 (Architekturebenen, Makro-/Mikroarchitektur, Architektursichten laut Vogel et al., "Software-Architektur") ist Recherche in einem externen Buch, das nicht in other/ liegt (Zugriff nur per FU-Netz/Springer-Link) — hier nicht ausgearbeitet.
+</div>
+
+<h2>Was ist Softwarearchitektur?</h2>
+<p>Keine einheitliche Definition, aber immer eine <strong>globale Betrachtung</strong> des Systems: welche Teile (Module) es hat, wie diese zusammenspielen, und wie dadurch funktionale <em>und</em> nichtfunktionale Anforderungen erfüllt werden. Verbreitete Def. (Bass/Clements/Kazman): Struktur(en) eines Systems aus Elementen, deren extern sichtbaren Eigenschaften und den Beziehungen zwischen ihnen.</p>
+<p><strong>Warnung:</strong> ein Architekturbild <em>ist nicht</em> die Architektur — es zeigt nur wenige, ungenau wiedergegebene Aspekte. Vollständige Architekturbeschreibung braucht mehrere Bilder (verschiedene Sichten/Diagrammarten) plus Text (z. B. Schnittstellendefinitionen in OCL).</p>
+
+<h2>Architekturstile (Übung 7-2)</h2>
+<p>Wiederverwendbare Gesamtstrukturideen für wiederkehrende Mengen nichtfunktionaler Anforderungen. Reale Systeme kombinieren meist mehrere Stile (global fürs Gesamtsystem, regional pro Subsystem).</p>
+<table>
+<tr><th>Stil</th><th>Idee</th><th>Typische Anforderung / Eignung</th><th>Vor-/Nachteil</th></tr>
+<tr><td><strong>Klient-/Dienstgeber</strong> (Client/Server)</td><td>zentraler Server hält gemeinsame Daten, viele Klienten greifen zu</td><td>verteiltes System, hohe Verfügbarkeit, Interaktivität</td><td>setzt zuverlässige, ausreichend starke Netze voraus</td></tr>
+<tr><td><strong>Mehrschicht-Architektur</strong> (Layered) — z. B. 3-Schichten: Präsentation/Logik/Daten</td><td>Abstraktionsschichten von techn. Mechanismen zu inhaltlichen Lösungen; jede Schicht nutzt nur die darunter</td><td>fast immer günstig für Informationssysteme; sehr gut für <strong>hohe Portabilität</strong> (Schicht austauschbar)</td><td>+ unnötige Kopplung vermieden, Schichten austauschbar; − kann umständlich/ineffizient werden (zu viel Weiterreichen)</td></tr>
+<tr><td><strong>Ereignisgesteuertes System</strong> (Event-based, implizite Aufrufe)</td><td>Teilnehmer registrieren sich für Ereignisse an zentralem Kanal, Steuerung dezentralisiert</td><td>GUIs, IoT, Fabriksteuerung</td><td>+ flexibel, änderungsfreundlich; − Verhalten schwer nachvollziehbar</td></tr>
+<tr><td><strong>Datenflussnetze</strong> (Pipes-and-Filters)</td><td>Verarbeitungsschritte (Filters) nur über Datenfluss (Pipe) verknüpft</td><td>Bioinformatik, Signalverarbeitung, Grafikpipelines — <em>ungeeignet</em> für Echtzeit mit komplexer Steuerung</td><td>+ einfach, klar; − für die meisten Zwecke zu unflexibel</td></tr>
+<tr><td><strong>Web-Architektur</strong></td><td>Client/Server + API auch fürs GUI (JS-Frontend ruft API), i18n, Security, Skalierung (Load Balancing, stateless), Microservices für dezentrale Teams</td><td>alles, was Client/Server braucht, plus Menschen- <em>und</em> Maschineninteraktion, viele Teams, hohe Skalierung</td><td>sehr umfangreiches Thema, hier nur angerissen</td></tr>
+</table>
+<p><strong>Echtzeitverhalten</strong> (zugesicherte Reaktionszeiten): am ehesten <em>keine</em> der obigen Standardstile direkt — eher spezialisierte Echtzeitarchitekturen mit fester Prozess-/Task-Planung nötig; Ereignisgesteuerte Systeme mit vielen Teilnehmern sind eher ungünstig (Antwortzeit schwer zugesichert).</p>
+<p><strong>Standardarchitekturen</strong> (fertige, detailliertere Referenzlösungen für ganze Anwendungsbereiche): QUASAR (sd&amp;m, betriebliche Informationssysteme), Jakarta EE (ex-Java EE), RM-ODP (verteilte Systeme). Einsatz senkt Entwurfsaufwand enorm — normaler statt radikaler Entwurf. Von einer etablierten Standardarchitektur abzuweichen erfordert gute Begründung.</p>
+
+<h2>Modularisierung / Systemzerlegung</h2>
+<div class="def">
+<strong>Modul</strong> (in UML: Komponente): Einheit zusammengehörender Programmelemente (Daten, Klassen, Prozeduren, …), die thematisch zusammengehören und dieselben Entwurfsentscheidungen betreffen. Ein Modul <strong>verbirgt</strong> diese Entscheidungen ("Geheimnisse") hinter seiner <strong>Schnittstelle</strong> — das ist <strong>Information Hiding</strong>.
+</div>
+<ul>
+  <li><strong>Ziel der Zerlegung:</strong> geringe Kopplung zwischen Modulen; Module nach Zuständigkeiten/Entwurfsentscheidungen bilden.</li>
+  <li>Verbreitete Irrtümer: feste Modulgröße gibt es nicht; nicht jede Klasse ist automatisch ein Modul; ein Java-Interface ist <em>keine</em> vollständige Schnittstelle (nur Signaturen, keine Semantik/Verträge); Module sind meist projektspezifisch, nicht automatisch wiederverwendbar.</li>
+</ul>
+<h3>Schnittstellen: Entwurf per Vertrag (Design by Contract)</h3>
+<p class="src">deckt sich mit fabiuebersicht.txt Zeilen 285-290</p>
+<p>Für jede Operation werden <strong>Vorbedingungen</strong> (preconditions) und <strong>Wirkungen/Nachbedingungen</strong> (postconditions) spezifiziert (z. B. in OCL) — ein Vertrag: "Hältst Du die Voraussetzungen ein, garantiere ich die Wirkung." Auf Implementierungsdetails, die nicht im Vertrag stehen, darf sich niemand außerhalb des Moduls verlassen (sonst ist der Entwurf inkorrekt) — Verträge werden <em>vor</em> der Implementierung festgelegt.</p>
+<h3>Wirkung von Modularisierung</h3>
+<p class="src">deckt sich mit fabiuebersicht.txt Zeilen 116-117</p>
+<p>Bei guten Entwürfen verbirgt die Schnittstelle gerade die Entwurfsentscheidungen, die sich öfter ändern → bei Änderungen muss meist nur ein Modul angepasst werden, die Schnittstelle bleibt stabil. Das System wird leichter verständlich, weil man von den meisten Modulen nur die Schnittstelle kennen muss. Bei schlechten Entwürfen (unklare/unvollständige Schnittstellen) geht dieser Effekt verloren.</p>
+<h3>Module beurteilen</h3>
+<p class="src">deckt sich mit fabiuebersicht.txt Zeilen 119-124 — Kriterien zur nachträglichen Beurteilung, keine Bauanleitung</p>
+<ol>
+  <li>Ein Modul hat eine gut verständliche Zuständigkeit</li>
+  <li>Module sind nicht größer als nötig</li>
+  <li>Module sind meist deutlich komplexer als ihre Schnittstelle</li>
+  <li>Entscheidungen, die sich ändern könnten, sind verborgen</li>
+</ol>
+<p>Schwäche: was sich künftig ändern könnte, ist oft schwer vorherzusehen.</p>
+
+<h2>Das 4+1-Sichtenmodell von Kruchten (Übung 7-3)</h2>
+<p class="src">Quelle: other/The_41_View_Model_of_Architecture.pdf — Kruchten, "Architectural Blueprints — The '4+1' View Model of Software Architecture" (1995)</p>
+<p>Eine vollständige Architekturbeschreibung braucht mehrere <strong>Sichten</strong>, weil verschiedene Stakeholder verschiedene Belange haben. Vier Kernsichten plus Szenarien als verbindende, fünfte Sicht (daher "4+1").</p>
+<table>
+<tr><th>Sicht (engl./dt.)</th><th>Beschreibt</th><th>Für wen</th></tr>
+<tr><td><strong>Logical View</strong> / Logische Sicht</td><td>objektorientiertes Modell des Systems: Schlüsselabstraktionen, Klassen, Beziehungen — trägt v. a. die funktionalen Anforderungen</td><td>Endnutzer, Funktionalität</td></tr>
+<tr><td><strong>Process View</strong> / Prozesssicht</td><td>Nebenläufigkeit, Synchronisation, Verteilung: Prozesse/Tasks und ihre Kommunikation</td><td>Integratoren; Performance, Skalierbarkeit</td></tr>
+<tr><td><strong>Development View</strong> / Implementierungssicht</td><td>statische Organisation der Software in der Entwicklungsumgebung: Module, Subsysteme, Schichten, Bibliotheken</td><td>Programmierer·innen, Software-Management; Wiederverwendung, Portierbarkeit</td></tr>
+<tr><td><strong>Physical View</strong> / Verteilungssicht</td><td>Abbildung der Software auf Hardware/Knoten (Deployment), betrifft v. a. nichtfunktionale Anforderungen wie Verfügbarkeit, Fehlertoleranz</td><td>Systemingenieur·innen; Topologie, Kommunikation</td></tr>
+<tr><td><strong>Scenarios</strong> / Anwendungsfallsicht</td><td>kleine Menge wichtiger Use Cases/Szenarien, die die anderen vier Sichten verbindet und illustriert — treibt die Architektur mit und dient als Validierung</td><td>alle Stakeholder</td></tr>
+</table>
+<p>Die Sichten sind nicht unabhängig (z. B. eine Klasse aus der Logical View wird i. d. R. zu einem Modul der Development View); je größer das Projekt, desto größer aber die Distanz zwischen ihnen. Nicht jedes System braucht alle Sichten voll ausgeprägt (z. B. Physical View entfällt bei Ein-Prozessor-Systemen). Vorgehen ist iterativ und szenariogetrieben: kleine Menge kritischer Szenarien wählen → Architektur grob entwerfen (alle 4 Sichten) → implementieren/testen/messen → nächste Iteration mit mehr Szenarien, bis stabil.</p>
+
+</body>
+</html>

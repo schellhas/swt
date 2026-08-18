@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>05 Anforderungserhebung</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def {
+    background: #f3f3f3;
+    border-left: 3px solid #888;
+    padding: .5rem .8rem;
+    margin: .5rem 0;
+  }
+  .src { color: #777; font-size: .85rem; }
+  .todo { background: #fff3cd; border-left: 3px solid #d4a017; padding: .5rem .8rem; margin: 1.5rem 0; }
+  table { border-collapse: collapse; margin: .5rem 0; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+</style>
+</head>
+<body>
+
+<h1>05 Anforderungserhebung (Requirements Elicitation)</h1>
+<p class="src">Quelle: vl/05_Anforderungserhebung.pdf + other/NusEas00-RE-roadmap.pdf — relevant für ub/04_ub_anforderungen.pdf (Aufgabe 4-1, 4-2, 4-3) und fabiuebersicht.txt (Zeilen 14-29, 183-189, 304-312)</p>
+
+<h2>Requirement — Grundbegriffe</h2>
+<div class="def">
+<strong>Requirement:</strong> etwas, das jemand braucht, um ein Problem zu lösen oder ein Ziel zu erreichen. (IEEE: "A condition or capability that must be met or possessed by a system... to satisfy a contract, standard, specification, or other formally imposed document.")
+</div>
+<ul>
+  <li>Oft existiert gar kein "formally imposed document" — es reicht, dass <em>jemand</em> zufriedengestellt werden will (informelle Requirements sind sogar häufiger).</li>
+  <li>Was aufgeschrieben ist, erfüllt den Nutzer manchmal trotzdem nicht (ungültige/inkorrekte Requirements).</li>
+  <li>Requirements sind <strong>Festlegungen, keine Fakten</strong>.</li>
+  <li>"System" kann ein Computersystem (<em>system requirements</em>) oder ein sozio-technisches System (<em>user requirements</em>) meinen.</li>
+</ul>
+
+<h2>Types of Requirements</h2>
+<p class="src">die für Übung 4-2b explizit referenzierte Folie</p>
+<table>
+<tr><th>Typ</th><th>Bedeutung</th></tr>
+<tr><td><strong>Funktional</strong></td><td>was das System tut: die Interaktion zwischen System und Umgebung, unabhängig von der Implementierung</td></tr>
+<tr><td><strong>Nichtfunktional</strong></td><td>beobachtbare Aspekte des Systems, die nicht direkt mit funktionalem Verhalten zu tun haben (z. B. Performance, Zuverlässigkeit)</td></tr>
+<tr><td><strong>Safety/Security</strong></td><td>eine Art nichtfunktionaler Anforderung — Verhalten, das das System <em>niemals</em> zeigen darf ("shall not"-Eigenschaften), z. B. "must be impossible to apply reverse thrust in mid-flight"</td></tr>
+<tr><td><strong>Constraints ("Pseudo-Requirements")</strong></td><td>von Kunde/Umgebung auferlegte Einschränkungen, oft zur zu verwendenden Technologie (Sprache, Betriebssystem, Middleware)</td></tr>
+</table>
+
+<h3>Zweite Sicht: Arten von Requirements nach Wert/Schwierigkeit</h3>
+<ul>
+  <li><strong>Ingenious requirements</strong> — unglaublich wertvoll (z. B. "eine Zelle kann eine Formel enthalten, die auf andere Zellen verweist")</li>
+  <li><strong>Fundamental requirements</strong> — klingen einfach, sind es aber nicht (z. B. "der Automat kann jede Ticketart verkaufen")</li>
+  <li><strong>Normal requirements</strong> — können nützlich sein oder auch weniger</li>
+  <li><strong>Usability requirements</strong> — schwer konkret zu fassen (z. B. "85% der Passagiere müssen ihren ersten Kauf innerhalb von 50s abschließen")</li>
+  <li><strong>Detail requirements</strong> — für manche Software-Arten extrem wichtig (z. B. gesetzliche Detailvorgaben)</li>
+  <li><strong>Usability detail requirements</strong> — können viel ausmachen (z. B. "nach Absenden wird der Submit-Button deaktiviert")</li>
+</ul>
+
+<h2>Requirements Engineering (RE)</h2>
+<div class="def">
+"RE is the branch of systems engineering concerned with real-world goals for, services provided by, and constraints on software systems... and with the relationship of these factors to precise specifications of system behaviour and to their evolution over time." (Zave94)<br>
+"RE is concerned with identifying the purpose of a software system, and the contexts in which it will be used."
+</div>
+
+<h3>RE-Prozess: 4 Schritte</h3>
+<table>
+<tr><th>Schritt</th><th>Ziel</th></tr>
+<tr><td>1. Understand the problem</td><td><strong>Requirements Elicitation</strong> — Kontext und Ziele in Nutzersprache verstehen</td></tr>
+<tr><td>2. Describe the problem</td><td><strong>Requirements Specification</strong> — beschreiben, was die SW tun muss, um die Ziele zu erreichen</td></tr>
+<tr><td>3. Attain agreement</td><td><strong>Requirements Validation</strong> — Lücken, Fehler, Widersprüche finden; Konfliktlösung/Verhandlung</td></tr>
+<tr><td>4. Maintain the agreement</td><td><strong>Requirements Management</strong> — Änderungen der Spezifikation verhandeln und entscheiden</td></tr>
+</table>
+<p>Konflikte zwischen Beteiligten sind unvermeidlich — Konfliktlösung ist eine Kernaktivität von RE.</p>
+
+<h3>Konventionell vs. Agil</h3>
+<table>
+<tr><th>Konventionell</th><th>Agil</th></tr>
+<tr><td>Requirements werden vor der Entwicklung festgelegt</td><td>Requirements werden laufend gesammelt und geändert</td></tr>
+<tr><td>präzise und detailliert schriftlich fixiert</td><td>in der jeweils praktikabelsten Form kommuniziert</td></tr>
+<tr><td>bindende Verpflichtung fürs Entwicklungsteam</td><td>Chancen zur Nutzengenerierung</td></tr>
+</table>
+<p>Was besser ist, hängt stark vom Kontext ab. In agilen Prozessen: Schritt 1 nutzt v. a. User-Feedback, Schritt 2 bevorzugt mündliche Kommunikation (Schreiben ist aufwendig und wird oft missverstanden), Schritt 3 findet Fehler auch durchs Ausprobieren, Schritt 4 sieht Änderungen als Normalzustand.</p>
+
+<h2>Requirements, Domain Properties und Spezifikation</h2>
+<ul>
+  <li><strong>Domain Properties (D):</strong> Eigenschaften im Problemraum, die wahr sind — unabhängig davon, ob das System je gebaut wird.</li>
+  <li><strong>Requirements (R):</strong> Eigenschaften im Problemraum, die durch das gelieferte System wahr gemacht werden sollen.</li>
+  <li><strong>Spezifikation (S):</strong> Beschreibung des Verhaltens des Programms im Lösungsraum, das nötig ist, um R zu erfüllen.</li>
+  <li>Zusammenhang: <strong>S + D ⟹ R</strong> (die Spezifikation erfüllt zusammen mit den Domain Properties die Requirements). Ist das Domänenmodell falsch, kann diese Schlussfolgerung trotz korrekter Spezifikation scheitern — ein·e umsichtige·r Softwareentwickler·in hinterfragt daher alle Domänen-Annahmen.</li>
+</ul>
+
+<h3>Validierung vs. Verifizierung</h3>
+<p class="src">deckt sich mit fabiuebersicht.txt Zeilen 25-29</p>
+<div class="def">
+<strong>Verifizierung (Verification):</strong> prüft, ob das <em>Programm</em> auf einem bestimmten <em>Computer</em> die <em>Spezifikation</em> erfüllt (Äquivalenz formaler Repräsentationen).<br>
+<strong>Validierung (Validation):</strong> umfassender — prüft, ob das System die tatsächlichen Erwartungen in der realen Welt erfüllt; das schließt implizit ein: Haben wir alle wichtigen Requirements verstanden? Haben wir alle relevanten Domain Properties verstanden?
+</div>
+<p><strong>Validierungskriterien</strong> für Requirements: Correctness (entsprechen der Sicht des Kunden), Completeness (alle Szenarien inkl. Ausnahmefällen beschrieben), Consistency (keine Widersprüche zwischen Requirements), <strong>Ambiguity/Unambiguousness</strong> (nicht vage — alle plausiblen Interpretationen sind akzeptable Lösungen), Feasibility/Realism (realistisch umsetzbar), Traceability (jede Systemfunktion lässt sich auf ein Requirement zurückführen — erst bei Auslieferung).</p>
+<p class="src">ergänzt aus vl/08_Dynamische-Modellierung.pdf</p>
+<ul>
+  <li><strong>Verifikation</strong> ist ein Äquivalenz-Check zwischen zwei <em>verwandten Modellen</em>: das zweite wurde per Transformation aus dem ersten abgeleitet (Analyse → System-Entwurf → Objekt-Entwurf → Implementierung) — war die Transformation korrekt?</li>
+  <li><strong>Validierung</strong> ist anders: es gibt kein zweites Modell, man vergleicht ein Modell direkt mit der Realität <code>R</code> (kann auch ein künstliches System wie ein Altsystem sein) — das betrifft nur den allerersten Schritt (<code>R → M<sub>Analysis</sub></code>) sowie den finalen Abnahmetest.</li>
+  <li>Techniken für Requirements-Validierung: formale/informelle Reviews (Meetings, Requirements Review); für Implementierungen: Abnahmetest, System Use.</li>
+</ul>
+
+<h3>What vs. How</h3>
+<ul>
+  <li>"Requirements should specify <strong>what</strong> without specifying <strong>how</strong>" — aber die Grenze ist nicht immer eindeutig: das "Wie" einer Abstraktionsebene ist das "Was" der nächsttieferen (System → Subsystem → Unit).</li>
+  <li><strong>What</strong>: bezieht sich auf den Zweck des Systems, extern, Eigenschaft der Anwendungsdomäne.</li>
+  <li><strong>How</strong>: bezieht sich auf Struktur/Verhalten des Systems, intern, Eigenschaft der Lösungsdomäne.</li>
+  <li><strong>Schnittstellen (Interfaces)</strong> sind die Grenze zwischen "What" und "How".</li>
+</ul>
+
+<h2>Was ist ein System?</h2>
+<ul>
+  <li>Ein Teil der Realität, der beobachtbar mit seiner Umgebung interagiert; durch eine <strong>Boundary</strong> (Grenze) abgetrennt (kann bei "soft systems" schwer zu bestimmen sein), erhält <strong>Inputs</strong>, sendet <strong>Outputs</strong>, hat oft einen Kontrollmechanismus und meist interessante <strong>emergente Eigenschaften</strong>.</li>
+  <li>Die zu bauende Software ist im <em>Lösungsraum</em> "das System" — im <em>Problemraum</em> nicht: dort gehören auch die Menschen, ihre Nutzungsweisen und weitere Umweltfaktoren zum größeren, zu verstehenden System → <strong>sozio-technisches System</strong>.</li>
+  <li>Faustregel: Sind Menschen irgendwie beteiligt, Software niemals mit "dem System" verwechseln.</li>
+</ul>
+
+<h2>Requirements Elicitation</h2>
+<ul>
+  <li>Ausgangspunkt: die Vorstellung, dass es ein zu lösendes "Problem" gibt (etwas Negatives, das beseitigt werden soll, oder eine Chance, die genutzt werden soll).</li>
+  <li><strong>W6H-Technik</strong> (die Journalisten-Technik) zum Identifizieren von Problem und Chance:</li>
+</ul>
+<table>
+<tr><th>Frage</th><th>liefert</th></tr>
+<tr><td>Which problem needs solving?</td><td>Problem-<strong>Boundaries</strong></td></tr>
+<tr><td>Where is the problem?</td><td><strong>Context</strong>/Problem Domain</td></tr>
+<tr><td>Whose problem is it?</td><td><strong>Stakeholders</strong> (Betroffene, Beteiligte)</td></tr>
+<tr><td>Why does it need solving?</td><td>Stakeholder-<strong>Goals</strong></td></tr>
+<tr><td>How might a SW system help?</td><td><strong>Scenarios</strong></td></tr>
+<tr><td>When and how does it need solving?</td><td><strong>Development Constraints</strong></td></tr>
+<tr><td>What might prevent solving it?</td><td><strong>Feasibility</strong> und <strong>Risk</strong></td></tr>
+</table>
+
+<h3>Schwierigkeiten der Erhebung</h3>
+<ul>
+  <li><strong>Eingeschränkte Beobachtbarkeit:</strong> Problem-Owner oft zu beschäftigt mit dem Problem selbst; Anwesenheit eines Beobachters kann das Problem verändern.</li>
+  <li><strong>Dünn verteiltes Domänenwissen:</strong> über viele Quellen verteilt, selten explizit verfügbar.</li>
+  <li><strong>Bias:</strong> Leute dürfen/wollen manchmal nicht sagen, was man wissen muss (politisches Klima, versteckte Agenden).</li>
+  <li><strong>Konflikte</strong> zwischen Quellen (unterschiedliche Ziele oder Verständnisse).</li>
+  <li><strong>Tacit Knowledge</strong> ("say-do"-Problem): Expert·innen kennen ihr eigenes Wissen nicht bewusst — können Einzelfälle lösen, aber keine allgemeine Regel nennen; dazu Repräsentationsprobleme (fehlende Sprache, ungenaue gesprochene Sprache) und <strong>Brittleness</strong> (Wissen wird beim Erheben erst erzeugt, nicht extrahiert — unvollständig, zu stark vereinfacht).</li>
+  <li><strong>Distortions:</strong> senderseitig (Group Think, Impression Management, Verfügbarkeitsheuristik, Unterschätzung von Unsicherheit), empfängerseitig (Fehlinterpretation, Fehlrepräsentation, Anchoring), beidseitig (Inkonsistenz).</li>
+  <li>Persönliche/zwischenmenschliche Faktoren.</li>
+</ul>
+
+<h2>Methoden für Anforderungserhebung</h2>
+<p class="src">deckt sich mit fabiuebersicht.txt Zeilen 304-312</p>
+<table>
+<tr><th>Methode</th><th>Vorteile</th><th>Nachteile</th></tr>
+<tr><td><strong>Introspection</strong> — sich hinsetzen und überlegen, was die Requirements sein könnten</td><td>einfach, schnell, billig, keine Missverständnisse</td><td>oft nicht anwendbar ("keine Ahnung"), kann stark in die Irre führen ("Users are not like us!")</td></tr>
+<tr><td><strong>Teilnehmende Beobachtung</strong> (participant observation)</td><td>stark kontextualisiert, relativ verlässlich, deckt Details auf, die andere Methoden nicht finden</td><td>extrem zeitaufwendig, "rich picture" schwer zu analysieren, sagt wenig über Auswirkungen vorgeschlagener Änderungen; Gefahr: "going native"</td></tr>
+<tr><td><strong>Interviews</strong> (semi-strukturiert oder offen)</td><td>reiche Informationssammlung</td><td>Interviewen ist eine schwer zu meisternde Fähigkeit, große Mengen qualitativer Daten schwer auszuwerten, alle o.g. Schwierigkeiten gelten, Herauslösung aus dem Kontext</td></tr>
+<tr><td><strong>Questionnaires</strong> (Fragebögen)</td><td>günstig, viele Leute erreichbar</td><td>vorgegebene Antwortkategorien verlieren Kontext, Freitext-Antworten oft mehrdeutig — "dangerously simplistic idea"</td></tr>
+<tr><td><strong>Group Elicitation Techniques</strong> (z. B. JAD/RAD-Workshops, Focus Groups)</td><td>natürlichere Interaktion als Einzelinterview, mehr Ideen</td><td>braucht trainierte Moderation, Gefahr von Groupthink, Dominanz/Unterordnung, oberflächliche Antworten bei Detailfragen</td></tr>
+<tr><td><strong>Use user feedback</strong> (Foren, Bugtracker, Monitoring, A/B-Tests)</td><td>"echt", Problem- und Lösungsdomäne überlappen, weniger Interpretationsbedarf; bevorzugter Ansatz in agilen Prozessen</td><td>manche Eingaben wirken sinnvoll, sind aber Unsinn; Missverständnisse, Feature Creep</td></tr>
+<tr><td><strong>Iterative Entwicklung</strong></td><td>jede Iteration ist eine Chance, Requirements zu überdenken — man hat aus der letzten Iteration immer etwas gelernt; inhärenter Ansatz agiler Prozesse</td><td>—</td></tr>
+</table>
+
+<h3>Darstellungsformen (representation-based)</h3>
+<ul>
+  <li><strong>Card Sorting:</strong> Domänenobjekte werden auf Karten geschrieben, Expert·in sortiert sie in Gruppen und erklärt das Kriterium. Gut um Tacit Knowledge zu erheben; modelliert aber nur Klassifikationswissen, kein Verhaltenswissen.</li>
+  <li><strong>Goal Hierarchies:</strong> fokussiert aufs "Warum" (meist "Geld sparen"/"Geld verdienen" als Top-Ziel), hierarchische Zielverfeinerung. Einfach, gute Basis für Konfliktlösung; kann aber sehr komplex werden (Analyse-Paralyse) oder bleibt zu grob.</li>
+  <li><strong>Scenarios:</strong> Beispielabläufe der Interaktion zwischen Akteur und System (positiv = gewünschtes Verhalten, negativ = unerwünschte Interaktion). Sehr natürlich und leicht verständlich; aber wenig strukturiert (Gruppierung zu Use Cases hilft).</li>
+  <li><strong>Achtung bei natürlicher Sprache:</strong> einfach zu benutzen, aber hochgradig mehrdeutig — natürlichsprachliche Requirements werden früher oder später kreativ missverstanden.</li>
+</ul>
+
+<h2>Übung 4-1: "Requirements Engineering: A Roadmap" (Nuseibeh &amp; Easterbrook, 2000)</h2>
+<p class="src">Quelle: other/NusEas00-RE-roadmap.pdf — das explizit in Übung 4-1 zu lesende Paper</p>
+<div class="def">
+RE wird hier als Zweig des <strong>Systems Engineering</strong> (nicht nur Software Engineering) verstanden, dessen Ziel es ist, Systemverhalten für Stakeholder zu liefern — bewusst weiter gefasst als Zave's software-fokussierte Definition (siehe oben), weil Software nie isoliert vom umgebenden System funktioniert.
+</div>
+<h3>Grundlagendisziplinen von RE</h3>
+<p>RE ist multidisziplinär und human-centred; zieht Werkzeuge aus:</p>
+<ul>
+  <li><strong>Kognitionspsychologie:</strong> erklärt, warum Menschen Schwierigkeiten haben, ihre Bedürfnisse zu beschreiben (Tacit Knowledge, s. o.).</li>
+  <li><strong>Anthropologie:</strong> methodischer Ansatz zur Beobachtung menschlicher Aktivität (z. B. Ethnomethodologie zur Analyse von Zusammenarbeit).</li>
+  <li><strong>Soziologie:</strong> ein neues System verändert Arbeitsstrukturen und Machtverhältnisse — Anforderungserhebung kann politisiert werden.</li>
+  <li><strong>Linguistik:</strong> RE ist wesentlich Kommunikation; hilft z. B. Mehrdeutigkeit in Spezifikationstexten zu vermeiden/analysieren.</li>
+  <li><strong>Logik:</strong> ermöglicht formale Analyse von Verhalten, wirft aber die Frage "nicht ob, sondern wann formalisieren" auf.</li>
+</ul>
+<h3>Die fünf RE-Kernaktivitäten</h3>
+<table>
+<tr><th>Aktivität</th><th>Kerninhalt</th></tr>
+<tr><td><strong>Eliciting</strong> (Erheben)</td><td>Systemgrenzen, Stakeholder, Ziele, Aufgaben/Szenarien identifizieren; Technikklassen: <em>Traditional</em> (Fragebögen, Interviews, Dokumentenanalyse), <em>Group</em> (Brainstorming, JAD/RAD-Workshops), <em>Prototyping</em>, <em>Model-driven</em> (goal-based wie KAOS, scenario-based wie CREWS), <em>Cognitive</em> (Protocol Analysis, Laddering, Card Sorting, Repertory Grids), <em>Contextual</em> (Ethnographie, teilnehmende Beobachtung)</td></tr>
+<tr><td><strong>Modelling &amp; Analysing</strong></td><td>Enterprise-, Daten-, Verhaltens-, Domänen- und NFR-Modellierung; Analyse u. a. durch Requirements Animation, automatisiertes Schließen, Konsistenzprüfung</td></tr>
+<tr><td><strong>Communicating</strong></td><td>Dokumentation (formal/semi-formal/informell), <strong>Requirements Traceability</strong> (Gotel: "Fähigkeit, das Leben eines Requirements vorwärts wie rückwärts zu verfolgen")</td></tr>
+<tr><td><strong>Agreeing</strong></td><td>Validierung als philosophisches Problem (was ist wahr/erkennbar — Popper: Theorien nur widerlegbar, nie beweisbar; Jackson: Requirements-Beschreibungen sollten "widerlegbar" sein) <em>und</em> als soziales Problem (Requirements Negotiation, z. B. Boehms Win-Win-Ansatz: Win-Bedingungen jedes Stakeholders identifizieren)</td></tr>
+<tr><td><strong>Evolving</strong></td><td>Requirements ändern sich immer; Change Management, Impact Analysis, "requirements scrubbing" (Streichen überflüssiger Requirements), Product-Families/Reuse</td></tr>
+</table>
+<h3>Drei "radikale Ideen" der 1990er (laut Paper)</h3>
+<ol>
+  <li>Modellierung/Analyse funktioniert nicht isoliert vom organisatorischen/sozialen Kontext — kontextuelle Erhebungstechniken (Ethnomethodologie, teilnehmende Beobachtung) wurden wichtig.</li>
+  <li>RE sollte sich nicht auf die Funktionalität des neuen Systems fokussieren, sondern auf <em>indikative</em> (was ist wahr) und <em>optative</em> (was soll wahr werden) Eigenschaften der <strong>Umgebung</strong> beschreiben.</li>
+  <li>Der Versuch, ein vollständig konsistentes Requirements-Modell zu bauen, ist meist aussichtslos — RE muss Widersprüche zwischen Stakeholdern aktiv analysieren und auflösen, statt sie zu verstecken.</li>
+</ol>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>08 Dynamische Modellierung</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def {
+    background: #f3f3f3;
+    border-left: 3px solid #888;
+    padding: .5rem .8rem;
+    margin: .5rem 0;
+  }
+  .src { color: #777; font-size: .85rem; }
+  .todo { background: #fff3cd; border-left: 3px solid #d4a017; padding: .5rem .8rem; margin: 1.5rem 0; }
+  code { background: #eee; padding: 0 .3rem; }
+  table { border-collapse: collapse; margin: .5rem 0; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  .qa { margin: .4rem 0; }
+  .qa .q { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>08 Dynamische Modellierung &amp; Anforderungsdokument</h1>
+<p class="src">Quelle: vl/08_Dynamische-Modellierung.pdf + other/statecharts_activitydiagrams.pdf — relevant für ub/06_ub_statische-dynamische-analyse.pdf (Aufgabe 6-2, 6-3) und fabiuebersicht.txt (Zeile 279-280, "Anforderungsdokument")</p>
+
+<div class="todo">
+Die feineren Notationsdetails aus Übung 6-2 (<code>decisionInput</code>, <code>datastore</code>, multicast/multireceive-Knoten) stehen weiterhin nur im "Dictionary of Terms" des Buchs "The UML Reference Manual" (Rumbaugh/Jacobson/Booch), nicht in den Folien — dafür bei Bedarf dort nachschlagen. Die Kernnotation für Aktivitätsdiagramme (Knoten, Tokens, Kontrollfluss, Verzweigung/Parallelität, Datenflüsse) ist unten aus other/statecharts_activitydiagrams.pdf ergänzt.
+</div>
+
+<h2>Dynamic Model — Grundlagen</h2>
+<div class="def">
+Ein <strong>dynamisches Modell</strong> ist eine Sammlung mehrerer Verhaltensdiagramme (State-Machine-, Aktivitäts-, Sequenzdiagramme) — meist mindestens eines pro wichtiger Klasse mit relevantem dynamischen Verhalten.
+</div>
+<ul>
+  <li><strong>Zweck:</strong> Verhaltensanforderungen verstehen; fehlende Methoden fürs Objektmodell aufdecken und liefern.</li>
+  <li><strong>Vorgehen:</strong> von Use Case/Szenario + identifizierten Klassen ausgehen → Interaktion zwischen Objekten modellieren (Sequenzdiagramm) bzw. Verhalten eines einzelnen Objekts modellieren (State-Machine-Diagramm).</li>
+</ul>
+
+<h2>Sequenzdiagramme zur Objektmodellierung nutzen</h2>
+<p class="src">Notation selbst siehe <a href="04_UML.html">04 UML</a>; hier geht es um den Einsatz beim Entdecken von Klassen/Operationen</p>
+<ul>
+  <li><strong>Typisches Layout:</strong> 1. Spalte der auslösende Akteur, 2. Spalte ein Boundary-Objekt (im Entwurf, in der Analyse evtl. nicht), 3. Spalte evtl. ein Control-Objekt, das den Use Case steuert, weitere Spalten die übrigen beteiligten Objekte.</li>
+  <li><strong>Erzeugung:</strong> Control-Objekte werden oft bei Beginn eines Use Case erzeugt; weitere Boundary-Objekte können von Control-Objekten erzeugt werden.</li>
+  <li><strong>Zugriff:</strong> Entity-Objekte werden von Control- und Boundary-Objekten angesprochen; Entity-Objekte sollten <strong>nie</strong> Boundary- oder Control-Objekte aufrufen.</li>
+  <li>Für jedes Objekt, das eine Nachricht (Event) empfängt, entsteht eine <strong>öffentliche Operation</strong> in der zugehörigen Klasse (Name der Operation meist = Name des Events).</li>
+</ul>
+<h3>Fork- vs. Stair-Diagramme (Jacobson) — eine Entwurfs-, keine Analysefrage!</h3>
+<table>
+<tr><th>Stil</th><th>Struktur</th><th>Vorteil</th></tr>
+<tr><td><strong>Fork (zentrale Kontrolle)</strong></td><td>viel Verhalten steckt in einem einzigen (meist Control-)Objekt, das alle anderen kennt und direkt befragt/befehligt</td><td>unterstützt Änderungen besser: Reihenfolge leicht änderbar, neue Operationen leicht einfügbar</td></tr>
+<tr><td><strong>Stair (dezentrale Kontrolle)</strong></td><td>Verhalten verteilt: jedes Objekt kennt nur wenige andere und delegiert</td><td>lokal einfach: Objekte bleiben überschaubar, Verantwortlichkeiten leicht verständlich</td></tr>
+</table>
+<p>Kein Stil ist grundsätzlich besser — meist ist eine geeignete Mischung sinnvoll (siehe Entwurfsmuster "Mediator", "Fassade").</p>
+
+<h2>Zustandsdiagramme (State Machine Diagrams)</h2>
+<div class="def">
+Ein Zustandsautomat beschreibt den <strong>Lebenszyklus eines Objekts</strong>: ein Graph, dessen Knoten Zustände und dessen gerichtete Kanten (Transitions) mit Ereignisnamen beschriftete Übergänge sind. Ein Zustandsdiagramm bezieht sich immer auf <strong>eine</strong> Klasse (ein Objektmodell mit mehreren Klassen kann entsprechend mehrere Zustandsdiagramme haben).
+</div>
+
+<h3>Übung 6-3a: Aktionen an Transitions vs. in States — Notation und Semantik</h3>
+<div class="qa">
+<strong>Notation:</strong>
+<ul>
+  <li>An einer <strong>Transition</strong> (Pfeil zwischen zwei Zuständen): <code>Event(Parameter) [Guard-Bedingung] / Aktion</code> — steht direkt auf dem Pfeil.</li>
+  <li>In einem <strong>Zustand</strong> (im Zustandskästchen selbst): <code>entry/Aktion</code>, <code>exit/Aktion</code>, <code>do/Aktivität</code>, oder <code>event/Aktion</code> als eigene Zeilen im Zustandskörper.</li>
+</ul>
+<strong>Semantischer Unterschied:</strong>
+<ul>
+  <li><strong>Transition-Aktion:</strong> wird genau einmal ausgeführt, während des Übergangs von einem Zustand in einen anderen (der Zustand wechselt).</li>
+  <li><strong><code>entry</code>-Aktion:</strong> wird einmal ausgeführt, sobald der Zustand betreten wird (unabhängig davon, über welche Transition).</li>
+  <li><strong><code>exit</code>-Aktion:</strong> wird einmal ausgeführt, sobald der Zustand verlassen wird.</li>
+  <li><strong><code>do</code>-Aktivität:</strong> läuft, solange sich das Objekt in diesem Zustand befindet (kontinuierlich/wiederholt), bis der Zustand verlassen wird.</li>
+  <li><strong><code>event/Aktion</code> im Zustand:</strong> ein <em>interner</em> Übergang — das Ereignis wird behandelt, ohne den Zustand zu verlassen (kein Entry/Exit wird ausgelöst).</li>
+</ul>
+<p class="src">Präzisierung aus other/statecharts_activitydiagrams.pdf:</p>
+<ul>
+  <li><strong>Interne Transition</strong> (Event als Zeile im Zustandskästchen): Ein- und Austrittsverhalten (<code>entry</code>/<code>exit</code>) werden <strong>nicht</strong> ausgelöst — der Zustand wird ja nicht verlassen.</li>
+  <li><strong>Selbsttransition</strong> (ein Pfeil vom Zustand zurück zu sich selbst): Ein- und Austrittsverhalten werden <strong>wohl</strong> ausgelöst — der Zustand wird formal verlassen und sofort wieder betreten.</li>
+</ul>
+<em>Praxistipp aus der Folie:</em> Notationsclutter reduzieren, indem man Aktionen möglichst in die Zustandskästchen legt (v. a. wenn identische Aktionen bei Events auf denselben Zielzustand vorkommen).
+</div>
+
+<h3>Was ist ein "Zustand"?</h3>
+<ul>
+  <li>Eine Abstraktion der Attributwerte eines (späteren) Implementierungsobjekts: eine "passende" Äquivalenzklasse von Attributwert-Konfigurationen, die nicht weiter unterschieden werden müssen (was "passend" ist, hängt vom aktuellen Ziel ab).</li>
+  <li>Ein Zustand hat eine <strong>Dauer</strong>. Manche Zustände brauchen keinen (oder keinen aussagekräftigen) Namen, aber trotzdem weitere Details (z. B. <code>entry</code>-Aktion).</li>
+</ul>
+
+<h3>Aktivität vs. Aktion (innerhalb eines Zustandsautomaten)</h3>
+<ul>
+  <li><strong>Activity:</strong> zusammengesetzte Operation — kann durch ein eigenes Aktivitätsdiagramm weiter beschrieben werden.</li>
+  <li><strong>Action:</strong> elementare Operation (kann intern zwar auch Struktur haben, wird vom Zustandsautomaten aber ignoriert).</li>
+</ul>
+
+<h3>Verschachtelte/zusammengesetzte Zustände (Composite States)</h3>
+<ul>
+  <li>Ein Zustand kann selbst wieder als eigener kleiner Zustandsautomat (Unterzustände mit eigenem Start-/Endpunkt) ausmodelliert werden — im übergeordneten Diagramm nur als ein Zustand mit kleinem Doppelkreis-Symbol angedeutet.</li>
+</ul>
+
+<h3>Nebenläufigkeit (Concurrency)</h3>
+<table>
+<tr><th>Art</th><th>Bedeutung</th></tr>
+<tr><td><strong>System Concurrency</strong> (zwischen Objekten)</td><td>Zustand des Gesamtsystems = Aggregation der Zustandsautomaten aller Objekte; jeder Zustandsautomat läuft konzeptuell nebenläufig zu allen anderen. Ein Zustandsdiagramm (pro Klasse) kann zu vielen Zustandsautomaten führen (einer pro Instanz).</td></tr>
+<tr><td><strong>Object Concurrency</strong> (innerhalb eines Objekts)</td><td>ein Objekt wird in mehrere parallele Zustands-Teilbereiche ("Regions", getrennt durch gestrichelte Linien) aufgeteilt; der Gesamtzustand besteht aus je einem Zustand pro Region. Split/Synchronisation werden durch Balken (fork/join) notiert.</td></tr>
+</table>
+<p>Nebenläufigkeit wird in diesem Kurs meist weitgehend ausgeklammert.</p>
+
+<h3>Praktische Tipps für State-Machine-Modellierung</h3>
+<ol>
+  <li>Nur für Klassen mit signifikantem/komplexem dynamischen Verhalten modellieren (sonst "Analysis Paralysis") — Ausnahme: wenn Zustandsdiagramme direkt zur Codegenerierung ausreichen (z. B. Steuerlogik in Telekommunikationssystemen).</li>
+  <li>Nur relevante Attribute bei der Zustandsdefinition berücksichtigen — Abstraktion konsequent nutzen.</li>
+  <li>Sinnvolle Granularität von Aktionen/Aktivitäten wählen — das ist immer noch Analyse, kein Entwurf!</li>
+  <li>Notationsclutter reduzieren (Aktionen wenn möglich in Zustandskästchen statt an jeder Transition).</li>
+</ol>
+
+<h3>Dynamische Modellierung von Benutzeroberflächen</h3>
+<p>Zustandsdiagramme eignen sich auch, um Navigationspfade/Page-Flows einer UI darzustellen (gut z. B. für web-basiertes UI-Design): Zustände = Bildschirmnamen, Aktivitäten/Aktionen = Aufzählungspunkte unter dem Bildschirmnamen (oft nur die Exit-Aktion gezeigt), Zustandsübergänge = Ergebnis der Exit-Aktion (Klick, Menüauswahl, Cursorbewegung).</p>
+
+<h2>Aktivitätsdiagramme (Übung 6-2)</h2>
+<p class="src">Quelle: other/statecharts_activitydiagrams.pdf</p>
+<ul>
+  <li>Zerlegen eine <strong>Aktivität</strong> in kleinere Einheiten (Teil-Aktivitäten); jede Teil-Aktivität kann wiederum in einem eigenen Aktivitätsdiagramm weiter zerlegt werden.</li>
+  <li>Eine Aktivität hat (mindestens) einen Input und einen Output.</li>
+</ul>
+<h3>Kontrollflusssemantik (Tokens)</h3>
+<ul>
+  <li>Der <strong>initiale Knoten</strong> erzeugt einen <strong>Token</strong>.</li>
+  <li>Eine Aktivität wird gestartet, sobald ihr Input einen Token erhält; nach Abschluss geht der Token an den Output, von dort dem Pfeil zum nächsten Knoten folgend.</li>
+  <li>Erst wenn <strong>alle</strong> Inputs eines Knotens einen Token haben, startet die Aktivität (implizites Join-Verhalten an einem einfachen Knoten mit mehreren eingehenden Pfeilen).</li>
+</ul>
+<h3>Aufteilung des Kontrollflusses</h3>
+<table>
+<tr><th>Konstrukt</th><th>Bedeutung</th></tr>
+<tr><td><strong>Fallunterscheidung (branch/merge)</strong> — Raute</td><td>der Token verfolgt nur einen der Pfade (mit Guard-Bedingungen wie <code>[alles verstanden]</code>)</td></tr>
+<tr><td><strong>Parallele Abarbeitung (fork/join)</strong> — Balken</td><td>der Token wird vervielfacht, die Pfade werden nebenläufig beschritten und am Join wieder synchronisiert; ein einfacher Knoten mit mehreren ein-/ausgehenden Pfeilen wirkt implizit wie fork/join</td></tr>
+</table>
+<ul>
+  <li><strong>Activity Final Node</strong> (gefüllter Kreis mit Ring): erreicht ein Token diesen Knoten, werden <strong>alle</strong> Tokens im Diagramm gelöscht — auch parallele Flüsse werden gestoppt.</li>
+  <li><strong>Flow Final Node</strong> (Kreis mit X): löscht nur den ankommenden Token, hat <strong>keinen</strong> Einfluss auf evtl. parallele Flüsse.</li>
+</ul>
+<h3>Datenflüsse</h3>
+<ul>
+  <li>Neben einfachen Kontroll-Tokens können auch komplexe Objekte von einer Aktivität zur nächsten geschickt werden — entweder über <strong>Pin-Notation</strong> (kleine Kästchen am Rand der Aktivität, benannt nach dem Objekttyp) oder über <strong>explizite Objekt-Knoten</strong> (eigene Kästchen zwischen den Aktivitäten).</li>
+  <li>Bedeutung: die Aktivität startet, sobald sie ein Objekt des erwarteten Typs erhält (auch das ist ein Token); nach Abschluss stellt sie einen Kontroll-Token <em>und</em> ggf. weitere Objekt-Tokens bereit, die unabhängig voneinander den Flüssen folgen.</li>
+</ul>
+
+<h2>Wann dominiert welches Modell?</h2>
+<div class="def">
+Ein Modell heißt <strong>dominant</strong>, wenn es einen viel größeren Anteil der <em>interessanten</em> Information enthält als die anderen.
+</div>
+<ul>
+  <li><strong>Einfaches Datenbanksystem:</strong> Operationen simpel (Laden, Speichern), aber komplexe Datenstrukturen → das <strong>statische Objektmodell</strong> dominiert.</li>
+  <li><strong>Telefonvermittlungssystem:</strong> Datenstrukturen sagen wenig aus, Verhalten zu komplex für Use Cases → das <strong>dynamische Modell</strong> (insbesondere Statecharts) dominiert.</li>
+</ul>
+
+<h2>Anforderungsdokument (Requirements Document)</h2>
+<p class="src">deckt sich mit fabiuebersicht.txt Zeile 279-280: "enthält weit mehr als funktionale Anforderungen als Anwendungsfälle"</p>
+<div class="def">Wichtig: das Anforderungsdokument ist nur <em>konzeptuell</em> ein einzelnes Dokument — in der Praxis oft mehrere separate Dokumente, manche davon gar nicht schriftlich fixiert.</div>
+<h3>Mögliche Gliederung</h3>
+<ol>
+  <li>Introduction</li>
+  <li>Current system</li>
+  <li>Proposed system
+    <ol>
+      <li>Overview</li>
+      <li>Functional requirements</li>
+      <li>Nonfunctional requirements</li>
+      <li>Constraints ("Pseudo requirements")</li>
+      <li>Analysis Model: 3.5.1 Scenarios (as-is/visionary), 3.5.2 Use Case Model, 3.5.3 Object Model (Data Dictionary + Klassendiagramme — <em>das ist immer noch Analyse, kein Entwurf!</em>), 3.5.4 Dynamic Model (Zustandsdiagramme für dynamisch wichtige Klassen, Sequenzdiagramme für kollaborierende Objekte), 3.5.5 User Interface (Navigationspfade, Screen-Mockups)</li>
+    </ol>
+  </li>
+  <li>Glossary</li>
+</ol>
+<h3>Kategorien nichtfunktionaler Anforderungen (3.3, mit Leitfragen)</h3>
+<p>User Interface &amp; Human Factors, Documentation, Hardware Considerations, Performance Characteristics, Error Handling &amp; Extreme Conditions, System Interfacing, Quality Issues, System Modifications, Physical Environment, Security Issues, Resources &amp; Management Issues (Betrieb wird in diesem Kurs weitgehend ausgeklammert).</p>
+<h3>Priorisierung von Requirements</h3>
+<table>
+<tr><th>Priorität</th><th>Muss behandelt werden während</th></tr>
+<tr><td>Hoch ("Core requirements")</td><td>Analyse, Entwurf <em>und</em> Implementierung; muss bei Kundenabnahme erfolgreich demonstriert werden</td></tr>
+<tr><td>Mittel ("Optional requirements")</td><td>Analyse und Entwurf; oft erst in einer späteren Iteration implementiert/demonstriert</td></tr>
+<tr><td>Niedrig ("Fancy requirements")</td><td>nur Analyse ("sehr visionäre Szenarien"); zeigen mögliche künftige Nutzung, z. B. sobald neue Technik verfügbar wird</td></tr>
+</table>
+<h3>Konventionell vs. Agil</h3>
+<p>Ein detailliertes, formales Anforderungsdokument ist ein Kennzeichen konventioneller Projekte (oft Kern eines Festpreisvertrags) — trotz Umfang oft von zweifelhafter Qualität. Agile ("Lightweight") Prozesse vermeiden ein solches Dokument bewusst; ist ein "agiles Anforderungsdokument" weniger detailliert, kann seine Qualität trotzdem besser sein. Ein Blick auf die Anforderungsprozesse einer Organisation verrät viel über die Organisation selbst.</p>
+
+</body>
+</html>

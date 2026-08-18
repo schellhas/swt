@@ -1,0 +1,381 @@
+Aufgaben der SWT
+	OB -> Kosten/Nutzen-Analyse
+	WAS -> Anforderung
+	WIE -> Entwurf
+	Bauen -> Implementierung
+	Validieren -> Analytische Qualitätssicherung
+	Verwalten -> Management
+
+Akteure Stakeholders
+	Kunden -> Leute die Entwicklung finanzieren
+	Benutzer -> End-User 
+	Kunden != Benutzer
+
+Arten von Anforderungen
+	Eigenschaften der Problemdomäne
+	Funktionale Anforderungen
+		- Was das System tut: Die interaktion zwischen dem System und der Umgebung, unabhängig von der Implementierung
+	Nichtfunktionale Anforderungen
+		- Beobachtbare Aspekte des Systems, welche nicht direkt funktional sind
+	Sicherheitsanforderungen
+		- Eine Art von nicht funktionaler Anforderungen: Verhalten, das das System niemals an den Tag legen darf
+	Einschränkungen
+		- Einschränkungen für das System, welche zu verwendende Technologie haben soll
+
+Validierung
+	Überprüft ob ein Produkt die tatsächlichen Anforderungen und Bedürfnisse des Endnutzers erfüllt -> Feedback Sessions
+
+Verifizierung
+	Überprüft, ob ein Produkt den spezifischen Anforderungen und Design-Vorgaben entspricht -> Code reviews/Unit-tests
+
+Wie baut man eine SW?
+	- Entscheiden wie/wo/wodurch die funktionalen Anforderungen umgesetzt werden können
+	- Herausfinden, wie man dabei die nicht funktionalen Anforderungen alle erfüllt kann
+	Prinzipien von Entwurf
+		- Trennung von Belangen: Wir teilen Probleme, damit wir wissen können falls ein Problem eintritt wo wir das problem finden können, bzw. wo wir das lesen können
+		- Architektur: Globale Struktur festlegen "Grobentwurf", insbesonders für das Erreichen der nichtfunktionalen Anforderungen
+		- Modularisierung: Trennung von Belangen durch Modularisierung, Kombination der Teile durch Schnittstellen "Information hiding, Lokalität"
+		- Wiederverwerndung: Erfinde Architekturen und Entwurfsmoster nicht immer wieder neu
+		- Dokumentation: Halte sowohl Schnittstellen als auch zu Grunde liegende Entwurfsentscheidungen und deren Begründungen fest
+
+Systemzerlegung -> wenn Architektur ausgewählt wird, muss System hierarchisch in passende Teile zerlegt werden: Diese Teile sind "Module" (Komponente)
+
+UML
+	- Privat
+	+ Public
+	# Gesichert
+	~ Packet
+
+Information Hiding -> Implementations-Details einer Klasse werden vor andere Teile des Programms/Benutzers verborgen
+
+OCL
+	Kann verwendet werden, um Code zu erzeugen, der das Verhalten von Klassen während der Laufzeit überprüft. OCL ist eine Sprache, mit der "Einschränkungen" ausgedrückt werden können
+
+Tests
+	- Defekttest: Ziel ist Zuverlässigkeitsprüfung, Findung von Versagen
+	- Testen: Anwenden eines Testfalls auf einen Testgegenstand
+	- Testfall: ein Tupel (Systemzustand (Testeingabe), Eingaben (Testeingabe), Systemverhalten (Testausgabe)), das erwartete Verhalten beschreibt
+	- Testgegenstand: System oder Teil davon, der (Komponente) getestet werden soll
+	- Testdurchführung (Testausführung): Gibt ein Testergebnis -> evtl. Defekt aufdecken
+
+Wer soll testen?
+	- Entwickler des Codes: Schnelle rückmeldung, Effizienz -> kennt sein Code schon
+		- Betriebsblindheit -> Dinge übersehen, Einseitige Perspektive
+	- Jemand anders: Frische Augen, Code wird gründlich getestet, ohne Annahmen war rein/raus kommen soll. Wissenasutausch. Zeitaufwand, Kosten, Missverständnisse
+	- Gut kann TDD sein, automatisierte Tests
+		- mehr testen
+		- tests wiederholen (falls sich etwas ändert)
+
+2 Stile von Projektmanagement
+	Planend-leitend
+		- Explizite Dokumente, evtl. detaillierte Planung
+		- Projektleiter mit Autorität
+		- Projektsteuerung zur Planeinhaltung
+		- Geeignet für: kleine & große Teams, klare Anforderungen, Vorhaben
+	Agil-selbst organisiert
+		- Geringere, impliziertere Planung, kürzerer Horizont
+		- Selbstorganisation: Gemeinsames Entscheiden
+		- Während Iteration: Koordination; Umsteuerung nur dazwischen
+		- Geeignet für kleine Teams, auch unklare/veränderliche Anforderungen
+
+Ziele der Softwareentwicklung
+	[GRAFIK]
+
+Prozesse
+	Konventionelle Prozesse													Agile Prozesse
+		- Aufgaben nacheinander vollständig lösen und nur ein mal bearbeiten						- Aufgaben sehr stark verschränkt wo jede Lösung eine Annäherung ist
+		- Prozess ist voll und gut planbar										- Besteht aus vielen Iterationen wo Feedback sehr wichtig ist
+		- Anforderungsdokument sehr detailliert und Formell erstellt -> sehr wichtiger Teil für den Vertrag		- Anforderungsdokument ist ein leichtes Dokument mit wenigen Details -> echt agil hat so ein Dokument nicht
+		- Gute Vorgaben/Leitlinien -> Durchsetzen (enforce)								- Selbstorganisation -> schrittweise verbessern
+
+Aktivitätsdiagramm
+	[GRAFIK]
+	[GRAFIK]
+	[GRAFIK]
+	[GRAFIK]
+	[GRAFIK]
+
+Anwendungsfall
+	Was ist ein Anwendungsfall? (Textform)
+		- Vereinbarung zwischen den Beteiligten eines Projektes über das Verhalten des Systems
+		- Beschreibt das Verhalten des Systems, wo der Hauptakteur ein Ziel verfolgt und erreicht
+		- Ein Anwendungsfall gruppiert die Beschreibungen fpr viele einzelne Fälle "Szenarios", die den Zielen eng zusammen gehören
+		- Beschreibt die Funktionalen Anforderungen
+	Anwendungsfall (Template)
+		- Hauptakteur: Primär Benutzer oder System
+		- Anwendungsbereich: Kontext & Grenzen
+		- Niveau: Detaillierungsgrad
+		- Beteiligte und Interessen
+		- Vorraussetzung: Bedienung vor Ausführung
+		- Mindestzusicherung: Grundlegende Garantie bei Fehlschlag -> Protokollieren
+		- Zusicherung im Erfolgsfall: Gewünschtes Ergebnis
+		- Auslöser: Ereignis das den Use Case startet
+		- Haupt-Erfolgsszenario: Schritt für Schritt Prozess zum Ziel
+		- Erweiterungen: Alternative Wege und fehlerfälle
+
+Wirkung von Modularisierung
+	Schnittstellen verbergen (hide) die Entwurfsentscheidungen, die sich öfter mal ändern -> Schnittstelle merkt nichts: Nur Modul wird verändert. System ist dann einfach zu verstehen
+
+Module beurteilen
+	Wie man gute Modularisierung findet
+	1. Ein Modul hat eine gut verständliche Zuverlässigkeit "Responsibility"
+	2. Module sind nicht größer als nötig
+	3. Module sind meistens viel komplexer als ihre Schnittstellen
+	4. Ändere Entscheidungen sind verborgen "hidden, Information hiding"
+
+OCL iterate: Klasse -> iterate(variable = {} | union.attribut)
+
+Qualitätssicherung
+	Ist die Gesamtheit aller Maßnahmen, die darauf zielen, ein Produkt in guter Qualität fertig zu stellen
+	Analytische QS:
+		- Dynamische Verfahren:
+			- Defekttest
+			- Benutzbarkeittest
+			- Lasttest
+			- Akzeptanztest
+		- Statische Verfahren:
+			- Manuelle Verfahren "Durchsichten, Inspektion"
+			- Automatische Verfahren "Modellprüfung, Quelltextanalyse"
+	Konstruktive QS:
+		- Test- und Durchsicht-Management
+		- Prozessmanagement
+		- Projekt- und Risikomgnt
+
+Arten von Tests
+	Testfälle finden: Bekannte Versagensfälle, Erfahrung
+	Black Box Test -> Funktionstest
+		- Wähle Testfälle durch betrachtung der Spezifikation (Schnittstelle) der Komponente/Module
+		- Für jeden Fall mit andersartigen Verhalten wähle mindestens einen Testfall
+		- Gruppe solcher Fälle in Äquivalenzklassen, Fehlerfälle, Randfälle
+	White Box Test -> Strukturtest
+		- Wähle Testfälle durch Betrachtung der Implementation (Struktur) der Komponente/Module
+		- Ziel: Abdeckung aller Elemente der implementation durch die Summe der Testfälle
+		- C0 Anweisungsüberdeckung
+		- C1 Bedienungsüberdeckung
+		- C2 Schleifenüberdeckung
+		- Datenflusskriterien
+	Whilebox: Zweigüberdeckung Beispiele
+		[GRAFIK]
+	Black-Box Beispiele
+		(5,5,5,Gleichseitig)
+		(Max-int, Max-int, Max-int, Gleichseitig)
+		(1,1,1,Gleichseitig)
+			quatsch eingaben können auch sinnvoll sein
+				(float, char, ...)
+			=> um zu sehen wie fehler behandelt werden (error handling)
+
+Aufgaben des Projektmanagements
+	Zeitplanung
+	- Schätzungen des Gesamtaufwands
+	- Aufstellen eines Zeit- und Arbeitsplans
+
+Aufgabenzerlegung finden
+	- Top-down Ansatz -> grob zu feine tasks
+	- Brainstorming- und Bottom-up-Ansatz -> irgendwelche Aufgaben zusammen Packen und in Gruppen ordnen
+
+Risiko
+	-> Möglichkeit dass ein unerwünschtes Ereignis Eintritt
+	Managementstile in Bezug auf Risiken
+	1. Optimistisch/Ignorierend
+	2. Reparierend
+	3. Vorbeugend "Risikomanagement"
+
+Anwendungs- und Technische Domäne
+	Anwendungsdomäne:
+		- Problembereich
+		Wozu die Software (Finanzwesen, E-Commerce, Bildung)
+	Technische Domäne:
+		- Lösungsbereich
+		Mit welcher Technik die Software realisiert wird (Java, NoSQL, Angular)
+
+Normales- und Radikales Vorgehen
+	Normales Vorgehen
+		- Etwas so machen wie üblich
+		- Die Domäne der Profis
+	Radikales Vorgehen
+		- Etwas "ganz neues" tun
+		- Einziger Weg für Anfänger
+
+Alle testenden Verfahren führen zunächst nur zu Versagen
+
+Arten von Tests
+	Benutzbarkeitstest: ob Benutzer in der Lage sind, die Funktionen des Systems zu nutzen
+	Lasttest: Kann das System genügend viele Benutzer zugleich schnell genug bedienen?
+	Leistungstest: Worauf wird die Antwortzeit verwandt? -> Effizienz utner normalem Context
+	Stresstest: Überlebt das System überlasten, massenhaft unsinnige Eingaben oder ähnliches?
+	Akzeptanztest: Um Kunde zu demonstrieren, dass die Anforderungen erfüllt sind
+
+Netzplan
+	gibt die Darstellung den Abhängigkeiten von Aufgaben
+	[GRAFIK]
+
+Taxonomie: Die Welt der Softwaretechnik
+	Welt der Problemstellung
+		Produktprobleme (Komplexitätsprobleme)
+			Emergente Eigenschaften:
+				Phänomene die man nur versteht, wenn man alle Teile betrachtet
+			Komplexität:
+				Ein System besteht aus vielen Einzelnteilen und hat emergente Eigenschaften
+			Anforderungsprobleme -> Problemraum
+				-> herausfinden, was gebaut werden soll
+			Entwurfsprobleme -> Lösungsraum
+				-> herausfinden, wie die SW strukturiert werden sollte, um die Anforderungen gut zu erfüllen
+		Prozessprobleme (Pysycho-soziale Probleme)
+			Entstehen weil Menschen Schwächen haben und zur Konstruktion von SW müssen Menschen zusammenarbeiten
+			Kognitive Beschränkung
+				-> denkfähigkeit
+			Mängel der Urteilskraft
+				-> emergente Eigenschaften, keine komplett richtige Entscheidungen treffen
+			Kommunikation, Koordination
+				-> info weiterleiten
+			Gruppendynamik
+				-> kann dazu führen, dass keine kritische Fragen gestellt werden
+			Verborgene Ziele
+				-> Menschen haben eigene Ziele
+			Fehler
+				-> Fehler können Auftreten
+	Welt der Lösungsansätze
+		Technische Ansätze "hart"
+			Konkrete technische Maßnahmen und Lösung, wie die Implementierung von Algorithmen
+			Abstraktion
+				-> Konzentration auf wesentliche Eigenschaften durch weglassen von Details
+			Wiederverwendung
+			Automatisierung
+				-> übertrage eine wiederholt zu erledigende tätigkeit an den computer
+		Methodische Ansätze "weich"
+			Strukturelle und organisatorische Methoden, wie die Anwendung von agilen Entwicklungsprozessen
+			Anforderungsermittlung
+				-> systematisch festlegen
+			Entwurf
+				-> Es ist wichtig eine Struktur/Funktionsweise vorab für da System festzulegen
+			Qualitätssicherung
+				-> man macht oft Fehler die zu schweren Mängeln in der SW führen können (konstruktive/analytische)
+			Projektmanagement
+				-> Bau einer großeren SW verlangt nach Planung, Leitung, Koordination
+
+Analysten sind an der Struktur interessiert, Entwerfer sind an der Lösung interessiert
+
+Software
+	ist eine Menge von Programmen oder Daten zusammen mit begleitenden Dokumenten, die für ihre Anwendung notwendig oder hilfreich sind
+Softwaretechnik
+	ist der sytematische Ansatz für die Entwicklung, den Betrieb, Wartung und Stillegung von Software
+
+Dynamische Modellierung
+	[GRAFIK]
+
+Anwendungsdomänen- und Lösungsdomänenklasse
+	Anwendungsdomänenklasse
+		Analyse & Entwurfsmodell
+		-> Abstraktion von Anwendungsdomäne
+		Vertrag, Luftdruck, Rezept
+	Lösungsdomänenklasse
+		Entwurfs(design) Modell
+		-> Abstraktion von Lösungsdomäne
+		Puffer, DB Verbindung, Parser, Tag
+
+Problem- und Lösungsbereich
+	[GRAFIK]
+
+Anforderungsdokument
+	enthält weit mehr als funktionale Anforderungen als Anwendungsfälle
+
+Klient-/Dienstgeber, Mehrschicht-Architektur, Ereignisgesteuertes System, Datenflussnetze und Web-Architektur
+	dickes ding
+
+Schnittstellen -> Entwurf per Vertrag (Design by Contract)
+	- Spezifiziere für jede Methode
+		- Voraussetzung
+		- Nachbedingungen/Wirkungen
+		- Invariante
+	- Wir teilen die gleichen Annahmen über die Klasse
+
+Proxy/Stellvertreter, Befehlsmuster, Abstrakte Fabrik, Baumuster, Strategie Muster, Beobachter Muster, Erzeugungsmuster, Verhaltensmuster, Strukturmuster, Fassade Muster, Zusammengesetztes Muster, Adaptermuster, Brückenmuster, 
+	sehr sehr dicker block, viele graphiken hier
+	(größter block auf dem pdf, nicht unterschätzen da ich jetzt nur stichpunkte geschrieben habe, JEDER stichpunkt ist ca. ein drittel so groß wie der durchschnittsblock in diesem dokument)
+
+Statische Verfahren
+	-> günstigere Methode
+	- SW Artefakte werden von Menschen gelesen mit dem Ziel Mängel aufzudecken
+	- kein ausführbarer Code benötigt
+	- Mängel werden früher entdeckt
+	- fördert Kommunikation & Bildung
+	-> Durchsichtne (review), peer review, Inspektion
+
+Methoden für Anforderungserhebung
+	-> Darstellung für Ergebnisse
+	- Introspection -> Sitzen und nachdenken was die sein können
+	- Teilnehmende Beobachtung -> Benutzer beobachten und lernen
+	- Interviews
+	- Questionnaires -> Fragebogen
+	- Group Elicitation Techniques -> zusammen sitzen (Gefahr von Gruppendenken)
+	- Use user feedback -> Diskussion in forums, workshops
+	- Iterative Entwicklung -> In jede Iteration nachdenken
+
+Konstruktive Qualitätssicherung
+	Arten von Prozessmanagement leitlinien
+	Prozesstandards
+		Geben vor, wie gewisse Prozesse strukturiert und durchgeführt werden sollen
+	Qualitätsstandards
+		Geben vor, wie gewisse Prozessergebnisse beschaffen sein sollen
+	Prozessreifemodelle
+		Beschreiben Aspekte, die für einen erfolgreichen Prozess optimiert werden müssen (aber nicht, wie der Prozess aussieht)
+
+Iterative Prozessmodelle
+	gut für unklaren oder mit verständlichen Anforderungen umgehen -> Allgemeine Ziele anstatt konkrete Pläne -> Agile Methoden verlängern sehr enge Kommunikation
+	Prototypmodell: Baue Anfangs ein (Teil)System "zum wegwerfen", um kritische Anforderungen besser zu verstehen. Danach folgt ein Prototyp oder Wasserfallmodell
+	Inkrementelles Modell: Baue das Gesamtsystem schrittweise. In jedem Schritt werden nur neue Teile hinzugebaut, aber es wird (theoretisch) nie etwas existierendes verändert
+	Iteratives Modell: Baue das Gesamtsystem schrittweise. In jedem Schritt werden neue Teile hinzugebaut und wo nötig auch existierende verändert
+		- Scrum
+			-> Springs. Product Owner, Scum Master, Development Team
+			Daily Scrum: Kurze Meetings für fortschrittbesprechung
+		- XP
+			flexible und gute Anpassung. Pair Programming, TDD, Kunde vor Ort
+	Spiralmodell: Risikomodell. Tue in jede Iteration das, was am stärksten zur verringerung des kritischen projektrisikos biträgt. das hat alle däge Modelle als Spezialfälle
+
+Universelle Prozessmodelle (Agil)
+	- Rational Unified Process (RUP)
+	- V-modell XT
+
+Wiederverwendung
+	bedeutet meistens auch Abstützen auf Erfahrungen und fördert somit meistens das normale Vorgehen
+		Qualität und Produktivität gehen hoch, Risiko geht runter
+
+Prinzipien zur Wiederverwendung
+	- normales Vorgehen
+	- Universalität -> fast alles lässt sich im Prinzip wiederverwenden
+	- Abwägung (trade off)
+		-> wäge sorgfältig den Gewinn an Produktivität und (hoffentlich) Qualität ab gegen den Verlust an Flexibilität und Kontrolle
+
+Softwareprozess
+	-> Die Abläufe, die in einem SW-Projekt geschehen
+Prozessmodelle
+	-> beschreibt Aktivitäten, Rollen und Artefakte im SW-Entwicklungsprozess
+	-> Eint abstraktes, strukturiertes Framework für die SW-Prozesse
+
+Wasserfallmodell
+	1. Planung
+	2. Anforderungsbestimmung
+	3. Architekturentwurf
+	4. Feinentwurf
+	5. Implementierung
+	6. Integration
+	7. Validierung
+	8. Inbetriebnahme
+	> am Ende jeder Phase erfolgt eine gründliche Prüfung der Ergebnisdokumente
+
+Schwächen vom Wasserfallmodell
+	-> unklare Anforderungen
+	-> veränderliche Anforderungen bei nicht beherrschten Architekturen
+	-> Bei schlechte Kommunikation zwischen Phasen "über die Mauer werfen"
+
+Strikte, stark planende Modelle
+	für
+	-> wenn ein wohldefiniertes Resultat in definierter Zeit erreicht werden muss
+	-> wenn sehr große (und verteilte) Projektgruppen koordiniert werden müssen
+Agile Modelle
+	für
+	-> wenn hohe Unsicherheit über die Anforderungen besteht
+	-> wenn Änderungen von außen häufig sind (Anforderungen, Budget, Zeitplan)
+
+[haufen GRAFIKen]
+

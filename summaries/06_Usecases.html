@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>06 Anwendungsfälle</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def {
+    background: #f3f3f3;
+    border-left: 3px solid #888;
+    padding: .5rem .8rem;
+    margin: .5rem 0;
+  }
+  .src { color: #777; font-size: .85rem; }
+  table { border-collapse: collapse; margin: .5rem 0; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  .qa { margin: .4rem 0; }
+  .qa .q { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>06 Anwendungsfälle (Use Cases)</h1>
+<p class="src">Quelle: vl/06_Usecases.pdf — relevant für ub/05_ub_use-cases.pdf und fabiuebersicht.txt (Zeilen 98-115, "Anwendungsfall")</p>
+
+<h2>Was ist ein Use Case?</h2>
+<div class="def">
+<strong>Rolle:</strong> Vereinbarung zwischen den Beteiligten eines Projekts über das Verhalten des Systems.<br>
+<strong>Ansatz:</strong> Beschreibung des Verhaltens des Systems als Antwort auf einen Auftrag eines Hauptakteurs, der mit seinem Auftrag ein Ziel verfolgt und erreicht.
+</div>
+<ul>
+  <li>Ein Use Case bündelt die Beschreibungen für viele einzelne Fälle (<strong>Szenarios</strong>), die den Zielen nach eng zusammengehören — er ist also abstrakt, aber nicht sehr.</li>
+  <li>Form: normalerweise (meist strukturierter) <strong>Text</strong>; formale/grafische Notationen (Flussdiagramme, Zustandsdiagramme, Sequenzdiagramme, Petrinetze) sind zwar prinzipiell möglich, Text ist aber meist die beste Wahl. "Wer nicht gut Text schreiben kann, kann auch nicht gut Use Cases schreiben."</li>
+</ul>
+
+<h3>a) Was ist ein Anwendungsfall und wozu dient er? (Übung 5-1a)</h3>
+<p>Siehe Definition oben. Zweck: er dient als <strong>Vereinbarung</strong> zwischen allen Projektbeteiligten (Kunden, Nutzer·innen, Entwickler·innen) darüber, was das System in einer bestimmten Interaktion leisten soll — unabhängig von der konkreten Implementierung. Er macht funktionale Anforderungen konkret nachvollziehbar und dient zugleich als Werkzeug der Anforderungserhebung (leicht zu schreiben, leicht mit Beteiligten abzugleichen).</p>
+
+<h2>Use-Case-Schablone</h2>
+<p class="src">deckt sich mit dem Anwendungsfall-Template in fabiuebersicht.txt Zeilen 104-114</p>
+<table>
+<tr><th>Feld</th><th>Bedeutung</th></tr>
+<tr><td>Hauptakteur</td><td>primär handelnde Rolle (Person oder System)</td></tr>
+<tr><td>Anwendungsbereich (Bezug, "system under discussion", SuD)</td><td>Kontext und Grenzen — wovon reden wir hier eigentlich?</td></tr>
+<tr><td>Niveau</td><td>Detaillierungs-/Abstraktionsgrad</td></tr>
+<tr><td>Beteiligte und Interessen</td><td>alle Stakeholder und was ihnen an diesem Use Case wichtig ist</td></tr>
+<tr><td>Voraussetzung</td><td>muss vor Ausführung bereits gelten</td></tr>
+<tr><td>Mindestzusicherung</td><td>Grundgarantie auch im Fehlerfall (z. B. Protokollierung)</td></tr>
+<tr><td>Zusicherung im Erfolgsfall</td><td>gewünschtes Ergebnis</td></tr>
+<tr><td>Auslöser</td><td>Ereignis, das den Use Case startet</td></tr>
+<tr><td>Haupt-Erfolgsszenario</td><td>nummerierte Schritt-für-Schritt-Beschreibung zum Ziel (idealerweise 3-9 Schritte)</td></tr>
+<tr><td>Erweiterungen</td><td>alternative Wege und Fehlerfälle, referenziert per Schrittnummer + Buchstabe (z. B. "3a", "4b")</td></tr>
+</table>
+<p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
+
+<h3>Akteure und Rollen</h3>
+<ul>
+  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
+  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
+</ul>
+
+<h2>Arten von Use Cases</h2>
+<p>Zwei Dimensionen, entlang derer man Use Cases unterscheiden sollte:</p>
+<table>
+<tr><th>Bezug (SuD)</th><th>liefert typischerweise</th></tr>
+<tr><td>eine Organisation</td><td>Geschäftsprozess</td></tr>
+<tr><td>ein Softwaresystem</td><td>Interaktion, funktionale Anforderungen (häufigste Sorte)</td></tr>
+<tr><td>eine SW-Komponente</td><td>Verhalten einer Schnittstelle</td></tr>
+</table>
+<table>
+<tr><th>Abstraktionsgrad</th><th>Detailmenge</th></tr>
+<tr><td>Überblick</td><td>hoher Abstraktionsgrad</td></tr>
+<tr><td>Benutzerinteraktion (Benutzerziel)</td><td>mittlerer Abstraktionsgrad</td></tr>
+<tr><td>Details</td><td>geringer Abstraktionsgrad</td></tr>
+</table>
+<p>Wenn nicht klar ist, von welchem System (ganze Firma? zu bauendes System? Teilsystem?) die Rede ist, wird der Use Case unverständlich. Ein gutes Projekt hat meist: 1 Überblicks-Use-Case fürs ganze Projekt, ~1-4 Überblicks-Use-Cases je Zielbereich, je 1 Benutzerziel-Use-Case pro "in einer Sitzung" erledigtem Ablauf, und Detail-Use-Cases nur für besonders komplizierte, oft wiederverwendete Teilabläufe.</p>
+
+<h3>Konventionell vs. Agil</h3>
+<p>Konventionell: Überblicks-, normale und (selten) Whitebox-/Detail-Use-Cases werden meist ausformuliert. Agil: eher <strong>Epics</strong> und <strong>Story Cards</strong> ("Als &lt;Rolle&gt; kann ich &lt;Ziel&gt; von &lt;SuD&gt;, um &lt;Akteursinteresse&gt;") statt vollständiger Use Cases; Details werden eher im Code oder iterativ nachgebessert.</p>
+
+<h2>Präzision beim Schreiben von Use Cases</h2>
+<ul>
+  <li><strong>Präzision</strong> (precision) ≠ <strong>Richtigkeit</strong> (accuracy) — ein Use Case kann sehr präzise, aber falsch sein, oder ungenau, aber völlig richtig. Ziel: ausreichend präzise <em>und</em> richtig.</li>
+  <li><strong>Gefahr 1 (zu früh zu genau):</strong> man übersieht anfangs oft etwas Wichtiges oder sitzt einem Missverständnis auf — schon investierte Detailarbeit ist dann verschwendet.</li>
+  <li><strong>Gefahr 2:</strong> wird das Dokument zu umfangreich, liest es niemand mehr. Also: <strong>weniger ist oft mehr</strong>, Use Cases sollten immer nur gerade genau genug sein.</li>
+</ul>
+<h3>Empfehlung: schrittweise präziser machen</h3>
+<ol>
+  <li>Hauptakteur und Ziel ("Story Card") — klärt schon wichtige Anforderungen/Beteiligte, erst mal prüfen ob alles stimmt</li>
+  <li>Haupt-Erfolgsszenario — reicht in manchen Fällen schon aus</li>
+  <li>Erweiterungsbedingungen (welche Varianten/Fehler müssen behandelt werden?)</li>
+  <li>Erweiterungsschritte (wie werden sie behandelt? — kann oft weggelassen und informell geklärt werden)</li>
+</ol>
+
+<h3>Wichtigkeit von Zielen</h3>
+<ul>
+  <li>Ein Ziel beantwortet zu den Schritten die Frage "Warum?"; der Name eines Use Case sollte immer ein Ziel bezeichnen.</li>
+  <li>In einem umfassenderen Use Case tritt ein untergeordnetes Ziel als einzelner Schritt auf → es entsteht eine <strong>Zielhierarchie</strong> (hierarchische Zerlegung), die einzelne Use Cases übersichtlich hält.</li>
+  <li>Klare Akteursbenennung deckt oft Probleme auf (z. B. wenn "Arzt" eigentlich eine Organisation statt einer Person ist).</li>
+</ul>
+
+<h2>Szenario vs. Anwendungsfall (Übung 5-1c)</h2>
+<div class="def">
+Ein <strong>Szenario</strong> ist eine konkrete(re) Ausprägung eines Use Case: es gibt keine Varianten, sondern nur einen linearen Ablauf, ggf. mit ganz konkreten Datenwerten.<br>
+Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, die mehrere Szenarien (Haupt-Erfolgsszenario + Erweiterungen/Varianten) bündelt.
+</div>
+<p>Szenarien werden ergänzend genutzt, wenn das Schreiben eines Use Case schwerfällt oder er für manche Beteiligte zu abstrakt ist (meistens kommt man aber ohne aus). Der Entwicklungsstil <strong>ATDD</strong> (Acceptance-Test-Driven Development) nutzt statt eines Use Case direkt N konkrete Szenarien als automatisierte Testfälle, die vor der Implementierung geschrieben werden und selbst als Spezifikation dienen.</p>
+
+<h2>Checkliste für Use-Case-Bestandteile</h2>
+<p>Bei einem guten Use Case sollte jede dieser Fragen mit "ja" beantwortet werden können:</p>
+<ul>
+  <li><strong>Titel:</strong> aktive Verbalphrase, die das Ziel des Hauptakteurs nennt? Ist das SuD für die Zielerreichung zuständig?</li>
+  <li><strong>Bereich (SuD):</strong> angegeben? bei Systementwurf: alle Teile entworfen, nichts außerhalb der Systemgrenze?</li>
+  <li><strong>Detailgrad/Zielniveau:</strong> liegt das Ziel wirklich auf diesem Niveau? passt der Inhalt zum geplanten Detailgrad?</li>
+  <li><strong>Hauptakteur:</strong> hat er/sie/es Verhalten und ein zu einer Dienstzusicherung des SuD passendes Ziel?</li>
+  <li><strong>Voraussetzungen:</strong> verbindlich und herstellbar? werden im Use Case selbst nicht mehr überprüft?</li>
+  <li><strong>Beteiligte/Interessen, Mindestzusicherung, Zusicherung im Erfolgsfall:</strong> jeweils angemessen berücksichtigt/geschützt/befriedigt?</li>
+  <li><strong>Haupt-Erfolgsszenario:</strong> 3-9 Schritte? beschreibt es den Ablauf vom Auslöser bis zur Erfolgsgarantie?</li>
+  <li><strong>Jeder Einzelschritt:</strong> als erreichtes Ziel formuliert (z. B. "validieren" statt "prüfen")? treibt er den Prozess sichtbar voran? ist Akteur und Absicht klar? abstrahiert er von der Bedienoberfläche?</li>
+  <li><strong>Erweiterungsbedingungen:</strong> kann/muss das SuD den Fall erkennen bzw. behandeln?</li>
+  <li>Insgesamt: "Ist dies, was Du möchtest?" (ggü. Beteiligten) und "Kannst Du das bauen?" (ggü. Entwickler·innen)</li>
+</ul>
+
+<h2>Grenzen von Use Cases</h2>
+<div class="def">
+Use Cases decken <strong>nur Verhaltensanforderungen</strong> ab. Sie beschreiben <em>nicht</em>: Domäneneigenschaften/Annahmen, Geschäftsregeln, nichtfunktionale Anforderungen, ggf. vorgegebenes Datenmodell/technische Schnittstellen, sonstige Randbedingungen. Das Anforderungsdokument muss daher mehr als nur Use Cases enthalten — Use Cases bilden aber einen guten Rahmen für den Rest.
+</div>
+<p>Aus Entwicklersicht fehlt zudem: welche <strong>Funktionen</strong> die SW braucht, welche <strong>Daten</strong> im System vorhanden sind, wie sich die Entwicklung auf Personen verteilen lässt — dafür ist als nächster Schritt <strong>Anforderungsanalyse</strong> nötig.</p>
+
+<h2>UML-Anwendungsfalldiagramme (Übung 5-2)</h2>
+<div class="qa"><span class="q">a) Anwendungsfalldiagramm vs. Anwendungsfall, Vor-/Nachteile</span><br>
+Ein Anwendungsfalldiagramm ist eine grafische <em>Übersicht</em> über Akteure und die wenigen Beziehungen zwischen Use Cases (Systemgrenze, include/extend/Generalisierung) — es enthält bewusst wenig Information und ersetzt nicht den ausformulierten (meist textuellen) Use Case selbst.<br>
+<strong>Vorteile:</strong> schneller visueller Überblick über Akteure und Struktur eines Systems; gut zur Kommunikation der Systemgrenze und Zusammenhänge zwischen Use Cases.<br>
+<strong>Nachteile:</strong> enthält keinerlei Verhaltens-/Ablaufdetails (kein Ersatz für den Text); kann leicht mit dem eigentlichen Use Case verwechselt werden ("bitte nie das Diagramm mit dem Use Case verwechseln!").</div>
+
+<div class="qa"><span class="q">b) Akteur</span><br>
+Repräsentiert eine <strong>Rolle</strong>, die von außerhalb des Systems mit ihm interagiert (Person oder anderes System) — nicht eine konkrete Person, sondern die Perspektive/Funktion, aus der heraus agiert wird.</div>
+
+<div class="qa"><span class="q">c) Weitere Modellelemente (drei Beispiele)</span><br>
+<ul>
+<li><strong>Subject/Systemgrenze</strong> (Rechteck, "system under discussion"): grenzt das betrachtete System von seiner Umgebung ab.</li>
+<li><strong>Use Case selbst</strong> (Oval): ein benannter Anwendungsfall innerhalb der Systemgrenze.</li>
+<li><strong>«include»-Beziehung</strong> (gestrichelter Pfeil): der ausführende Use Case ruft immer einen anderen Use Case auf — entspricht dem Unterstreichen von Schritten in der Textform.</li>
+</ul>
+</div>
+
+<div class="qa"><span class="q">d) Arten von Beziehungen zwischen zwei Use Cases</span><br>
+<table>
+<tr><th>Beziehung</th><th>Bedeutung</th><th>Entspricht in Textform</th></tr>
+<tr><td><strong>«include»</strong></td><td>zwingender Aufruf eines anderen (Unter-)Use Case als Teil des Ablaufs</td><td>unterstrichener Schritt mit Verweis auf Unter-Use-Case</td></tr>
+<tr><td><strong>«extends» / Generalisierung</strong></td><td>optionale/alternative, ausgelagerte Varianten und Fehlerfälle</td><td>"extends"-Beziehung (Erweiterungen) bzw. "generalizes"-Beziehung (Alternativen/Fehlerfälle)</td></tr>
+</table>
+Beide dienen dazu, Use Cases übersichtlich zu halten, indem Teilabläufe ausgelagert werden — «include» ist dabei verpflichtend, «extends»/Generalisierung optional bzw. alternativ.</div>
+
+<h3>Präzisierung: include, extend, Generalisierung</h3>
+<p class="src">ergänzt aus other/04_anwendungsfaelle.pdf (Lehrbuchkapitel "Anwendungsfalldiagramm", Beispiel "Bestellwesen") — deckt sich mit VL06, ist aber präziser in Pfeilrichtung und Semantik</p>
+<ul>
+  <li><strong>include:</strong> Basisanwendungsfall <em>A</em> nutzt Anwendungsfall <em>B</em> (»<code>A includes B</code>«) — <em>A</em> ist vom erfolgreichen Ablauf von <em>B</em> abhängig. Der Pfeil zeigt <strong>vom benutzenden zum benutzten</strong> Use Case (<code>A --«include»--&gt; B</code>), da <em>A</em> "Kenntnis" von <em>B</em> hat. Zweck: Redundanzvermeidung — dieselbe Teilfunktionalität wird nur einmal beschrieben. Die include-Beziehung sagt nichts über den <em>Zeitpunkt</em> aus, zu dem <em>B</em> im Ablauf von <em>A</em> passiert (Anfang, Ende, mittendrin) — sie wird immer erreicht.</li>
+  <li><strong>extend:</strong> Anwendungsfall <em>B</em> erweitert <em>A</em> optional (»<code>B extends A</code>«) an einem benannten <strong>Erweiterungspunkt</strong> (<em>extension point</em>) in <em>A</em>, unter einer angegebenen Bedingung. Der Pfeil zeigt <strong>vom erweiternden zum Basis-Use-Case</strong> (<code>B --«extend»--&gt; A</code>) — also <strong>genau entgegengesetzt</strong> zur include-Richtung. Zweck: Flexibilität/Erweiterbarkeit des Anwendungsfallmodells; die zusätzliche Funktionalität ist optional, <em>A</em> liefert auch ohne sie ein sinnvolles Ergebnis. In der UML bleibt die genaue Semantik unklar/kompliziert — extend wird oft einfach als include mit Bedingung interpretiert.</li>
+  <li><strong>Generalisierung zwischen Use Cases:</strong> analog zur Klassengeneralisierung (Pfeil mit geschlossener, nicht gefüllter Spitze vom spezielleren zum allgemeineren Use Case). Der speziellere Use Case (z. B. "Mahnung erstellen") übernimmt die Aufgabe des allgemeineren ("Forderung stellen"), erledigt aber Teilaufgaben auf spezielle Art. Beziehungen des allgemeineren Use Case zu Akteuren werden dabei mitvererbt.</li>
+  <li><strong>Wichtig:</strong> zyklische Abhängigkeiten (ein Use Case nutzt/erweitert sich selbst, direkt oder über mehrere Stufen) müssen vermieden werden.</li>
+</ul>
+<h4>Textuelles Schema (alternative, einfachere Notation)</h4>
+<p>Neben der ausführlichen Cockburn-Schablone oben gibt es ein einfacheres, verbreitetes Schema: <code>use case Name / actors ... / precondition ... / main flow ... / alternative flow X ... / postcondition ... / exceptional flow Y ... / postcondition ... / end Name</code>. Ein <strong>Szenario</strong> ist hier explizit als "Instanziierung" eines Use Case auf einen konkreten Fall definiert. <strong>Akteur-Generalisierung</strong> ist ebenfalls möglich: ein spezielleres Akteur (z. B. "Privatkunden-Sachbearbeiter") kann mindestens die Rolle des allgemeineren Akteurs ("Sachbearbeiter") spielen — nützlich zur Redundanzvermeidung bei gemeinsamen Verantwortlichkeiten mehrerer Akteure.</p>
+
+</body>
+</html>

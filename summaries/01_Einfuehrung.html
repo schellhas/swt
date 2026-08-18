@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>01 Einführung</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def {
+    background: #f3f3f3;
+    border-left: 3px solid #888;
+    padding: .5rem .8rem;
+    margin: .5rem 0;
+  }
+  .src { color: #777; font-size: .85rem; }
+  code { background: #eee; padding: 0 .3rem; }
+  table { border-collapse: collapse; margin: .5rem 0; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; }
+</style>
+</head>
+<body>
+
+<h1>01 Einführung</h1>
+<p class="src">Quelle: vl/01_Einfuehrung.pdf — relevant für ub/01_ub_einfuehrung.pdf (Aufgabe 1-2, 1-3) und fabiuebersicht.txt (Aufgaben der SWT, Akteure)</p>
+
+<h2>Was ist Software / Softwaretechnik?</h2>
+<div class="def">
+<strong>Software:</strong> Menge von Programmen oder Daten zusammen mit begleitenden Dokumenten, die für ihre Anwendung notwendig oder hilfreich sind. (Hesse et al. 84)
+</div>
+<div class="def">
+<strong>Softwaretechnik (= Software Engineering):</strong> Fachgebiet der Informatik, das sich mit der Bereitstellung und systematischen Verwendung von Methoden und Werkzeugen für die Herstellung und Anwendung von Software beschäftigt.
+</div>
+<ul>
+  <li>Weitere Aspekte anderer Definitionen: ingenieurmäßiges Vorgehen (auf Basis wissenschaftlicher Erkenntnisse), Herstellung schließt Anforderungsermittlung + Pflege/Fortentwicklung ein</li>
+  <li>Anforderungen ändern sich meist schon während der Herstellung → Agile Software-Entwicklung</li>
+  <li>Es gibt bewusst keine einheitliche Definition — das ist typisch für das Feld</li>
+</ul>
+
+<h2>Aufgaben der SWT</h2>
+<p>Sechs eng miteinander verwobene Aufgaben:</p>
+<table>
+<tr><th>Aufgabe</th><th>Bedeutung</th></tr>
+<tr><td><strong>OB</strong></td><td>Kosten/Nutzen-Analyse — was könnte SW leisten, welcher Nutzen, welche Kosten?</td></tr>
+<tr><td><strong>WAS</strong></td><td>Anforderungen klären — funktional (was tun) & nichtfunktional (sonstige Eigenschaften)</td></tr>
+<tr><td><strong>WIE</strong></td><td>Entwurf — wie sollte die SW aufgebaut sein (Architektur, Modulzerlegung)</td></tr>
+<tr><td><strong>Bauen</strong></td><td>Implementierung</td></tr>
+<tr><td><strong>Validieren</strong></td><td>Analytische Qualitätssicherung — hat die SW die erwünschten Eigenschaften?</td></tr>
+<tr><td><strong>Verwalten</strong></td><td>Management — den gesamten Prozess gestalten (planen, Mängeln vorbeugen)</td></tr>
+</table>
+
+<h3>Zuordnung zu Bereichen der Softwaretechnik</h3>
+<p class="src">ergänzt aus ub/02_ub_eigene-idee.pdf, Aufgabe 2-1b</p>
+<p>Die Übung unterteilt die SWT grob in vier <strong>Bereiche</strong>: Anforderungen, Entwurf/Implementierung, Qualitätssicherung, Management. Naheliegende Zuordnung der sechs Aufgaben:</p>
+<table>
+<tr><th>Bereich</th><th>Zugehörige Aufgabe(n)</th></tr>
+<tr><td>Anforderungen</td><td>OB (Kosten/Nutzen), WAS (Anforderungen)</td></tr>
+<tr><td>Entwurf/Implementierung</td><td>WIE (Entwurf), Bauen (Implementierung)</td></tr>
+<tr><td>Qualitätssicherung</td><td>Validieren</td></tr>
+<tr><td>Management</td><td>Verwalten</td></tr>
+</table>
+
+<h2>Stakeholder ("Wer ist beteiligt?")</h2>
+<ul>
+  <li><strong>Kund·innen</strong> — geben das Geld; evtl. viele mit unterschiedlichen Bedürfnissen</li>
+  <li><strong>Benutzer·innen</strong> — setzen die SW später ein; nur manchmal identisch mit Kund·innen (<strong>Kunde ≠ Benutzer</strong>)</li>
+  <li><strong>Manager·innen</strong> — treffen organisatorische Entscheidungen während der Entwicklung (Alternative: Selbstorganisation)</li>
+  <li><strong>Entwickler·innen</strong> — definieren und bauen die SW, meist mehrere in verschiedenen Rollen ("Programmieren im Großen")</li>
+</ul>
+
+<h2>Zielkonflikte: Kosten, Nutzen, Qualität</h2>
+<ul>
+  <li><strong>Nutzen maximieren:</strong> wertvolle Anforderungen aufdecken + umsetzen, dazu passende SW hoher Qualität produzieren</li>
+  <li><strong>Kosten minimieren:</strong> SW mit möglichst wenig Arbeitsaufwand fertigstellen (Schlüsseltechniken: Wiederverwendung, Qualitätssicherung, Risikomanagement) + künftige Kosten vermeiden (Defektkorrekturen, spätere Änderungen — beides hängt an Qualität/Wartbarkeit)</li>
+  <li>→ <strong>Qualität spielt eine zentrale Rolle</strong>, weil sie sowohl Nutzen erhöht als auch künftige Kosten senkt</li>
+  <li>Gütemaßstab der SWT: SW ist gut, wenn der erzielte <strong>Nutzen</strong> deutlich höher ist als die aufgewendeten <strong>Kosten</strong> — und das auch künftig so bleibt</li>
+</ul>
+
+<h3>Qualitätsmerkmale von Software</h3>
+<table>
+<tr><th>Externe Qualität (Benutzersicht)</th><th>Interne Qualität (Entwicklersicht)</th></tr>
+<tr><td>Benutzbarkeit (Bedienbarkeit, Erlernbarkeit, Robustheit)</td><td>Zuverlässigkeit (Korrektheit, Robustheit, Verfügbarkeit)</td></tr>
+<tr><td>Verlässlichkeit (Zuverlässigkeit, Verfügbarkeit, Sicherheit, Schutz)</td><td>Wartbarkeit (Verstehbarkeit, Änderbarkeit, Testbarkeit, Korrektheit, Robustheit)</td></tr>
+<tr><td>Brauchbarkeit (Angemessenheit, Geschwindigkeit, Skalierbarkeit, Pflege)</td><td>Effizienz (Speicher-, Laufzeiteffizienz, Skalierbarkeit)</td></tr>
+</table>
+
+<h3>Warum sind nicht alle vier Ziele gleichzeitig erreichbar? (Übung 1-2a)</h3>
+<p class="src">Hintergrund aus other/Brooks_No Silver Bullet.pdf — Frederick P. Brooks, "No Silver Bullet: Essence and Accidents of Software Engineering" (1987)</p>
+<div class="def">
+Brooks unterscheidet bei der Schwierigkeit von Softwareentwicklung zwischen <strong>Essence</strong> (dem eigentlichen konzeptuellen Konstrukt: Datensätze, Beziehungen, Algorithmen, Funktionsaufrufe) und <strong>Accidents</strong> (den Schwierigkeiten, dieses Konstrukt darzustellen/zu implementieren, z. B. in einer umständlichen Programmiersprache). Seine These: die "accidental" Schwierigkeiten wurden historisch schon stark reduziert (High-Level-Sprachen, Time-Sharing, integrierte Entwicklungsumgebungen) — der verbleibende, <strong>nicht wegoptimierbare</strong> Schwierigkeitsanteil liegt in der Essenz selbst.
+</div>
+<p>Vier inhärente Eigenschaften der Essenz von Software, die erklären, warum man nicht einfach "mehr Qualität" oder "mehr Umfang" ohne Kosten bekommt:</p>
+<ul>
+  <li><strong>Complexity:</strong> Software-Systeme haben ungewöhnlich viele Zustände/Einzelteile, die kaum wiederholt vorkommen (im Gegensatz zu Häusern oder Computern mit vielen gleichartigen Bauteilen) — das macht sie schwer zu entwerfen, zu verstehen, zu testen und zu erweitern.</li>
+  <li><strong>Conformity:</strong> Software muss sich an von Menschen und Institutionen willkürlich festgelegte Schnittstellen anpassen (nicht an durch Naturgesetze vereinheitlichte Prinzipien wie in der Physik) — diese Komplexität lässt sich nicht wegkonstruieren.</li>
+  <li><strong>Changeability:</strong> Software wird viel häufiger geändert als andere gefertigte Produkte, u. a. weil sie erfolgreich ist (Nutzer wollen dann noch mehr) und weil sie leichter änderbar erscheint (reines "Gedankenzeug").</li>
+  <li><strong>Invisibility:</strong> die Struktur von Software hat keine natürliche geometrische Darstellung (anders als ein Bauplan) — mehrere sich überlagernde Graphen (Kontrollfluss, Datenfluss, Abhängigkeiten, Zeitablauf) erschweren es, sich einen Überblick zu verschaffen.</li>
+</ul>
+<p><strong>Kernaussage ("No Silver Bullet"):</strong> Weil diese vier Eigenschaften zur Essenz gehören, gibt es keine einzelne Technik oder Management-Methode, die Softwareproduktivität/-qualität um eine Größenordnung verbessert — auch vielversprechende Kandidaten wie Ada, objektorientierte Programmierung, KI/Expertensysteme, "automatische" Programmierung oder grafische Programmierung lösen jeweils nur einzelne <em>accidental</em> Schwierigkeiten. Deshalb steht man immer vor Zielkonflikten: mehr Qualität oder mehr Umfang zu erzwingen, ohne mehr Zeit/Kosten zuzulassen, stößt an diese Essenz-Grenzen.</p>
+<p><strong>Vielversprechendere Ansätze laut Brooks</strong> (Angriffe auf die Essenz statt auf Accidents): Buy-versus-Build (fertige Produkte kaufen statt bauen), <strong>iterative/inkrementelle Entwicklung</strong> ("grow, don't build" — Systeme schrittweise wachsen statt komplett im Voraus spezifizieren lassen), Requirements-Verfeinerung durch <strong>Rapid Prototyping</strong> (da Kund·innen ihre Anforderungen selten vollständig im Voraus spezifizieren können), und gezielte Förderung großartiger Designer·innen (ähnlich wichtig wie gute Manager·innen).</p>
+<p><em>Interne Qualitätseigenschaften sind Mittel zum Zweck</em> — sie dienen den externen.</p>
+
+<h3>Wie schafft man hohe Qualität?</h3>
+<ul>
+  <li><strong>Analytische QS</strong> (produktorientiert): konkrete Mängel aufdecken + nachbessern — statisch (Durchsichten, Inspektionen, Modellprüfung) oder dynamisch (Test)</li>
+  <li><strong>Konstruktive QS</strong> (prozessorientiert): Mängel von vornherein vermeiden, durch Prozessmanagement ("Vorbeugen ist besser als Heilen")</li>
+  <li>Keine Gegensätze — sie ergänzen sich</li>
+</ul>
+
+<h2>Grobunterteilungen der Softwaretechnik</h2>
+<ol>
+  <li><strong>Nach Perspektive:</strong> Produkt (Gesamtheit der greifbaren Arbeitsergebnisse/Artefakte) vs. Prozess (Gesamtheit der Abläufe bzw. das zugrunde liegende Prozessmodell) — <em>bitte nie verwechseln</em></li>
+  <li><strong>Nach Lebensdauer des Wissens:</strong>
+    <ul>
+      <li><strong>Prinzip</strong> — sehr abstrakter Grundsatz, bleibt lebenslang gültig</li>
+      <li><strong>Methode</strong> — planmäßige, begründete Vorgehensweise für ein Ziel, bleibt ca. 10–30 Jahre relevant</li>
+      <li><strong>Verfahren</strong> — präzise, konkrete Vorgehensvorschrift für spezifischen Bereich</li>
+      <li><strong>Werkzeug</strong> — Programm, das ein Verfahren automatisiert/eine Methode unterstützt, bleibt evtl. nur kurze Zeit relevant</li>
+    </ul>
+  </li>
+  <li><strong>Nach Art der Aktivität:</strong> Anforderungsermittlung, Entwurf, Implementierung, Validierung, Inbetriebnahme, Management</li>
+  <li><strong>Nach betroffenem Bereich:</strong> technische vs. menschliche Aspekte — SWT wird von Menschen betrieben (Wissen, Kurzzeitgedächtnis, Kommunikationsvermögen als Beschränkungen) und Software wird von Menschen benutzt → <strong>sozio-technisches System</strong>. Technische Aspekte sind nicht alles!</li>
+</ol>
+
+<h2>Arten von SWT-Situationen (Kontextfaktoren)</h2>
+<p>Die meisten Methoden der SWT sind nur für manche Situationen ideal — wichtige Unterscheidungskriterien:</p>
+<ul>
+  <li><strong>Nähe/Anzahl der Kunden:</strong> Individualsoftware (1 Kunde) vs. Standardsoftware (Millionen Kund·innen/Benutzer·innen, Kunde ≠ Benutzer)</li>
+  <li><strong>Art der Benutzer:</strong> geschulte Profis vs. gering/nicht ausgebildete Benutzer (letzteres schwieriger — erfordert Benutzbarkeitsgestaltung)</li>
+  <li><strong>Größe/Komplexität:</strong> klein (Methoden oft unnötig) vs. groß (SWT + Projektmanagement einzige Erfolgschance)</li>
+  <li><strong>Kritikalität von Domänenwissen:</strong> rein technische Domäne vs. komplexe Fachlichkeit (Faustregel: hat es eine interaktive Benutzungsschnittstelle, ist es nie rein technisch; die Domäne ist immer vielschichtiger als man denkt)</li>
+  <li><strong>Näherungslösungen nötig?</strong> exakt lösbar vs. prinzipiell unlösbar/nur approximativ (z.B. Machine-Learning-Aufgaben)</li>
+  <li><strong>Kritikalität von Effizienz:</strong> Ressourcen im Überfluss vs. knapp (IoT, mobile Geräte, Echtzeit, Server für Millionen Nutzer)</li>
+  <li><strong>Kritikalität von Verlässlichkeit</strong> (= Zuverlässigkeit + Sicherheit + Verfügbarkeit + Schutz): Mensch kann Versagen abfedern vs. Versagen hat schwere Folgen (Autopilot, Insulinpumpe, Bankensoftware)</li>
+</ul>
+
+</body>
+</html>

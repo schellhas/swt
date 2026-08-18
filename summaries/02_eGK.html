@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>02 eGK</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def {
+    background: #f3f3f3;
+    border-left: 3px solid #888;
+    padding: .5rem .8rem;
+    margin: .5rem 0;
+  }
+  .src { color: #777; font-size: .85rem; }
+  .todo { background: #fff3cd; border-left: 3px solid #d4a017; padding: .5rem .8rem; margin: 1.5rem 0; }
+</style>
+</head>
+<body>
+
+<h1>02 eGK (Projektbeispiel: elektronische Gesundheitskarte)</h1>
+<p class="src">Quelle: vl/02_eGK.pdf — relevant für ub/02_ub_eigene-idee.pdf (Aufgabe 2-2a)</p>
+
+<p>Die eGK ist ein durchlaufendes Fallbeispiel, an dem die Vorlesung die Komplexität eines echten Großprojekts zeigt (seit 2003 laufendes Projekt, öffentlich zugängliche Anforderungs-/Entwurfsdokumente). Zweck laut Folie: <em>Art und Menge nötigen Wissens</em> begreifen, nicht die Details lernen.</p>
+
+<h2>Domänen-Begriff</h2>
+<div class="def">
+<strong>Domäne</strong> = das Umfeld und der Anwendungsbereich, in dem ein SW-Projekt angesiedelt ist.
+</div>
+<ul>
+  <li><strong>Anwendungsdomäne</strong> (problem domain, Problembereich) — wozu die Software dienen soll, plus deren ganzes Umfeld</li>
+  <li><strong>Technische Domäne</strong> (solution domain, Lösungsbereich) — mit welcher Technik die Software realisiert wird</li>
+  <li>Sagt man nur "Domäne", ist meist die Anwendungsdomäne gemeint</li>
+</ul>
+<p>Domänen weisen meist hohe Komplexität auf:</p>
+<ul>
+  <li><strong>fachlich:</strong> Fachbegriffe, "selbstverständliche" Sachverhalte, Kultur, Standards, Verfahren/Prozesse, Rollen, Anforderungen</li>
+  <li><strong>technisch:</strong> Sprachen, Technologien, Standards, Komponenten</li>
+</ul>
+<p>→ Sehr viel Wissen ist nötig, deshalb Zusammenarbeit von Fachspezialist·innen und Technikspezialist·innen erforderlich.</p>
+
+<h2>Weitere "Merke"-Hinweise (am eGK-Beispiel)</h2>
+<ul>
+  <li><strong>Nichtfunktionale Anforderungen sind oft dominant:</strong> die eigentliche Funktion ist oft simpel, aber Sicherheits-, Verfügbarkeits- und Skalierungsanforderungen machen ein System erst richtig komplex</li>
+  <li><strong>Domänenwissen ist wichtig:</strong> ohne Verständnis der fachlichen Anforderungen kann man kaum brauchbare Ergebnisse garantieren — in mindestens einer Domäne sollte man sich auskennen</li>
+</ul>
+
+<div class="todo">
+<strong>Noch nicht ausgearbeitet:</strong> Der Rest der eGK-Folie (funktionale Anforderungen als UML-Aktivitätsdiagramm/Use-Case, Mengengerüst, Verfügbarkeitsklassen, Beteiligte/Nutznießer/Konfliktlinien, Digitale Signatur) wird ergänzt, sobald die zugehörigen Übungen (Anforderungen, Anwendungsfälle) bearbeitet werden.
+</div>
+
+</body>
+</html>

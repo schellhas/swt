@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>04 UML</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def {
+    background: #f3f3f3;
+    border-left: 3px solid #888;
+    padding: .5rem .8rem;
+    margin: .5rem 0;
+  }
+  .src { color: #777; font-size: .85rem; }
+  code { background: #eee; padding: 0 .3rem; }
+  table { border-collapse: collapse; margin: .5rem 0; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  .qa { margin: .4rem 0; }
+  .qa .q { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>04 UML (Modeling with UML)</h1>
+<p class="src">Quelle: vl/04_UML.pdf — relevant für ub/03_ub_uml.pdf und fabiuebersicht.txt (UML-Zeile 43-47)</p>
+
+<h2>Modell-Grundbegriffe</h2>
+<div class="def">
+<strong>Modell:</strong> eine Abstraktion, die relevante Aspekte eines Systems beschreibt (Details werden bewusst weggelassen).<br>
+<strong>Sicht (view):</strong> zeigt ausgewählte Aspekte eines Modells — jede Sicht ist selbst wieder ein Modell; komplexe Modelle werden meist nur über mehrere Sichten gezeigt, nie als Ganzes.<br>
+<strong>Notation:</strong> ein Regelwerk zur Darstellung von Modellen (grafisch oder textuell).
+</div>
+<p><strong>UML</strong> (Unified Modeling Language) ist der meistgenutzte Standard zur Softwaremodellierung, sowohl für Anforderungen (Anwendungsdomäne) als auch für Entwurf (Lösungsdomäne). Entstanden aus der Konvergenz von OMT (Rumbaugh), OOSE (Jacobson) und der Booch-Methode ("The Three Amigos").
+
+<h2>Diagrammarten (Überblick)</h2>
+<table>
+<tr><th>Diagramm</th><th>Sicht</th><th>Zweck</th></tr>
+<tr><td>Use-Case-Diagramm</td><td>funktional</td><td>Katalog von Szenarien, die das funktionale Verhalten aus Nutzersicht beschreiben</td></tr>
+<tr><td>Klassendiagramm / Objektdiagramm</td><td>statisch</td><td>statische Struktur: Klassen, Attribute, Assoziationen (bzw. konkrete Objekt-Konfigurationen als Beispiel)</td></tr>
+<tr><td>Sequenzdiagramm</td><td>dynamisch (Beispiel)</td><td>Beispiele für dynamisches Verhalten zwischen Objekten</td></tr>
+<tr><td>Zustandsdiagramm (State Machine)</td><td>dynamisch</td><td>Verhalten eines einzelnen Objekts als endlicher Automat</td></tr>
+<tr><td>Aktivitätsdiagramm</td><td>dynamisch</td><td>Workflow/Kontrollfluss eines Systems (im Prinzip ein Flowchart, aber mit Nebenläufigkeit)</td></tr>
+</table>
+<p>Weniger gebräuchlich (nur am Rande): Component-, Deployment-, Communication-, Interaction-Overview-Diagramme; dazu die nicht-grafische <strong>OCL</strong> (Object Constraint Language).</p>
+
+<h2>UML-Elemente (Übung 3-1)</h2>
+
+<h3>Klassen und Objekte</h3>
+<ul>
+  <li><strong>Klasse:</strong> hat einen Namen, repräsentiert im Problemraum ein Konzept; im Lösungsraum kapselt sie Zustand (Attribute) und Verhalten (Operationen). Notation: Rechteck, oben Name (nicht unterstrichen), dann Attribute, dann Operationen.</li>
+  <li><strong>Objekt/Exemplar (Instance):</strong> repräsentiert ein konkretes Phänomen. Notation: <code>instanzname : Klassenname</code>, <strong>unterstrichen</strong>. Instanzname und/oder Klassenname können weggelassen werden (<code>:Klassenname</code> oder <code>instanzname:</code>); ganz anonym (<code>:</code>) sollte man vermeiden.</li>
+</ul>
+
+<h3>Attribute und Operationen</h3>
+<ul>
+  <li><strong>Attribut:</strong> hat einen Typ (z. B. <code>zone2price : Table</code>); im Objektdiagramm kann statt des Typs der aktuelle Wert stehen.</li>
+  <li><strong>Operation:</strong> hat eine Signatur (Parameter + Rückgabetyp), z. B. <code>getPrice(zone: Zone): Price</code>. Statische Operationen werden unterstrichen dargestellt.</li>
+</ul>
+
+<h3>Assoziationen</h3>
+<ul>
+  <li>Denotieren Beziehungen zwischen Klassen; als Linie zwischen den Klassen-Rechtecken dargestellt.</li>
+  <li><strong>Multiplizität</strong> an einem Assoziationsende gibt an, wie viele Objekte das Quellobjekt legitimerweise referenzieren kann. Zahl oder Bereich (<code>1..5</code>, <code>2..*</code>); <code>*</code> allein heißt "beliebig viele (auch 0)"; fehlende Angabe kann "noch unbekannt", "woanders spezifiziert" oder per Konvention "1" bedeuten.</li>
+  <li>1:1-, 1:n- und n:m-Assoziationen sind alle möglich; bei n:m kann eine <strong>qualifizierte Multiplizität</strong> nötig sein (z. B. wenn ein Schlüssel wie <code>tickerSymbol</code> die Beziehung eindeutig macht).</li>
+  <li><strong>Assoziationsklasse:</strong> wenn die Assoziation selbst Attribute braucht (z. B. <code>DonationLevel</code> zwischen <code>Organization</code> und <code>Person</code>), wird sie als eigene Klasse an die Assoziationslinie gehängt (gestrichelt verbunden).</li>
+  <li>Weitere Notationsdetails an Assoziationen: <strong>Rollenname</strong> (Association-End-Name, z. B. <code>owner</code>), <strong>Navigationsrichtung</strong> (Pfeil), <strong>Sichtbarkeit</strong> (z. B. <code>-history</code>), <strong>Ordering-Property</strong> (<code>{ordered}</code>), <strong>Changeability-Constraint</strong> (<code>{readOnly}</code>), <strong>Qualifier</strong>.</li>
+</ul>
+
+<h3>Sichtbarkeit (Visibility)</h3>
+<p class="src">ergänzt aus fabiuebersicht.txt — Standard-UML-Notation, in der VL nur am Beispiel <code>-history</code> gezeigt</p>
+<table>
+<tr><th>Symbol</th><th>Bedeutung</th></tr>
+<tr><td><code>-</code></td><td>privat (private)</td></tr>
+<tr><td><code>+</code></td><td>öffentlich (public)</td></tr>
+<tr><td><code>#</code></td><td>geschützt (protected)</td></tr>
+<tr><td><code>~</code></td><td>paketsichtbar (package)</td></tr>
+</table>
+
+<h3>Generalisierung</h3>
+<ul>
+  <li>Kindklassen erben Attribute und Operationen der Elternklasse (Java: <code>extends</code>).</li>
+  <li>Notation: Linie mit <strong>geschlossenem, nicht gefülltem Dreieck</strong> an der Elternklasse ("erbt von").</li>
+  <li>Verwandt: <strong>Realization</strong> (Java: <code>implements</code>) — eine Klasse implementiert ein Interface; Notation: gestrichelte Linie mit demselben offenen Dreieck.</li>
+</ul>
+
+<h3>Komposition und Aggregation</h3>
+<ul>
+  <li><strong>Aggregation:</strong> Sonderfall einer Assoziation für eine "besteht aus"/"ist Teil von"-Hierarchie. Das Ganze heißt <em>aggregate</em>, die Teile heißen <em>components</em>. Notation: <strong>offene Raute</strong> an der Ganzes-Seite.</li>
+  <li><strong>Komposition:</strong> starke Form der Aggregation — die Teile existieren nie ohne das Ganze (die Assoziation gilt während der gesamten Lebenszeit der Teile). Notation: <strong>gefüllte (schwarze) Raute</strong> an der Ganzes-Seite.</li>
+</ul>
+
+<h2>UML-Metamodell (Übung 3-3)</h2>
+<ul>
+  <li>Konkrete UML-Diagramme bestehen aus grafischen Elementen, die Elemente des zu Grunde liegenden UML-<strong>Modells</strong> repräsentieren. Die UML selbst wird wiederum durch ein <strong>Metamodell</strong> beschrieben — UML ist "in UML selbst" spezifiziert.</li>
+  <li><strong>Klassenebene:</strong> jede Art von UML-Element (z. B. "Assoziation") ist selbst eine Klasse im Metamodell (Metaklasse), z. B. die Metaklasse <code>Association</code>.</li>
+  <li><strong>Instanzebene:</strong> jede konkrete Assoziation in einem UML-Modell ist eine Instanz der Metaklasse <code>Association</code>.</li>
+  <li><strong>Konkrete Metaklassen</strong> (Suffix "[Class]") beschreiben tatsächlich vorkommende Modellelemente (Klassen, Assoziationen, Generalisierungen, ...); <strong>abstrakte Metaklassen</strong> ("[Abstract Class]") sind nur technische Hilfskonstrukte im Metamodell und kommen in konkreten Modellen nicht direkt vor.</li>
+  <li><strong>Profile</strong> erweitern das Metamodell um <code>«stereotypes»</code> und Constraints, die auf bestimmte Metamodell-Elemente angewendet werden können (z. B. das EJB-Profil mit Stereotyp <code>Bean</code> auf der Metaklasse <code>Component</code>).</li>
+  <li>UML ist semi-formal spezifiziert, aber nicht vollständig formal — die Spezifikation selbst ist mehrere hundert Seiten lang.</li>
+</ul>
+
+<h2>UML-Sequenzdiagramme (Übung 3-4)</h2>
+
+<h3>Notationselemente</h3>
+<ul>
+  <li><strong>Objekte/Akteure</strong> werden als Spalten dargestellt (Kopf: <code>objektname:Klassenname</code> bzw. Strichmännchen für Akteure) — dieselben Klassifizierer wie im Klassendiagramm.</li>
+  <li><strong>Lifeline</strong> (gestrichelte, vertikale Linie unter dem Objektkopf) — die <strong>Vertikale stellt die Zeit</strong> dar (von oben nach unten).</li>
+  <li><strong>Nachrichten (messages)</strong> werden als (meist horizontale) <strong>Pfeile</strong> zwischen Lifelines dargestellt. Ein <strong>Methodenaufruf</strong> ist eine bestimmte Art Nachricht: ein durchgezogener Pfeil mit gefüllter Pfeilspitze (synchroner Aufruf), der in eine <strong>Aktivierung</strong> (schmales Rechteck auf der Lifeline) mündet. Eine Nachricht ist also allgemeiner als ein Methodenaufruf — sie kann z. B. auch ein asynchrones Signal sein.</li>
+  <li><strong>Rückgabe (return)</strong>: gestrichelter Pfeil zurück zum Aufrufer.</li>
+  <li>Horizontale <strong>gestrichelte Pfeile</strong> zeigen zusätzlich Datenfluss an.</li>
+  <li>Die Objekte "kommen aneinander heran" über eine Verbindung (<em>connector</em>/Link), die letztlich auf einer Assoziation aus dem zugrunde liegenden Klassendiagramm beruht (oder ein "gate" für externe Aufrufe von außerhalb des Diagramms).</li>
+</ul>
+
+<h3>Erweiterte Konstrukte</h3>
+<ul>
+  <li><strong>Erzeugung (creation):</strong> gestrichelter Pfeil mit offener Spitze auf ein neu erzeugtes Objekt (<code>create()</code>).</li>
+  <li><strong>Zerstörung (destruction):</strong> Lifeline endet mit einem <strong>X</strong>.</li>
+  <li><strong>Interaction Use</strong> (<code>ref</code>-Rahmen): referenziert ein anderes (Teil-)Sequenzdiagramm.</li>
+  <li><strong>Iteration</strong> (<code>loop</code>-Rahmen mit Bedingung, z. B. <code>[get next item]</code>).</li>
+  <li><strong>Bedingungen/Verzweigung</strong> (<code>alt</code>-Rahmen mit <em>guard conditions</em> wie <code>[available]</code>/<code>[unavailable]</code>, getrennt durch gestrichelte Linie); <code>opt</code> für einen optionalen Zweig ohne Alternative.</li>
+</ul>
+
+<h3>Weitere Antworten zu Übung 3-4</h3>
+<div class="qa"><span class="q">a) Was ist ein Sequenzdiagramm, wozu dient es?</span><br>
+Zeigt Verhalten als Interaktion zwischen Objekten (dynamische Sicht, als Beispiel). Wird während Anforderungsanalyse und Systementwurf genutzt, um das Modell zu verfeinern, fehlende Objekte zu finden und Verhalten gegenüber anderen Stakeholdern zu erklären. Ergänzt das Klassendiagramm (das die Struktur zeigt).</div>
+<div class="qa"><span class="q">g) Woran erkennt man, dass ein Sequenzdiagramm nur einen von vielen möglichen Abläufen zeigt?</span><br>
+Es beschreibt explizit nur <em>Beispiele</em> ("describes examples only, no general specification"). Sichtbar z. B. daran, dass <code>alt</code>-Fragmente mit guard conditions zeigen, dass es alternative Abläufe gibt, von denen im Diagramm jeweils nur einer konkret ausgeführt wird.</div>
+
+</body>
+</html>

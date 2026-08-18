@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>07 Objektmodellierung</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def {
+    background: #f3f3f3;
+    border-left: 3px solid #888;
+    padding: .5rem .8rem;
+    margin: .5rem 0;
+  }
+  .src { color: #777; font-size: .85rem; }
+  code { background: #eee; padding: 0 .3rem; }
+  table { border-collapse: collapse; margin: .5rem 0; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  .qa { margin: .4rem 0; }
+  .qa .q { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>07 Objektmodellierung (Analysis Model: Objects)</h1>
+<p class="src">Quelle: vl/07_Objektmodellierung.pdf — relevant für ub/06_ub_statische-dynamische-analyse.pdf (Aufgabe 6-1)</p>
+
+<h2>Application Domain vs. Solution Domain (Übung 6-1a)</h2>
+<table>
+<tr><th></th><th>Application Domain (Problembereich)</th><th>Solution Domain (Lösungsbereich)</th></tr>
+<tr><td>Was ist das?</td><td>die "Heimat"-Domäne des zu lösenden Problems</td><td>technische Domänen, die beim Bau der Software helfen</td></tr>
+<tr><td>Beispieldomänen</td><td>Finanzwesen, Meteorologie, Gesundheitswesen</td><td>Telekommunikation, Datenbanken, Compilerbau, Betriebssysteme, Web-Technologie</td></tr>
+<tr><td><strong>Problembereichsklasse</strong> (application/problem domain class)</td><td>eine Abstraktion <em>in</em> der Anwendungsdomäne (in Business-Anwendungen oft "Business Object" genannt); kommt in Analyse- <em>und</em> Entwurfsmodell vor</td><td>—</td></tr>
+<tr><td><strong>Lösungsklasse</strong> (solution domain class)</td><td>—</td><td>eine Abstraktion, die aus <em>technischen</em> Gründen eingeführt wird, nicht direkt wegen der Anwendungsanforderungen; kommt <em>nur</em> im Entwurfsmodell vor</td></tr>
+<tr><td>Beispiele</td><td>Contract, AirPressure, Prescription</td><td>Buffer, DatabaseConnection, Parser, Filehandle, Tag</td></tr>
+</table>
+<p><strong>Wichtig:</strong> Das Analysemodell (Objektmodellierung dieser Vorlesung) beschreibt <em>ausschließlich</em> Problembereichsklassen — es ist explizit <strong>kein</strong> Lösungsentwurf ("It is not meant to be a solution design!").</p>
+
+<h2>Object vs. Class</h2>
+<div class="def">
+<strong>Object</strong> (Exemplar/Instance): genau ein konkretes Ding.<br>
+<strong>Class</strong>: beschreibt abstrakt eine Kategorie von Objekten mit ähnlichen Eigenschaften.
+</div>
+<ul>
+  <li><strong>Klassendiagramm:</strong> beschreibt alle möglichen Zustände der Daten (Spezifikation).</li>
+  <li><strong>Objektdiagramm (Instance Diagram):</strong> ein konkretes Set von Objekten/Beziehungen für ein Beispiel, Szenario oder einen Testfall (Illustration).</li>
+</ul>
+
+<h3>Objektarten (Entity / Control / Boundary)</h3>
+<table>
+<tr><th>Art</th><th>Repräsentiert</th><th>Änderungshäufigkeit</th></tr>
+<tr><td><strong>Entity Objects</strong></td><td>persistente, vom System verfolgte Information ("business objects", "Geschäftsobjekte")</td><td>am niedrigsten</td></tr>
+<tr><td><strong>Control Objects</strong></td><td>die vom System durchgeführten Steuerungsaufgaben ("Logik")</td><td>mittel</td></tr>
+<tr><td><strong>Boundary Objects</strong></td><td>die Interaktion zwischen Benutzer und System</td><td>am höchsten</td></tr>
+</table>
+<p>Diese Dreiteilung macht Modelle änderungsresistenter. Oft "Model, View, Controller" (MVC) genannt — dieser Begriff passt aber eigentlich nur <em>innerhalb</em> von GUIs (also für Lösungsklassen). In UML als Stereotyp notierbar (<code>«Entity»</code>, <code>«Control»</code>, <code>«Boundary»</code>) oder per Namenskonvention (Suffix <code>_Control</code>, <code>_Boundary</code>).</p>
+
+<h2>Wie findet man Klassen? Abbotts Textanalyse</h2>
+<p>Methoden (mehrere kombinieren): Kunden beobachten/befragen, Weltwissen &amp; Intuition nutzen, syntaktische Analyse von Anforderungstexten/Szenarien (Abbott 1983, "noun-verb analysis").</p>
+<table>
+<tr><th>Beispiel</th><th>Grammatikalische Konstruktion</th><th>mögliche UML-Komponente</th></tr>
+<tr><td>"Monopoly"</td><td>konkrete Person/Sache</td><td>Object</td></tr>
+<tr><td>"toy"</td><td>Nomen</td><td>Class</td></tr>
+<tr><td>"3 years old"</td><td>Adjektiv</td><td>Attribute</td></tr>
+<tr><td>"enters"</td><td>Verb</td><td>Operation</td></tr>
+<tr><td>"depends on…"</td><td>intransitives Verb</td><td>Operation (Event)</td></tr>
+<tr><td>"is a", "either…or", "kind of…"</td><td>klassifizierendes Verb</td><td>Inheritance</td></tr>
+<tr><td>"has a", "consists of"</td><td>possessives Verb</td><td>Aggregation</td></tr>
+<tr><td>"must be", "less than…"</td><td>Modalverb</td><td>Constraint</td></tr>
+</table>
+
+<h3>Ablauf des Object Modeling</h3>
+<ol>
+  <li>Szenarien formulieren (mit Endnutzer/Domänenexpert·in)</li>
+  <li>Use Cases aus den Szenarien extrahieren</li>
+  <li>Flow of Events analysieren (z. B. mit Abbotts Textanalyse)</li>
+  <li>Klassendiagramm erzeugen: Klassen → Attribute/Operationen → Assoziationen → Multiplizitäten → Rollen</li>
+</ol>
+<p>Reihenfolge ist nur eine Heuristik, flexibel; Iteration hilft. Werden falsche Abstraktionen gefunden, müssen Inkonsistenzen erkannt und das Modell korrigiert werden.</p>
+
+<h2>Checklisten</h2>
+<ul>
+  <li><strong>Klassen:</strong> Kategorie identifizieren (Personen/Rollen, Orte, Ereignisse, Verträge, Handlungsinformationen, Container, konkrete Dinge); passenden Namen finden (Nutzerbegriff, Singular-Nomen); Abstraktionsniveau prüfen; wirklich eine Problembereichsklasse (nicht versehentlich eine Lösungsklasse, z. B. ein technischer Container)?</li>
+  <li><strong>Assoziationen:</strong> erst einfache Linie; Art prüfen (physischer/logischer Teil von, Beschreibung von, nutzt, besitzt, andere); Restriktionen (<code>{ordered}</code>, <code>{xor}</code>, <code>{subset}</code>); Rollen benennen; reflexive Assoziationen immer benennen; 1:1-Assoziationen hinterfragen (sollten die Klassen vereint werden?); mehrere Assoziationen zwischen denselben Klassen wirklich unterschiedlich?</li>
+  <li><strong>Attribute:</strong> Abstraktionsniveau prüfen (komplexe Attribute lieber als eigene Klasse, keine Implementierungsdetails modellieren); Lage prüfen (wäre das Attribut auch ohne die Assoziation nötig? Wenn nein: evtl. Attribut der Assoziation/Assoziationsklasse); passender Name (Nomen oder Adjektiv+Nomen, nicht Klassenname wiederholen).</li>
+  <li><strong>Inheritance:</strong> natürlich (spiegelt eine echte Taxonomie der Problemdomäne)? redundant (zwei Unterklassen brauchen dieselben Attribute/Operationen)? fehlausgerichtet (Unterklasse erbt unpassende Operationen — <strong>sehr gefährlich</strong>)? Hinweis: Vererbung im Analysemodell muss im Entwurf/Code nicht zwingend als Vererbung realisiert werden.</li>
+  <li><strong>Operationen:</strong> richtige Klasse (in Hierarchien so weit wie sinnvoll nach oben verschieben)? passender Name (Prozeduren: Imperativ, beschreibt Effekt; Funktionen: Nomen, beschreibt Rückgabe)? Kohäsion prüfen (Attribute ohne zugehörige Operation → fehlende Operation); zu viele Parameter → Hilfsklasse einführen.</li>
+</ul>
+
+<h3>Praktische Hinweise für Diagramme</h3>
+<ul>
+  <li><strong>Ravioli-Modelle vermeiden:</strong> nicht zu viele Klassen in ein Diagramm packen — Faustregel 5 bis 10 Klassen.</li>
+  <li>Taxonomien (Vererbungshierarchien) auf ein separates Diagramm auslagern.</li>
+  <li>Explizite Meetings für Objektidentifikation einplanen: erst Objekte finden → dann in Entity/Boundary/Control differenzieren → Assoziationen+Multiplizität finden (am besten von konkreten Instanzdiagrammen ausgehend) → Vererbung identifizieren → Aggregation identifizieren → wichtige Methoden/Attribute identifizieren. Immer wieder iterieren.</li>
+</ul>
+
+<h2>Wer nutzt Klassendiagramme? Analyst- vs. Designer- vs. Implementor-Sicht</h2>
+<ul>
+  <li>Kund·innen/Endnutzer·innen interessieren sich kaum dafür (die interessiert eher Verhalten → Use Cases).</li>
+  <li><strong>Domänenexpert·innen (Analyst):</strong> nutzen Klassendiagramme zur Modellierung der Anwendungsdomäne → Analysemodell. Interessiert an Problembereichsklassen und daran, ob Vererbung die Taxonomien der Anwendungsdomäne widerspiegelt. <strong>Nicht</strong> interessiert an Lösungsklassen oder exakten Operationssignaturen.</li>
+  <li><strong>Entwickler·innen (Designer):</strong> nutzen Klassendiagramme in Analyse, System-Entwurf, Objekt-Entwurf und Implementierung → Entwurfsmodelle. Entwurfsmodelle erweitern <em>und verändern</em> das Analysemodell — man darf das Analysemodell nie einfach als Entwurfsmodell annehmen! Designer fokussieren auf die Lösungsdomäne, betrachten Problembereichsklassen als weitgehend gegeben, suchen passende Lösungsklassen. Zentrales Entwurfsproblem: Spezifikation geeigneter Schnittstellen (erst der Subsysteme = Architekturentwurf, dann der Klassen), sodass alle funktionalen und nichtfunktionalen Anforderungen erfüllbar sind und der Entwurf leicht zu implementieren/testen/verstehen/ändern ist.</li>
+  <li><strong>Implementor·innen</strong> — drei Rollen: <em>Class implementor</em> (implementiert die Klasse, wählt Datentypen/Algorithmen, realisiert die Schnittstelle in einer Programmiersprache), <em>Class extender</em> (entwirft eine Unterklasse, muss ggf. Teile der Oberklassenimplementierung verstehen), <em>Class-user/Client</em> (will eine bestehende Klasse nutzen, interessiert nur an der Schnittstelle: Signaturen, Vor-/Nachbedingungen — sollte die Implementierung nicht kennen müssen).</li>
+</ul>
+
+<h2>Übung 6-1c: Klassendiagramme in Analyse / Entwurf / Implementierung</h2>
+<table>
+<tr><th>Aspekt</th><th>Analyse</th><th>Entwurf</th><th>Implementierung</th></tr>
+<tr><td><strong>Einsatzzweck</strong></td><td>Anwendungsdomäne verstehen und modellieren (Analysemodell), Anforderungen abbilden</td><td>Schnittstellen (erst Subsysteme/Architektur, dann Klassen) so spezifizieren, dass alle Anforderungen erfüllbar sind</td><td>Klassen konkret realisieren: Datentypen und Algorithmen wählen</td></tr>
+<tr><td><strong>Terminologie</strong></td><td>"application/problem domain classes", Entity-/Control-/Boundary-Objekte, "Business Objects"</td><td>zusätzlich "solution domain classes" (technische/Design-Klassen)</td><td>Klassen/Objekte im Code, konkrete Datentypen, Klassen-Implementor/-Extender/-User</td></tr>
+<tr><td><strong>Assoziationssemantik</strong></td><td>Beziehungen zwischen Objekten in der Realität</td><td>Erreichbarkeit von Instanzen ("reachability")</td><td>technisch realisierte Navigierbarkeit (z. B. Referenzen/Pointer)</td></tr>
+<tr><td><strong>Detailgrad</strong></td><td>grob; keine Lösungsklassen, keine exakten Operationssignaturen</td><td>feiner: Schnittstellen mit Signaturen, zunächst Architektur- dann Klassenebene</td><td>vollständig: jedes Detail inkl. Algorithmen und Datentypen</td></tr>
+<tr><td><strong>Zielgruppe</strong></td><td>Domänenexpert·innen / Analyst·innen</td><td>System-Level- und Detail-Level-Designer·innen</td><td>Class Implementor, Class Extender, Class-User (Client)</td></tr>
+</table>
+<p>Ergänzend unterschiedliche Interpretation einzelner Konstrukte zwischen Analyse- und Entwurfsmodell (<em>"very important!"</em>):</p>
+<table>
+<tr><th>Konstrukt</th><th>Analysemodell</th><th>Entwurfsmodell</th></tr>
+<tr><td>Assoziation</td><td>Beziehung zwischen Objekten in der Realität</td><td>Erreichbarkeit von Instanzen</td></tr>
+<tr><td>Attribut</td><td>Charakteristikum von Objektinstanzen</td><td>Zustandsspeicher, Basis für Entscheidungen/Kontrollfluss</td></tr>
+<tr><td>Vererbung</td><td>Typtaxonomie; Objekte, die die Rolle eines Oberklassenobjekts einnehmen können</td><td>Typerweiterung (Wiederverwendung von Code) — Vorsicht: Wiederverwendung von Oberklassencode ohne echte Subtyp-Beziehung führt oft zu großen Problemen</td></tr>
+</table>
+
+<h3>Zusammenfassung</h3>
+<p>Das Analysemodell spiegelt Konzepte aus Anwendungsdomäne <em>und</em> Anforderungen wider und wird durch systematische Analyse von Use Cases (plus weitere Techniken) gefunden. Das darauffolgende Entwurfsmodell ist meist deutlich anders: Es lässt oft etliche Problembereichsklassen weg (weil für das technische System nicht relevant) und enthält üblicherweise viele zusätzliche Lösungsklassen.</p>
+
+</body>
+</html>

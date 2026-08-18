@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>11 Entwurfsmuster</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif; max-width: 820px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; color: #1a1a1a; }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def { background: #f3f3f3; border-left: 3px solid #888; padding: .5rem .8rem; margin: .5rem 0; }
+  .src { color: #777; font-size: .85rem; }
+  .todo { background: #fff3cd; border-left: 3px solid #d4a017; padding: .5rem .8rem; margin: 1.5rem 0; }
+  code { background: #eee; padding: 0 .3rem; }
+  table { border-collapse: collapse; margin: .5rem 0; width: 100%; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+</style>
+</head>
+<body>
+
+<h1>11 Entwurfsmuster (Design Patterns)</h1>
+<p class="src">Quelle: vl/11_Entwurfsmuster.pdf + vl/12_Entwurfsmuster2.pdf — relevant für ub/08_ub_entwurfsmuster.pdf und fabiuebersicht.txt (Zeile 292-294, laut Notiz der größte Block im Original)</p>
+
+<h2>Begriffsklärungen (Übung 8-1a, 8-1b)</h2>
+<table>
+<tr><th>Begriffspaar</th><th>Unterschied/Zusammenhang</th></tr>
+<tr><td>Schnittstelle ↔ Signatur</td><td>Die <strong>Signatur</strong> einer Operation ist nur Name + Parameter + Rückgabetyp. Die <strong>Schnittstelle</strong> eines Moduls ist mehr: die Gesamtheit aller extern sichtbaren Eigenschaften — alle Signaturen <em>plus</em> deren Semantik (Vor-/Nachbedingungen, siehe Design by Contract) und ggf. zugesicherte nichtfunktionale Eigenschaften.</td></tr>
+<tr><td>Klasse ↔ Komponente</td><td>Eine <strong>Klasse</strong> ist ein einzelner OO-Baustein. Eine <strong>Komponente</strong> ist meist gröber: sie kann mehrere Klassen bündeln und stellt selbst wieder eine Schnittstelle nach außen bereit (z. B. per Facade-Muster).</td></tr>
+<tr><td>Komponente ↔ Modul</td><td>Weitgehend synonym — <strong>Komponente</strong> ist der UML-/Entwurfsbegriff für das allgemeinere SWT-Konzept <strong>Modul</strong> (siehe <a href="09_Architektur.html">09 Architektur</a>).</td></tr>
+<tr><td>Kohäsion ↔ Kopplung</td><td><strong>Kohäsion</strong>: wie stark die Elemente <em>innerhalb</em> eines Moduls thematisch zusammengehören (hoch = gut, entspricht "gut verständliche Zuständigkeit"). <strong>Kopplung</strong>: wie stark verschiedene Module <em>voneinander</em> abhängen (niedrig = gut, Ziel der Trennung von Belangen). Ziel guten Entwurfs: hohe Kohäsion, niedrige Kopplung.</td></tr>
+</table>
+<h3>Komponente vs. Entwurfsmuster vs. Architekturstil</h3>
+<table>
+<tr><th>Konzept</th><th>Abstraktionsebene</th><th>Ergebnis</th></tr>
+<tr><td><strong>Komponente</strong></td><td>konkret</td><td>ein fertiger, direkt einsetzbarer Baustein mit definierter Schnittstelle</td></tr>
+<tr><td><strong>Entwurfsmuster</strong></td><td>mittel — Idee für wenige Klassen</td><td>keine fertige Klasse: die Lösungsidee muss für den jeweiligen Kontext adaptiert/neu implementiert werden (siehe unten)</td></tr>
+<tr><td><strong>Architekturstil</strong></td><td>global — ganzes System/Subsystem</td><td>Grobstruktur, siehe <a href="09_Architektur.html">09 Architektur</a> — adressiert primär nichtfunktionale Anforderungen des Gesamtsystems, nicht einzelner Klassen</td></tr>
+</table>
+
+<h2>Was ist ein Entwurfsmuster?</h2>
+<div class="def">
+Ein <strong>Design Pattern</strong> beschreibt ein <strong>Problem</strong>, das in unserem Umfeld immer wieder auftritt, und dazu eine <strong>Lösungsidee</strong> — so formuliert, dass man sie beliebig oft nutzen kann, ohne sie je exakt gleich anzuwenden: die Idee wird immer an den konkreten Kontext <strong>angepasst</strong>.
+</div>
+<ul>
+  <li>Muster sind <strong>Abstraktionen</strong> (reduzieren mehrere Elemente auf eine Idee → spart mentale Ressourcen, erleichtert Kommunikation) und <strong>Wiederverwendung</strong> (fertige Lösungsidee statt Neuerfindung).</li>
+  <li>Liegen zwischen einzelnen Klassen/Datenstrukturen (kleiner) und ganzen Frameworks (größer) — sind generalisiert aus echten Systemen, kein "Elfenbeinturm"-Konstrukt.</li>
+  <li>Zweck: <strong>änderungsfreundliche (modifiable) Entwürfe</strong> — durch klar gekapselte Entwurfsentscheidungen und reduzierte Kopplung; ermöglichen iterative/inkrementelle Entwicklung, weniger Folgefehler bei Bugfixes, nachträgliche Erweiterung.</li>
+</ul>
+
+<h2>Pattern-Taxonomie (Übung 8-1c-3)</h2>
+<table>
+<tr><th>Kategorie</th><th>Fokus</th><th>Löst</th><th>Muster</th></tr>
+<tr><td><strong>Strukturmuster</strong> (Structural)</td><td>wie Objekte zu größeren Strukturen komponiert werden</td><td>Flexibilität/Erweiterbarkeit; reduzieren Kopplung, führen abstrakte Klassen für künftige Erweiterungen ein, kapseln komplexe Strukturen</td><td>Composite, Adapter, Bridge, Fassade, Proxy</td></tr>
+<tr><td><strong>Verhaltensmuster</strong> (Behavioral)</td><td>Algorithmen und Verantwortlichkeitsverteilung zwischen Objekten ("wer macht was?")</td><td>reduzieren Kopplung an ein bestimmtes Verfahren; machen komplexe, zur Laufzeit schwer nachvollziehbare Kontrollflüsse greifbar</td><td>Befehl (Command), Beobachter (Observer), Strategie; (Proxy passt teils auch hier)</td></tr>
+<tr><td><strong>Erzeugungsmuster</strong> (Creational)</td><td>Erzeugung (ggf. komplexer) Objekte</td><td>System unabhängig davon machen, wie/woraus/als was Objekte erzeugt werden</td><td>Abstrakte Fabrik (Abstract Factory), Erbauer (Builder)</td></tr>
+</table>
+
+<h2>Die Muster im Einzelnen</h2>
+
+<h3>Strukturmuster</h3>
+<table>
+<tr><th>Muster</th><th>Problem</th><th>Lösungsidee</th><th>Rollen</th></tr>
+<tr><td><strong>Composite</strong> (Zusammengesetztes Muster)</td><td>Teil-Ganzes-Hierarchien beliebiger Tiefe/Breite darstellen, dynamisch veränderbar, Client soll Einzelteile und Kompositionen <em>einheitlich</em> behandeln</td><td>Gemeinsame Oberklasse <code>Component</code>; zwei Unterklassenarten: <code>Leaf</code> (Blatt) und <code>Composite</code> (Container, hält Kind-<code>Component</code>s); gemeinsame Operationen in <code>Component</code> definiert</td><td>Client, Component, Leaf, Composite</td></tr>
+<tr><td><strong>Adapter</strong> (Wrapper)</td><td>Ein Dienst mit vorhandener (Legacy-)Schnittstelle S soll eine geforderte Zielschnittstelle T erfüllen, ohne die Legacy-Klasse zu ändern</td><td>Adapterklasse A implementiert T und delegiert intern an ein S-Objekt (Adaptee). Objekt-Adapter (Delegation, Einfachvererbung) sind viel häufiger als Klassen-Adapter (Mehrfachvererbung).</td><td>Client, Target, Adapter, Adaptee</td></tr>
+<tr><td><strong>Bridge</strong> (Handle/Body)</td><td>Eine (evtl. wachsende) Abstraktion soll unabhängig von einer (evtl. wechselnden/mehrfachen) technischen Implementierung variieren können — ohne eine riesige kombinierte Vererbungshierarchie</td><td>Trennung in zwei parallele Hierarchien: <code>Abstraction</code> hält eine Referenz auf <code>Implementation</code>; beide unabhängig voneinander erweiterbar. Wird <em>up-front</em> beim Entwurf eingesetzt (Adapter dagegen nachträglich, beim Reengineering).</td><td>Abstraction, RefinedAbstraction, Implementation, ConcreteImplementation</td></tr>
+<tr><td><strong>Fassade</strong> (Facade)</td><td>Ein Subsystem aus vielen Klassen soll einfach nutzbar sein, ohne dass Clients die interne Struktur kennen müssen</td><td>Eine Fassadenklasse bietet eine vereinheitlichte, höherstufige Schnittstelle und delegiert intern an die passenden Subsystemklassen; das Innere bleibt bei Änderungen meist unsichtbar für Clients</td><td>Facade, Subsystemklassen</td></tr>
+<tr><td><strong>Proxy</strong> (Stellvertreter)</td><td>Zugriff auf ein Objekt ist nicht möglich/gewünscht (zu teuer, entfernt, geschützt)</td><td>Ein Ersatzobjekt mit derselben Schnittstelle wie das Originalobjekt übernimmt den Zugriff (per Delegation) — Client merkt den Unterschied nicht</td><td>Client, Subject, Proxy, RealSubject</td></tr>
+</table>
+<p><strong>Proxy-Varianten:</strong> Remote Proxy (Stellvertreter für entferntes Objekt, Orts-/Zugriffstransparenz), Virtual Proxy (Platzhalter, wenn Erzeugung teuer ist), Protection Proxy (kapselt Zugriffsrechte).</p>
+
+<h3>Verhaltensmuster</h3>
+<table>
+<tr><th>Muster</th><th>Problem</th><th>Lösungsidee</th><th>Rollen</th></tr>
+<tr><td><strong>Befehl</strong> (Command, auch Action/Transaction)</td><td>Aktionen sollen wie Daten behandelbar sein: herumreichen, speichern, in Warteschlangen packen, rückgängig machen</td><td>Jede Aktion wird als Objekt mit fester Schnittstelle (<code>execute()</code>) verpackt; das Command-Objekt bindet einen Receiver und kann für <code>undo</code> nötige Daten selbst mitspeichern</td><td>Client, Invoker, Command, ConcreteCommand, Receiver</td></tr>
+<tr><td><strong>Beobachter</strong> (Observer, Publish/Subscribe, Listener)</td><td>Ändert ein Objekt seinen Zustand, müssen mehrere (zur Übersetzungszeit unbekannt viele) abhängige Objekte reagieren</td><td>Alle Abhängigen (Observer) registrieren sich mit derselben Schnittstelle (<code>update()</code>) beim beobachteten Objekt (Subject); bei Zustandsänderung ruft das Subject <code>notify()</code> auf, das reihum <code>update()</code> auf allen Observern aufruft</td><td>Subject, Observer, ConcreteSubject, ConcreteObserver</td></tr>
+<tr><td><strong>Strategie</strong> (Strategy, Policy)</td><td>Es gibt mehrere austauschbare Wege, dieselbe Aufgabe zu lösen (Algorithmen, Varianten, Policies), die frei/dynamisch gewählt werden sollen</td><td>Gemeinsame <code>Strategy</code>-Schnittstelle für alle Varianten; ein <code>Context</code>-Objekt hält eine Strategy-Referenz und delegiert daran</td><td>Context, Strategy, ConcreteStrategyA/B/C</td></tr>
+</table>
+
+<h3>Erzeugungsmuster</h3>
+<table>
+<tr><th>Muster</th><th>Problem</th><th>Lösungsidee</th><th>Rollen</th></tr>
+<tr><td><strong>Abstrakte Fabrik</strong> (Abstract Factory, Kit)</td><td>Man erzeugt viele Objekte aus einer Familie verwandter Klassen mit mehreren austauschbaren Implementierungsvarianten; pro Programmlauf muss aber konsistent <em>eine</em> Variante verwendet werden, ohne dass der Client das wissen muss</td><td>Für jedes Familienmitglied eine gemeinsame abstrakte Produktschnittstelle; Objekte werden über Fabrikmethoden (nicht Konstruktoren) erzeugt, gebündelt in einer (abstrakten) Fabrikklasse mit einer konkreten Implementierung pro Variante</td><td>Client, AbstractFactory, ConcreteFactory1/2, AbstractProduct, ProductA/B</td></tr>
+<tr><td><strong>Erbauer</strong> (Builder)</td><td>Erzeugung eines komplexen Objekts erfordert viele Einzelschritte, die je nach gewünschter Repräsentation stark variieren, sollen aber vom Erzeugungsprozess (Director) einheitlich angestoßen werden</td><td>Ein <code>Director</code> ruft eine feste Folge von <code>Builder</code>-Methoden auf; jede konkrete Builder-Unterklasse realisiert diese Schritte für eine bestimmte Zielrepräsentation und liefert am Ende das fertige Ergebnis</td><td>Director, Builder, ConcreteBuilderA/B</td></tr>
+</table>
+<p><strong>Abstract Factory vs. Builder:</strong> Abstract Factory erzeugt eine <em>Familie</em> von (einfachen oder komplexen) Produkten in <em>einem</em> Schritt; Builder erzeugt <em>ein</em> komplexes Produkt über <em>viele</em>, stark variierende Schritte. Beide werden oft kombiniert (eine Fabrikmethode kann selbst einen Builder statt direkt ein Produkt liefern) und Abstract Factory wird oft mit Bridge kombiniert (Fabrik wählt die konkrete Implementierung).</p>
+
+<h3>Singleton (Einzelstück) — Übung 8-1c</h3>
+<div class="todo">Nicht Teil von vl/11 oder vl/12 — die Übung verlangt ausdrücklich eigene Recherche ("Recherchieren Sie ... Denken Sie daran, Ihre Quellen anzugeben"). Standarddefinition zur Einordnung:</div>
+<div class="def">
+<strong>Problem:</strong> Von einer Klasse darf zur Laufzeit höchstens ein Exemplar existieren, und dieses muss global erreichbar sein (z. B. eine zentrale Konfiguration, ein Logger, ein Verbindungspool).<br>
+<strong>Lösungsidee:</strong> Der Konstruktor wird privat gemacht (verhindert externe Instanziierung); eine statische Methode/Attribut der Klasse selbst verwaltet die einzige Instanz und liefert sie bei Bedarf (ggf. "lazy", erst beim ersten Zugriff erzeugt).
+</div>
+<p><strong>Einordnung in die Taxonomie:</strong> Erzeugungsmuster (Creational) — es geht ausschließlich darum, <em>wie</em> (bzw. wie oft) ein Objekt erzeugt wird, nicht um seine Struktur oder sein Verhalten nach der Erzeugung.</p>
+<p><strong>Kritik (verbreitet, ggf. gute Ergänzung für 8-1c):</strong> Singletons wirken wie globale Variablen, erschweren Testbarkeit (kein Austausch durch Test-Doubles) und führen zu versteckter Kopplung — <strong>Dependency Injection</strong> (siehe unten) wird oft als Alternative empfohlen.</p>
+
+<h2>Vertiefung: Proxy, Adapter, Fassade, Brücke im Vergleich (Übung 8-1d)</h2>
+<table>
+<tr><th></th><th>Ziel</th><th>Wann eingesetzt</th><th>Beziehung zum "Original"</th></tr>
+<tr><td><strong>Adapter</strong></td><td>zwei <em>unabhängig voneinander</em> entstandene, inkompatible Schnittstellen kompatibel machen</td><td><em>nachträglich</em> (Reengineering/Interface Engineering), Legacy-Code bleibt unverändert</td><td>Adapter und Adaptee haben <em>unterschiedliche</em> Schnittstellen (Target ≠ Adaptee-Schnittstelle)</td></tr>
+<tr><td><strong>Brücke</strong></td><td>Abstraktion und Implementierung <em>von vornherein</em> unabhängig variieren lassen</td><td><em>up-front</em> beim Entwurf ("green field"), wenn neue Implementierungen später dazukommen sollen</td><td>Abstraction und Implementation haben von Anfang an <em>getrennte</em> Hierarchien</td></tr>
+<tr><td><strong>Fassade</strong></td><td>komplexes <em>Subsystem aus vielen Klassen</em> einfach nutzbar machen</td><td>für jedes Subsystem, das nach außen eine klare Schnittstelle haben soll</td><td>Fassade bündelt/delegiert an <em>mehrere</em> Klassen dahinter, keine 1:1-Beziehung</td></tr>
+<tr><td><strong>Proxy</strong></td><td>Zugriff auf <em>ein einzelnes</em> Objekt kontrollieren/vermitteln, ohne dessen Schnittstelle zu ändern</td><td>wenn direkter Zugriff teuer, unmöglich oder unerwünscht ist</td><td>Proxy hat <em>dieselbe</em> Schnittstelle wie das Objekt, das er vertritt (1:1)</td></tr>
+</table>
+<p><strong>Gemeinsamkeit aller vier:</strong> reduzieren Kopplung zwischen Klassen, nutzen Schnittstellenvererbung + Delegation, kapseln Details der eigentlichen Implementierung.</p>
+
+<h2>Zusätzliche Entwurfsheuristiken</h2>
+<ul>
+  <li><strong>Implementierungsvererbung vermeiden</strong>, wo möglich Schnittstellenvererbung (interface inheritance) bevorzugen — Implementierungsvererbung führt oft zu Kaskadenänderungen bei Oberklassenänderungen; bei Bedarf lieber Delegation statt Vererbung.</li>
+  <li><strong>Design by Contract</strong> konsequent über Vererbungshierarchien hinweg einhalten: eine überschreibende Methode darf höchstens die Vorbedingungen der Oberklasse verlangen und muss mindestens deren Nachbedingungen liefern (Liskovsches Substitutionsprinzip) — sonst funktioniert Code, der die Oberklasse nutzt, nicht mehr korrekt mit der Unterklasse.</li>
+</ul>
+
+<h2>Dependency Injection (Übung 8-3e)</h2>
+<div class="todo">Nicht Teil der Vorlesungsfolien — Übung verlangt explizit eigene Recherche. Kurzeinordnung:</div>
+<div class="def">
+<strong>Dependency Injection (DI):</strong> Ein Objekt bekommt die Objekte, die es braucht (seine Abhängigkeiten), von außen "hineingereicht" (z. B. per Konstruktor oder Setter, wie <code>setStorage(IStorage s)</code>) statt sie selbst zu erzeugen oder fest zu referenzieren. Die konkrete Implementierung ist dem abhängigen Objekt zur Kompilierzeit nicht bekannt, nur die Schnittstelle.
+</div>
+<ul>
+  <li><strong>Vorteile:</strong> lose Kopplung (Client kennt nur die Schnittstelle, z. B. <code>IStorage</code>), leichtere Testbarkeit (Test-Doubles/Mocks injizierbar), Implementierung zur Laufzeit austauschbar, oft in Kombination mit Strategy/Adapter genutzt.</li>
+  <li><strong>Nachteile:</strong> höhere Komplexität/Indirektion (schwerer nachzuvollziehen, wo eine konkrete Implementierung herkommt), oft zusätzliche Infrastruktur (DI-Container/Framework) nötig, Fehler evtl. erst zur Laufzeit statt zur Kompilierzeit sichtbar.</li>
+</ul>
+
+</body>
+</html>
