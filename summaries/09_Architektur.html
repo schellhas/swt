@@ -31,11 +31,18 @@
 <body>
 
 <h1>09 Architektur &amp; Modularisierung</h1>
-<p class="src">Quelle: vl/09_Architektur.pdf + other/The_41_View_Model_of_Architecture.pdf — relevant für ub/07_ub_architektur.pdf und fabiuebersicht.txt (Zeilen 41, 49, 116-124, 282, 285-290)</p>
+<p class="src">Quelle: vl/09_Architektur.pdf + other/The_41_View_Model_of_Architecture.pdf — relevant für ub/07_ub_architektur.pdf und uebersicht.txt (Zeilen 41, 49, 116-124, 282, 285-290)</p>
 
+<h2>Architekturebenen: Makro- vs. Mikroarchitektur (Übung 7-1)</h2>
 <div class="todo">
-Übung 7-1 (Architekturebenen, Makro-/Mikroarchitektur, Architektursichten laut Vogel et al., "Software-Architektur") ist Recherche in einem externen Buch, das nicht in other/ liegt (Zugriff nur per FU-Netz/Springer-Link) — hier nicht ausgearbeitet.
+Übung 7-1 verlangt Recherche im Buch von Vogel et al., "Software-Architektur" (Zugriff nur per FU-Netz/Springer-Link, hier nicht verfügbar). Die folgende Erklärung ist daher <strong>allgemeines Fachwissen zum Standardkonzept</strong> Makro-/Mikroarchitektur, <em>nicht</em> 1:1 gegen die genaue Begrifflichkeit/Beispiele des Buchs verifiziert — für die exakte Buch-Terminologie ("Ebenenwechsel" als feststehender Begriff) ggf. gegenprüfen.
 </div>
+<ul>
+  <li><strong>Makroarchitektur:</strong> die grobe, globale Struktur eines Systems — welche Bausteine/Komponenten/Subsysteme es gibt und wie sie über ihre <em>Schnittstellen</em> zusammenspielen. Betrachtungsebene: Systemzerlegung, vergleichbar mit der Development View im 4+1-Modell.</li>
+  <li><strong>Mikroarchitektur:</strong> die interne Struktur <em>innerhalb</em> eines einzelnen Bausteins — Klassen, deren Beziehungen, verwendete Entwurfsmuster. Betrachtungsebene: Feinentwurf innerhalb eines Moduls (siehe <a href="11_Entwurfsmuster.html">11 Entwurfsmuster</a>).</li>
+  <li><strong>Entscheidendes Merkmal des Übergangs (Ebenenwechsel):</strong> die Bausteingrenze bzw. dessen Schnittstelle. Von außen (makro) ist ein Baustein nur über seine Schnittstelle sichtbar — Information Hiding verbirgt die interne Umsetzung; von innen (mikro) betrachtet man genau diese verborgene Umsetzung. Der "Wechsel der Ebene" bedeutet also den Wechsel des Betrachtungsstandpunkts von "was nach außen sichtbar ist" zu "wie es dahinter gebaut ist" — deckt sich mit dem Modularisierungs-/Information-Hiding-Prinzip weiter unten.</li>
+  <li><strong>Zweck der Unterscheidung:</strong> unterschiedliche Entwurfsentscheidungen und Stakeholder je Ebene — Makroentscheidungen (z. B. welcher Architekturstil, welche Komponenten) sind global und teuer zu ändern, Mikroentscheidungen (z. B. welches Entwurfsmuster in einer Komponente) sind lokal und leichter revidierbar.</li>
+</ul>
 
 <h2>Was ist Softwarearchitektur?</h2>
 <p>Keine einheitliche Definition, aber immer eine <strong>globale Betrachtung</strong> des Systems: welche Teile (Module) es hat, wie diese zusammenspielen, und wie dadurch funktionale <em>und</em> nichtfunktionale Anforderungen erfüllt werden. Verbreitete Def. (Bass/Clements/Kazman): Struktur(en) eines Systems aus Elementen, deren extern sichtbaren Eigenschaften und den Beziehungen zwischen ihnen.</p>
@@ -62,14 +69,28 @@
   <li><strong>Ziel der Zerlegung:</strong> geringe Kopplung zwischen Modulen; Module nach Zuständigkeiten/Entwurfsentscheidungen bilden.</li>
   <li>Verbreitete Irrtümer: feste Modulgröße gibt es nicht; nicht jede Klasse ist automatisch ein Modul; ein Java-Interface ist <em>keine</em> vollständige Schnittstelle (nur Signaturen, keine Semantik/Verträge); Module sind meist projektspezifisch, nicht automatisch wiederverwendbar.</li>
 </ul>
+<h3>Information-Hiding-Heuristiken: Export und Import (Übung 9-1a/b)</h3>
+<p class="src">Quelle: vl/13_Schnittstellenspezifikation.pdf — relevant für ub/09_ub_ocl.pdf Aufgabe 9-1a/b</p>
+<p>Im Analysemodell gilt zunächst alles als öffentlich; erst beim Entwurf wird die Schnittstelle bewusst eingeschränkt:</p>
+<ul>
+  <li><strong>Export — "Need to know"-Prinzip:</strong> etwas nur dann öffentlich zugänglich machen, wenn jemand es voraussichtlich braucht — und dann bevorzugt über klar definierte Kanäle, damit das Modul die Zugriffe (insbesondere Änderungen an einzelnen Attributen) kontrollieren kann. Das Prinzip begründet, warum Information Hiding sinnvoll ist: ungenutzt exponierte Details können nicht mehr gefahrlos geändert werden, weil man nie weiß, wer sich schon darauf verlassen hat.</li>
+  <li><strong>Import:</strong> je weniger eine Operation über andere Module weiß, desto unwahrscheinlicher wird sie von deren Änderungen betroffen — Module bleiben so leichter änderbar.</li>
+  <li><strong>Abwägung:</strong> Information Hiding steht manchmal im Zielkonflikt mit Effizienz/Einfachheit (z. B. direkter Zugriff auf ein privates Attribut aus Geschwindigkeitsgründen in Echtzeitsystemen/Spielen) — Grundsatz dabei: "Make it work first before you make it work fast."</li>
+</ul>
 <h3>Schnittstellen: Entwurf per Vertrag (Design by Contract)</h3>
-<p class="src">deckt sich mit fabiuebersicht.txt Zeilen 285-290</p>
-<p>Für jede Operation werden <strong>Vorbedingungen</strong> (preconditions) und <strong>Wirkungen/Nachbedingungen</strong> (postconditions) spezifiziert (z. B. in OCL) — ein Vertrag: "Hältst Du die Voraussetzungen ein, garantiere ich die Wirkung." Auf Implementierungsdetails, die nicht im Vertrag stehen, darf sich niemand außerhalb des Moduls verlassen (sonst ist der Entwurf inkorrekt) — Verträge werden <em>vor</em> der Implementierung festgelegt.</p>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 285-290</p>
+<p>Für jede Operation werden drei Dinge spezifiziert (z. B. in OCL) — ein Vertrag: "Hältst Du die Voraussetzungen ein, garantiere ich die Wirkung."</p>
+<ul>
+  <li><strong>Vorbedingung</strong> (precondition): was der Aufrufer garantieren muss, bevor er die Operation aufruft.</li>
+  <li><strong>Nachbedingung/Wirkung</strong> (postcondition): was die Operation garantiert, wenn die Vorbedingung erfüllt war.</li>
+  <li><strong>Invariante</strong>: Eigenschaft, die für alle Objekte der Klasse jederzeit (vor <em>und</em> nach jedem Methodenaufruf) gilt — der gemeinsame, stets gültige Grundzustand, auf den sich alle Beteiligten verlassen können ("wir teilen die gleichen Annahmen über die Klasse").</li>
+</ul>
+<p>Auf Implementierungsdetails, die nicht im Vertrag stehen, darf sich niemand außerhalb des Moduls verlassen (sonst ist der Entwurf inkorrekt) — Verträge werden <em>vor</em> der Implementierung festgelegt.</p>
 <h3>Wirkung von Modularisierung</h3>
-<p class="src">deckt sich mit fabiuebersicht.txt Zeilen 116-117</p>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 116-117</p>
 <p>Bei guten Entwürfen verbirgt die Schnittstelle gerade die Entwurfsentscheidungen, die sich öfter ändern → bei Änderungen muss meist nur ein Modul angepasst werden, die Schnittstelle bleibt stabil. Das System wird leichter verständlich, weil man von den meisten Modulen nur die Schnittstelle kennen muss. Bei schlechten Entwürfen (unklare/unvollständige Schnittstellen) geht dieser Effekt verloren.</p>
 <h3>Module beurteilen</h3>
-<p class="src">deckt sich mit fabiuebersicht.txt Zeilen 119-124 — Kriterien zur nachträglichen Beurteilung, keine Bauanleitung</p>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 119-124 — Kriterien zur nachträglichen Beurteilung, keine Bauanleitung</p>
 <ol>
   <li>Ein Modul hat eine gut verständliche Zuständigkeit</li>
   <li>Module sind nicht größer als nötig</li>

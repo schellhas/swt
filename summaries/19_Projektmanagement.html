@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>19 Projektmanagement</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif; max-width: 820px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; color: #1a1a1a; }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def { background: #f3f3f3; border-left: 3px solid #888; padding: .5rem .8rem; margin: .5rem 0; }
+  .src { color: #777; font-size: .85rem; }
+  .todo { background: #fff3cd; border-left: 3px solid #d4a017; padding: .5rem .8rem; margin: 1.5rem 0; }
+  code { background: #eee; padding: 0 .3rem; }
+  table { border-collapse: collapse; margin: .5rem 0; width: 100%; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>19 Projektmanagement</h1>
+<p class="src">Quelle: vl/19_Projektmanagement.pdf + vl/20_Projektmanagement2.pdf — relevant für ub/12_ub_prozesse-prozessmodelle.pdf (Aufgabe 12-3) und uebersicht.txt (Zeilen 69-79, 167-181, 208-210)</p>
+
+<h2>Zwei Stile von Projektmanagement</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 69-79</p>
+<table>
+<tr><th></th><th>Planend-leitend</th><th>Agil-selbstorganisierend</th></tr>
+<tr><td><strong>Planung</strong></td><td>explizit, dokumentiert, evtl. detailliert</td><td>geringer, impliziter, kurzer Horizont</td></tr>
+<tr><td><strong>Führung</strong></td><td>Projektleiter·in mit Weisungsbefugnis</td><td>Selbstorganisation: gemeinsames Entscheiden</td></tr>
+<tr><td><strong>Steuerung</strong></td><td>Projektsteuerung zur Planeinhaltung</td><td>während Iteration: Koordination; Umsteuern nur zwischen Iterationen</td></tr>
+<tr><td><strong>Geeignet für</strong></td><td>kleine <em>und</em> große Teams, klare Anforderungen, Vorhaben mit Nicht-SW-Anteilen</td><td>kleine Teams, auch unklare/veränderliche Anforderungen</td></tr>
+</table>
+<p>Für sehr große Projekte ist gutes (planendes) Projektmanagement oft der wichtigste Erfolgsfaktor; stark radikale Vorhaben sind mit beiden Stilen schwierig (→ Spiralmodell/Risikoansatz mit mittlerem Planungsgrad hilft dort eher).</p>
+
+<h2>Aufgabenzerlegung (Work Breakdown Structure, WBS)</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 167-174</p>
+<ul>
+  <li><strong>Top-down-Ansatz</strong> (meistens sinnvoll): die gröbsten nötigen Schritte identifizieren und schrittweise immer feiner herunterbrechen — die oberste Ebene z. B. nach Aktivitäten des Prozessmodells oder nach Komponenten des Systems gliedern.</li>
+  <li><strong>Brainstorming-/Bottom-up-Ansatz</strong> (bei Bedarf ergänzend): mit einer Gruppe wild irgendwelche Aufgaben zusammentragen und anschließend in Gruppen ordnen — sollte <em>vor</em> einer Top-Down-Zerlegung erfolgen, sonst ist man betriebsblind.</li>
+  <li>Bei lang laufenden/iterativen Projekten nicht sofort alles bis ins Detail zerlegen: nahe Phasen/Iterationen genau zerlegen, fernere nur grob — verhindert übertriebenen Neuplanungsaufwand, weil spätere Phasen ohnehin meist anders aussehen als ursprünglich gedacht.</li>
+</ul>
+
+<h2>Netzplan, Gantt-Chart, kritischer Pfad, Pufferzeit (Übung 12-3)</h2>
+<div class="todo">Im Original ein Grafik-Platzhalter ("Netzplan → gibt die Darstellung der Abhängigkeiten von Aufgaben") — hier anhand des allgemeinen Konzepts rekonstruiert.</div>
+<p>Grundlage ist für jede Teilaufgabe: ID, geschätzte <strong>Dauer</strong>, ihre <strong>Vorgänger</strong> (welche Aufgaben vorher abgeschlossen sein müssen) und die benötigten <strong>Ressourcen</strong> (z. B. Anzahl/Qualifikation der Personen).</p>
+<table>
+<tr><th>Darstellung</th><th>Zeigt</th></tr>
+<tr><td><strong>Netzplan</strong></td><td>die logischen Abhängigkeiten der Aufgaben als Diagramm — jede Aufgabe ein Rechteck/Knoten (mit ID, Dauer, frühestmöglichem Start), Pfeile für "muss vorher erledigt sein"-Beziehungen. <em>Ohne</em> Zeitskala.</td></tr>
+<tr><td><strong>Gantt-Chart</strong></td><td>dieselben Aufgaben und Abhängigkeiten, aber als Balken <em>auf einer Zeitachse</em> — macht sichtbar, wann welche Aufgabe läuft und wie sich Verzögerungen fortpflanzen.</td></tr>
+</table>
+<ul>
+  <li><strong>Kritischer Pfad:</strong> die Abfolge von Aufgaben, bei denen <em>jede</em> Verzögerung unmittelbar das Gesamtprojekt verzögert (es kann auch mehrere kritische Pfade gleichzeitig geben, wenn mehrere Ketten exakt gleich lang zur kürzesten Gesamtlaufzeit beitragen). Diese Aufgaben besonders sorgfältig überwachen/unterstützen.</li>
+  <li><strong>Pufferzeit (slack time):</strong> der zeitliche Spielraum, den eine Aufgabe <em>außerhalb</em> des kritischen Pfads hat — Verzögerungen innerhalb des Puffers verzögern das Gesamtprojekt (noch) nicht. Achtung: Das Ausnutzen eines Puffers verkleinert typischerweise die Pufferzeiten anderer, davon abhängiger Aufgaben.</li>
+  <li><strong>Kürzeste Projektlaufzeit:</strong> die Dauer des längsten Pfads durch den Netzplan (= des kritischen Pfads) von Start bis Ende.</li>
+</ul>
+
+<h3>Ressourcenplanung: Personalbedarf (Übung 12-3d-g)</h3>
+<ul>
+  <li>Nach der rein logischen Abhängigkeitsplanung (Netzplan) kommt die konkrete Zuweisung von Aufgaben zu Personen hinzu — üblich als grafische Zeitleiste pro Person (wer arbeitet wann an welcher Aufgabe).</li>
+  <li><strong>Maximal sinnvoller Personalbedarf (P<sub>max</sub>):</strong> die größte Teamgröße, ab der zusätzliche Personen die Projektlaufzeit nicht mehr verkürzen können — bestimmt durch die Struktur des Netzplans (Aufgaben, die zwingend nacheinander erledigt werden müssen, lassen sich durch mehr Personal nicht parallelisieren) und durch Aufgaben, die eine feste Mindestanzahl an Personen brauchen.</li>
+  <li>Bei <strong>weniger</strong> Personal als P<sub>max</sub> verlängert sich die Projektlaufzeit, weil nicht mehr alle parallelisierbaren Aufgaben gleichzeitig bearbeitet werden können — man muss abwägen, welche Aufgaben nacheinander statt parallel laufen und wie sich das auf Pufferzeiten und Gesamtlaufzeit auswirkt.</li>
+  <li><strong>Team-Entscheidung:</strong> die Wahl der tatsächlichen Teamgröße (zwischen 2 und P<sub>max</sub>) ist eine Abwägung über mehrere Gesichtspunkte, z. B. Personalkosten, Projektlaufzeit/Time-to-Market, Kommunikationsaufwand bei größeren Teams, Risiko durch geringere Pufferzeiten bei kleineren Teams.</li>
+</ul>
+
+<h2>Risikomanagement</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 176-181</p>
+<div class="def">
+<strong>Risiko:</strong> die Möglichkeit, dass ein unerwünschtes Ereignis eintritt. <strong>Risikohöhe</strong> = Eintrittswahrscheinlichkeit × Schadenshöhe (lässt sich meist nur grob/qualitativ, nicht quantitativ bestimmen — reicht aber für Risikomanagement).
+</div>
+<table>
+<tr><th>Managementstil</th><th>Haltung</th></tr>
+<tr><td><strong>Ignorierend/optimistisch</strong></td><td>kümmert sich nur um das Ziel, nicht um mögliche Hindernisse — führt zu sehr langen Terminüberschreitungen</td></tr>
+<tr><td><strong>Reparierend</strong></td><td>kümmert sich erst um Probleme, wenn sie auftreten (häufigster Stil in der Praxis) — kein echtes Risikomanagement</td></tr>
+<tr><td><strong>Vorbeugend</strong> (= Risikomanagement)</td><td>kümmert sich um Probleme, <em>bevor</em> sie auftreten: "If you don't attack the risks, the risks will attack you."</td></tr>
+</table>
+<p><strong>Ablauf:</strong> (1) Risiken identifizieren, (2) bewerten (Wahrscheinlichkeit × erwarteter Schaden), (3) priorisieren, (4) managen — Maßnahmen zur Senkung der Eintrittswahrscheinlichkeit wo möglich, sonst Vorbereitung von Gegenmaßnahmen für den Schadensfall, (5) regelmäßig wiederholen/überprüfen.</p>
+
+</body>
+</html>

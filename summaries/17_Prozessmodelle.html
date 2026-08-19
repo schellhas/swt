@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17 Prozessmodelle</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif; max-width: 820px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; color: #1a1a1a; }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def { background: #f3f3f3; border-left: 3px solid #888; padding: .5rem .8rem; margin: .5rem 0; }
+  .src { color: #777; font-size: .85rem; }
+  code { background: #eee; padding: 0 .3rem; }
+  table { border-collapse: collapse; margin: .5rem 0; width: 100%; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>17 Software-Prozessmodelle</h1>
+<p class="src">Quelle: vl/17_Prozessmodelle.pdf — relevant für ub/12_ub_prozesse-prozessmodelle.pdf und uebersicht.txt (Zeilen 84-89)</p>
+
+<h2>Das Wasserfallmodell (Übung 12-2a)</h2>
+<div class="def">
+Eine kleine Zahl von Grobaktivitäten (Planung, Anforderungsbestimmung, Architekturentwurf, Feinentwurf, Implementierung, Integration, Validierung, Inbetriebnahme) wird <strong>der Reihe nach</strong> durchlaufen — jede Phase nur einmal, Phase N beginnt erst nach Abschluss von Phase N-1.
+</div>
+<ul>
+  <li><strong>Dokumenten-getriebener Prozess:</strong> alle Ergebnisse jeder Phase liegen in Dokumenten vor; am Phasenende erfolgt eine gründliche Prüfung, dann Übergabe an die nächste Phase ("Meilenstein") — ggf. sogar mit anderem Personal.</li>
+  <li><strong>Zugrundeliegende Annahme:</strong> Mängel in Phase N werden spätestens in Phase N+1 aufgedeckt und lassen sich dann noch leicht in den Dokumenten beider Phasen korrigieren.</li>
+</ul>
+<p><strong>Warum galt das Wasserfallmodell lange als ideal (Übung 12-2a.1)?</strong> Es bietet maximale Planbarkeit und Kontrolle: klare, saubere Phasenstruktur, vollständige Dokumentation an jedem Übergang, eindeutige Verantwortlichkeiten und Meilensteine — genau das, was für Vertragsgestaltung, Budgetierung und Koordination großer/verteilter Teams gebraucht wird.</p>
+
+<h3>Schwächen des Wasserfallmodells (Übung 12-2a.2)</h3>
+<table>
+<tr><th>Schwäche</th><th>Problem</th></tr>
+<tr><td><strong>Unklare Anforderungen</strong></td><td>Werden Anforderungen in der Anforderungsbestimmung nicht gut verstanden, braucht man eigentlich Entwurf, Implementierung <em>und</em> Validierung als Hilfsmittel dafür — im Wasserfallmodell führen späte Anforderungsänderungen zu Chaos, weil sie das Prozessmodell durchbrechen (entweder wird die dokumentgetriebene Arbeitsweise enorm teuer, oder die Dokumente werden nicht mehr korrekt gepflegt).</td></tr>
+<tr><td><strong>Veränderliche Anforderungen</strong></td><td>Dasselbe Problem, wenn sich Anforderungen erst im Projektverlauf von außen ändern.</td></tr>
+<tr><td><strong>Nicht beherrschte Architekturen</strong></td><td>Ähnlich wie bei unklaren Anforderungen — auch hier bräuchte man frühes Feedback aus Implementierung/Test.</td></tr>
+<tr><td><strong>"Über die Mauer werfen"</strong></td><td>Kommunikation läuft nur über Dokumente (Desaster, wenn diese nicht gelesen werden); oft wechselt das Personal zwischen Phasen; Verständnis für Phase-N-Phänomene geht in Phase N+1 weitgehend verloren.</td></tr>
+</table>
+<p>Diese Schwächen werden bei <strong>agilen Projekten stark abgefedert</strong>, weil dort Anforderungsänderungen erwartet (statt bekämpft) werden und die Kommunikation direkt zwischen Menschen statt über Dokumente läuft.</p>
+
+<h2>Prozessmodellarten (Übung 12-1a)</h2>
+<table>
+<tr><th>Art</th><th>Grundidee</th></tr>
+<tr><td><strong>Wasserfallartig</strong></td><td>Jede Phase wird einmal, vollständig und in fester Reihenfolge durchlaufen — kein planmäßiges Zurückgehen. Maximale Vorausplanung.</td></tr>
+<tr><td><strong>Evolutionär / iterativ</strong></td><td>Das Gesamtsystem wird schrittweise gebaut; in jedem Schritt werden neue Teile hinzugefügt <em>und</em>, wo nötig, bestehende Teile verändert. Jede Iteration liefert eine funktionsfähige, evaluierbare Zwischenversion.</td></tr>
+<tr><td><strong>Inkrementell</strong></td><td>Sonderfall des evolutionären Vorgehens: Das Gesamtsystem wird schrittweise gebaut, aber in jedem Schritt werden <em>nur neue Teile hinzugefügt</em> — bereits Bestehendes wird (theoretisch) nie mehr verändert.</td></tr>
+</table>
+<p>Weitere iterative Varianten: <strong>Prototypmodell</strong> (baut anfangs ein Wegwerf-(Teil-)System, um kritische Anforderungen zu klären, danach folgt ein regulärer Prototyp oder ein Wasserfallmodell) und das <strong>Spiralmodell</strong> (Risikomodell: tue in jeder Iteration das, was am stärksten zur Verringerung des kritischsten Projektrisikos beiträgt — verallgemeinert alle anderen Modelle als Spezialfälle).</p>
+
+<h3>Wieviel Planung? Das Spektrum (nach Barry Boehm)</h3>
+<p>Prozessmodelle unterscheiden sich vor allem darin, <strong>wie präzise/strikt/weit im Voraus geplant wird</strong> — ein Spektrum von "ad hoc" (kein Planungsaufwand, aber unvorhersehbares Ergebnis) über risikogesteuerte und meilensteingetriebene Modelle bis zu feingranularen Verträgen (maximale Planung, aber enorm aufwändig und unflexibel gegenüber Änderungen). <strong>Agile Methoden</strong> liegen nahe am ad-hoc-Ende: sehr kurzer Planungshorizont, dafür hohe Flexibilität.</p>
+
+<h3>Wann sind welche Modelle angemessen? (Übung 12-1b)</h3>
+<table>
+<tr><th>Stark planende Modelle geeignet, wenn…</th><th>Agile Modelle geeignet, wenn…</th></tr>
+<tr><td>ein wohldefiniertes Resultat in definierter Zeit erreicht werden muss</td><td>hohe Unsicherheit über Anforderungen (Inhalt, Prioritäten) besteht</td></tr>
+<tr><td>sehr große/verteilte Projektgruppen koordiniert werden müssen (Pläne/Dokumente kaum verzichtbar)</td><td>Änderungen von außen häufig sind (Anforderungen, Zeitplan, Budget, Qualitätsziele)</td></tr>
+<tr><td>parallele Hardware-Entwicklung, hohe Wiederverwendungsziele oder örtlich verteilte Entwicklung vorliegen</td><td>stark radikales Vorgehen nötig ist (unbeherrschte Anforderungen/Technologie)</td></tr>
+</table>
+<p>Faustregel: Nur bei <strong>normalem Vorgehen</strong> lässt sich verlässlich planen — bei stark <strong>radikalem</strong> Vorgehen (neue Technologie, unklare Anforderungen) hilft auch striktes Planen wenig, hier passt eher ein risikogesteuertes/agiles Vorgehen.</p>
+
+<h2>Konventionelle vs. agile Prozesse</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 84-89</p>
+<table>
+<tr><th>Aspekt</th><th>Konventionell</th><th>Agil</th></tr>
+<tr><td>Mitwirkung des Kunden</td><td>unwahrscheinlich</td><td>kritischer Erfolgsfaktor</td></tr>
+<tr><td>Aufgabenbearbeitung</td><td>Aufgaben nacheinander vollständig, nur einmal gelöst</td><td>stark verschränkt, jede Lösung nur eine Annäherung (Iteration)</td></tr>
+<tr><td>Etwas Nützliches wird geliefert</td><td>erst nach längerer Zeit</td><td>mindestens alle paar Wochen</td></tr>
+<tr><td>Das Richtige entwickeln durch</td><td>langes Spezifizieren, Vorausdenken; formelles, detailliertes Anforderungsdokument (wichtiger Vertragsbestandteil)</td><td>Iteration von Entwickeln &amp; Zeigen; Anforderungsdokument (falls vorhanden) leichtgewichtig</td></tr>
+<tr><td>Nötige Disziplin</td><td>Formalismen, sonst wenig</td><td>informell, aber <strong>viel</strong> Disziplin</td></tr>
+<tr><td>Änderungen</td><td>erzeugen Widerstand; Vorgaben werden durchgesetzt</td><td>werden erwartet; Selbstorganisation verbessert schrittweise</td></tr>
+<tr><td>Kommunikation</td><td>über Dokumente</td><td>zwischen Menschen</td></tr>
+<tr><td>Vorsorge für Änderungen</td><td>durch Versuch der Vorausplanung</td><td>durch "flexibel bleiben"</td></tr>
+</table>
+
+<h2>eXtreme Programming (XP) — Übung 12-2b</h2>
+<div class="def">
+XP ist eine radikale <strong>agile Methode</strong> für eher kleine Projekte: ein Satz von Praktiken, die bewährte Techniken der SW-Entwicklung bewusst "ins Extrem" führen (z. B. wurden Codedurchsichten bewährt befunden → XP fordert <em>ständige</em> Code-Reviews durch Pair Programming). Alle Praktiken müssen genau eingehalten werden — das verlangt sehr hohe Disziplin, keine Ausrede zum bloßen "Hacken".
+</div>
+<p><strong>Ablauf (Lückentext-Antworten):</strong> Ein XP-Projekt ist zeitlich in <strong>Iterationen</strong> eingeteilt, die jeweils mit einer neuen Version des Softwaresystems enden. Am <strong>Ende</strong> jeder Iteration besprechen Kunde und Entwickler·innen gemeinsam, welche Funktionalitäten als Nächstes realisiert werden ("Planning Game"). Der Kunde formuliert seine Wünsche auf <strong>User Stories</strong>. Während der gesamten Entwicklung ist der Kunde <strong>vor Ort</strong> (On-site Customer). Er definiert zudem <strong>Akzeptanztests</strong>, um am Ende jeder Iteration die Funktionalität prüfen zu können. Für die Entwickler·innen gibt XP zusätzlich Praktiken vor wie <strong>Pair Programming</strong> (Paarprogrammierung), <strong>Continuous Integration</strong> oder die gemeinsame Verantwortung (<strong>Collective Ownership</strong> — jede Klasse ist mindestens zwei Personen vertraut, das schafft Flexibilität bei "wer macht was wann").</p>
+<h3>Agilitätsfördernde XP-Praktiken im Überblick</h3>
+<table>
+<tr><th>Praktik</th><th>Idee</th><th>Wirkung</th></tr>
+<tr><td>Short Releases</td><td>alle paar Wochen eine benutzbare Version an den Kunden</td><td>kompletter Projektfehlschlag fast unmöglich; Anforderungsmängel werden früh erkannt</td></tr>
+<tr><td>On-site Customer</td><td>entscheidungsbefugte/r Kundenvertreter·in stets im Team</td><td>Unklarheiten werden umgehend ausgeräumt</td></tr>
+<tr><td>Pair Programming</td><td>aller Code wird von zwei Personen gemeinsam geschrieben</td><td>jede Klasse ist mind. zwei Personen vertraut → mehr Flexibilität</td></tr>
+<tr><td>Testing</td><td>zu jedem Modul gründliche automatisierte Tests</td><td>erhöhte Bereitschaft, neue Anforderungen zu akzeptieren; weniger Angst vor Codeänderungen</td></tr>
+</table>
+
+</body>
+</html>

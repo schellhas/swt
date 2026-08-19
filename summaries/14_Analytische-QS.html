@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14 Analytische Qualitätssicherung</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif; max-width: 820px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; color: #1a1a1a; }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def { background: #f3f3f3; border-left: 3px solid #888; padding: .5rem .8rem; margin: .5rem 0; }
+  .src { color: #777; font-size: .85rem; }
+  .todo { background: #fff3cd; border-left: 3px solid #d4a017; padding: .5rem .8rem; margin: 1.5rem 0; }
+  code { background: #eee; padding: 0 .3rem; }
+  pre { background: #eee; padding: .5rem .8rem; overflow-x: auto; }
+  table { border-collapse: collapse; margin: .5rem 0; width: 100%; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>14 Analytische Qualitätssicherung (Testen &amp; Durchsichten)</h1>
+<p class="src">Quelle: vl/14_Analytische-QS.pdf + vl/15_Analytische-QS2.pdf — relevant für ub/10_ub_analytische_qa_1.pdf, ub/11_ub_analytische_qa_2.pdf und uebersicht.txt (Zeilen 6, 25-29, 54-67, 128-165, 199-206, 296-303)</p>
+
+<h2>Grundbegriffe</h2>
+<table>
+<tr><th>Begriff</th><th>Bedeutung</th></tr>
+<tr><td><strong>Verifizieren</strong></td><td>Prüft, ob ein Produkt den <em>spezifischen Anforderungen und Design-Vorgaben</em> entspricht — "Bauen wir das Produkt richtig?" (z. B. Code Reviews, Unit-Tests)</td></tr>
+<tr><td><strong>Validieren</strong></td><td>Prüft, ob ein Produkt die <em>tatsächlichen Bedürfnisse</em> der Endnutzer erfüllt — "Bauen wir das richtige Produkt?" (z. B. Feedback-Sessions, Akzeptanztest)</td></tr>
+</table>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 25-29 (Übung 10-1a)</p>
+
+<div class="def">
+<strong>Qualitätssicherung (QS):</strong> Gesamtheit aller Maßnahmen, die <em>nicht</em> darauf zielen, ein Produkt überhaupt fertigzustellen, sondern es <em>in guter Qualität</em> fertigzustellen.
+</div>
+<table>
+<tr><th></th><th>Konstruktive QS</th><th>Analytische QS</th></tr>
+<tr><td><strong>Ansatz</strong></td><td>vorbeugend: verhindert, dass Mängel überhaupt entstehen</td><td>prüfend: deckt bereits entstandene Mängel auf</td></tr>
+<tr><td><strong>Beispiele</strong></td><td>Qualitäts-/Prozessmanagement</td><td><strong>Softwaretest</strong> (dynamische Prüfung), <strong>Durchsichten</strong> (manuelle statische Prüfung), automatische statische Prüfung</td></tr>
+</table>
+<p>Faustregel für <em>wann</em> man QS betreibt: <strong>dauernd und jede/r</strong> — je früher ein Mangel gefunden wird, desto weniger Schaden/Kosten verursacht er (z. B. kostet ein erst nach Auslieferung behobener Anforderungsmangel evtl. über das Tausendfache eines früh gefundenen).</p>
+
+<h2>Die Fehlerkette: Fehler → Defekt → Versagen (Übung 10-1c)</h2>
+<div class="def">
+<strong>Fehler (error):</strong> ein Falschtun (commission) oder Versäumnis (omission) der Entwickler·innen — nicht zwangsläufig beim Kodieren, auch bei Anforderungen/Entwurf möglich. Liegt entweder ein <strong>Irrtum</strong> (misconception, Wissenslücke) oder ein <strong>Versehen</strong> (blunder, Flüchtigkeitsfehler) zugrunde.<br>
+→ führt zu einem <strong>Defekt (defect/fault):</strong> ein fehlerhaftes Element im Programm/Dokument selbst.<br>
+→ kann (muss aber nicht) zu <strong>Versagen (failure)</strong> führen: falsches, beobachtbares Verhalten des Programms (falsch bzgl. Spezifikation, Anforderungen oder Erwartungen). Manchmal führen erst mehrere Defekte gemeinsam zu einem Versagen.
+</div>
+<p><strong>Wichtige Konsequenz:</strong> Alle testenden Verfahren decken zunächst nur <em>Versagen</em> auf — der zugrunde liegende Defekt muss erst noch lokalisiert werden (<strong>Debugging</strong>). Das kann aufwändig sein (großes Codevolumen, mehrere zusammenwirkende Defekte, zeitlicher Abstand zwischen Ursache und sichtbarem Versagen). Statische und konstruktive Verfahren sind hier im Vorteil: Sie decken den Mangel meist direkt am Fundort auf, die Lokalisierungsphase entfällt.</p>
+
+<h2>Defekttest: Terminologie (Übung 10-1b)</h2>
+<ul>
+  <li><strong>Testen:</strong> Anwenden eines Testfalls auf einen Testgegenstand.</li>
+  <li><strong>Testfall:</strong> ein Tupel <code>(Systemzustand, Eingaben, erwartetes Systemverhalten)</code> — Zustand+Eingaben zusammen heißen <strong>Testeingabe</strong>, das erwartete Verhalten <strong>Testausgabe</strong>.</li>
+  <li><strong>Testgegenstand (Komponente):</strong> System oder Teil davon, der getestet werden soll (Methode, Modul, Subsystem, Gesamtsystem).</li>
+  <li><strong>Testdurchführung:</strong> Zustand herstellen → Testgegenstand aufrufen → Eingaben übermitteln → tatsächliches mit erwartetem Verhalten vergleichen.</li>
+  <li><strong>Testergebnis:</strong> Übereinstimmung (keine Erkenntnis gewonnen) oder Abweichung — <strong>ein Defekt wurde gefunden: das ist der Erfolgsfall!</strong> Der Sinn eines Testfalls ist also, möglichst ein Versagen herbeizuführen, nicht "zu bestehen".</li>
+</ul>
+
+<h2>Testfallauswahl: Funktionstest vs. Strukturtest (Übung 10-1d.1, 10-2b/c)</h2>
+<table>
+<tr><th></th><th>Funktionstest (functional/black box testing)</th><th>Strukturtest (structural/white/glass box testing)</th></tr>
+<tr><td><strong>Grundlage</strong></td><td>Spezifikation/Schnittstelle der Komponente — man "guckt nicht hinein"</td><td>Implementierung/Struktur der Komponente — man "guckt hinein"</td></tr>
+<tr><td><strong>Ziel</strong></td><td>Für jeden Fall mit andersartigem Verhalten mindestens einen Testfall</td><td>Abdeckung aller Elemente der Implementierung durch die Testfallmenge</td></tr>
+<tr><td><strong>Gruppierung</strong></td><td>Äquivalenzklassen, Fehlerfälle, Randfälle (Heuristik)</td><td>Anweisungen, Bedingungen, Schleifen, Datenflüsse (siehe Abdeckungskriterien)</td></tr>
+</table>
+<p><strong>Äquivalenzklasse:</strong> disjunkte Menge von Programmeingaben, deren Werte zu (vermutlich) gleichartigem Verhalten führen — bei Black-Box-Tests beruht die Einteilung auf <em>Vermutungen</em> über das innere Verhalten, da man die Implementierung nicht kennt. <strong>Grenzwertbetrachtung (Randfälle):</strong> an der Grenze zwischen zwei Äquivalenzklassen "schlägt" das Verhalten um — je ein Testfall knapp links und rechts der Grenze. Bei <em>mehrdimensionalen</em> Äquivalenzklassen (z. B. zwei numerische Eingaben) werden die Grenzverläufe komplizierter: pro durchgehendem Grenzverlauf zwischen zwei Klassen genügen näherungsweise zwei Testfälle (je einer auf jeder Seite), eine vollständige Betrachtung müsste zusätzlich die Grenzpunkte selbst (Ecken, an denen mehrere Klassen zusammentreffen) gesondert behandeln.</p>
+<p>Funktionstest verlangt oft erhebliche Kreativität ("was zählt als andersartig?"), deckt aber häufig auf, dass die Spezifikation unvollständig/unklar ist — <em>"oft wird erst beim Testen die Spezifikation richtig geklärt"</em>. Ein Black-Box-Test kann nicht zwischen unterschiedlich aufgebauten Implementierungen mit gleichem Verhalten unterscheiden — das kann nur der Strukturtest.</p>
+
+<h3>Abdeckungskriterien (Coverage)</h3>
+<table>
+<tr><th>Kriterium</th><th>Bedingung</th></tr>
+<tr><td><strong>Anweisungsüberdeckung</strong> (statement coverage, <strong>C0</strong>)</td><td>jede Anweisung mindestens einmal ausgeführt — schwächstes, aber in der Praxis häufigstes Kriterium; für Fehlerbehandlungscode oft schwer/unmöglich zu erreichen</td></tr>
+<tr><td><strong>Bedingungsüberdeckung</strong> (condition coverage, <strong>C1</strong>, oft "Zweigüberdeckung"/branch coverage)</td><td>zusätzlich: jede Steuerbedingung (<code>if</code>, <code>while</code>, <code>switch</code> …) war mindestens einmal wahr <em>und</em> einmal falsch</td></tr>
+<tr><td><strong>Schleifenüberdeckung</strong> (loop coverage, <strong>C2</strong>)</td><td>zusätzlich: jede Schleife wird einmal 0-fach, einmal 1-fach und einmal mehrfach durchlaufen</td></tr>
+<tr><td><strong>Datenflusskriterien</strong></td><td>z. B. "jedes Beschreiben einer Variable wird später auch mal ausgelesen" — mächtig, aber schwierig anzuwenden</td></tr>
+</table>
+<p><strong>Wichtig:</strong> Zwei Implementierungen mit identischem Black-Box-Verhalten können völlig unterschiedliche Mindestanzahlen an Testfällen für 100% C0/C1 benötigen, je nachdem wie die Fallunterscheidung im Code strukturiert ist (z. B. verschachtelte <code>if/else if</code>-Kette vs. mehrere unabhängige <code>if</code>s).</p>
+
+<h3>Worked Example: Zweigüberdeckung an klassifiziereDreieck (Übung 10-2c)</h3>
+<div class="todo">Konkretes Beispiel für Strukturtest/Zweigüberdeckung — im Original evtl. als Grafik/Beispiel skizziert, hier anhand des Übungsaufgaben-Codes rekonstruiert.</div>
+<pre>if (seite1==seite2 || seite2==seite3 || seite1==seite3)  return Gleichschenklig;   // Verzweigung 1
+if (seite1==seite2 && seite2==seite3)                     return Gleichseitig;      // Verzweigung 2
+if (quad3+quad2==quad1 || quad1+quad3==quad2 || quad3+quad2==quad1) return Rechtwinklig; // Verzw. 3
+return Normal;</pre>
+<p>Für <strong>C1 (Zweigüberdeckung)</strong> muss jede der 3 Steuerbedingungen mindestens einmal wahr <em>und</em> einmal falsch gewesen sein — bei mehrteiligen <code>||</code>/<code>&amp;&amp;</code>-Bedingungen genügt dafür, dass die Gesamtbedingung wahr/falsch wird (nicht jeder Teilausdruck einzeln — das wäre ein strengeres Kriterium, MC/DC). Mit wenigen, gezielt gewählten Testfällen (z. B. ein gleichseitiges, ein gleichschenkliges, ein rechtwinkliges und ein "normales" Dreieck) lassen sich alle drei Verzweigungen je einmal wahr und einmal falsch durchlaufen. <strong>Anweisungsüberdeckung (C0)</strong> ist damit meist automatisch mit erreicht — C1 ist also i. d. R. das strengere Kriterium (Ausnahmen: nicht erreichbarer Code, z. B. ein <code>assert false</code> im letzten <code>else</code>-Zweig, das nie ausgeführt werden kann).</p>
+
+<h2>Testreihenfolge: Modul-, Bottom-Up- und Top-Down-Test (Übung 10-1d.5)</h2>
+<p>Man testet nie gleich das ganze System auf einmal (<em>Big-Bang-Test</em> — Defekte wären kaum lokalisierbar), sondern beginnt mit wenigen Teilen und fügt schrittweise mehr zusammen.</p>
+<table>
+<tr><th>Ansatz</th><th>Vorgehen</th><th>Vorteil</th><th>Nachteil</th></tr>
+<tr><td><strong>Reines Modultesten</strong> (unit testing)</td><td>jedes Modul isoliert testen</td><td>Debugging einfach</td><td>braucht Stummel (stubs) für benutzte Module — deren Semantik kann vom Original abweichen (verborgene/vorgetäuschte Defekte)</td></tr>
+<tr><td><strong>Bottom-Up</strong></td><td>beginne bei den elementaren Modulen, die nichts anderes aufrufen; teste erst, wenn alles Aufgerufene schon getestet ist</td><td>testet nur "reale", relevante Zusammenhänge</td><td>braucht Testtreiber (drivers), die die noch fehlenden aufrufenden Module simulieren</td></tr>
+<tr><td><strong>Top-Down</strong></td><td>beginne beim "Hauptprogramm" (z. B. der Bedienoberfläche)</td><td>testet anschauliche, nutzernahe Abläufe; sinnvoll wenn Anforderungen erst dadurch klar werden</td><td>braucht Stummel für noch fehlende, aufgerufene Module (können aufwändig sein)</td></tr>
+</table>
+<p>In der Praxis wird meist <strong>opportunistisch</strong> zwischen beiden Richtungen gewechselt, je nachdem was praktisch am wenigsten Zusatzaufwand (Stummel/Treiber) erfordert. Priorisierung: Teile mit vielen Aufrufern oder hohem Risiko (unsichere Anforderungen, Architektur-Auswirkungen) früh testen; Teile mit vielen Aufrufern, hoher Nutzungsrelevanz oder komplexer Spezifikation besonders intensiv testen — Ziel ist stets, möglichst viele Mängel schon im Modultest zu finden, weil Lokalisierung später viel schwieriger wird.</p>
+
+<h2>Wer soll testen? (Übung 10-3)</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 61-67</p>
+<p>Am besten: jemand Geübtes, <strong>möglichst nicht die Entwickler·in des Codes selbst</strong>. Zwei psychologische Gründe:</p>
+<ol>
+  <li>Man weist sich nur ungern selbst die eigenen Unzulänglichkeiten nach.</li>
+  <li>Bei einem Fehlverständnis der Spezifikation enthalten Code <em>und</em> selbstgeschriebene Tests oft dieselben falschen Annahmen — der Test deckt den Denkfehler dann nicht auf.</li>
+</ol>
+<p><strong>Ausnahme: Test-First-Entwicklung (TDD)</strong> — Testfälle werden implementiert, <em>bevor</em> der Code geschrieben wird. Das umgeht die psychologische Abneigung (es gibt ja noch keinen "eigenen" Code zu kritisieren) und nutzt die Testfallentwicklung zugleich zur Vertiefung/Klärung des Spezifikationsverständnisses. Entwicklertests bleiben trotzdem immer empfehlenswert — schon fürs Grobe, weil die Kommunikation von Versagen zurück an die Entwickler·in sonst aufwändig und fehlerträchtig ist.</p>
+<p><strong>Warum überhaupt automatisieren?</strong> (uebersicht.txt Zeile 65-67) Automatisierte Tests ermöglichen <strong>mehr</strong> Testen (höhere Abdeckung des Verhaltensraums), <strong>wiederholtes</strong> Testen (auch später eingefügte Defekte werden bei jedem Lauf erneut geprüft) und <strong>zuverlässigeres</strong> Testen (manuelles Testen ist seinerseits fehleranfällig, Versagen kann übersehen werden).</p>
+
+<h2>Weitere dynamische Testarten (Übung 10-1d.2/4)</h2>
+<table>
+<tr><th>Testart</th><th>Frage</th></tr>
+<tr><td><strong>Benutzbarkeitstest</strong></td><td>Sind echte Benutzer·innen in der Lage, die Funktionen des Systems zu nutzen? (Beobachtung bei freier Nutzung oder vorgegebenen Aufgaben)</td></tr>
+<tr><td><strong>Lasttest</strong></td><td>Kann das System genügend viele Benutzer·innen zugleich schnell genug bedienen?</td></tr>
+<tr><td><strong>Leistungstest</strong></td><td>Worauf wird die Antwortzeit verwandt? (Grundlage für gezielte Effizienzoptimierung)</td></tr>
+<tr><td><strong>Stresstest</strong></td><td>Überlebt das System Überlast, massenhaft unsinnige Eingaben o. Ä.? Gemeinsamkeit mit Lasttest: beide schicken massenhafte Eingaben; Unterschied: Lasttest prüft normale/hohe, aber gültige Last, Stresstest bewusst extreme/entartete Bedingungen.</td></tr>
+<tr><td><strong>Akzeptanztest</strong></td><td>Demonstriert dem Auftraggeber, dass das Produkt fertig/tauglich ist — sollte direkt aus Use Cases hergeleitet werden. <strong>Zielumkehr:</strong> anders als Defekt-/Benutzbarkeitstests (erfolgreich = Mangel gefunden) ist ein Akzeptanztest erfolgreich, wenn er <em>keine</em> (nennenswerten) Mängel findet.</td></tr>
+</table>
+<p><strong>Funktionstest vs. Akzeptanztest</strong> (Übung 10-1d.4): Funktionstest prüft während der Entwicklung einzelne Komponenten gegen ihre Spezifikation (Erfolg = Defekt gefunden); Akzeptanztest prüft am Ende das Gesamtsystem gegen die Kundenanforderungen zur Abnahme (Erfolg = keine Mängel mehr).</p>
+
+<h2>Durchsichten (manuelle statische Verfahren) — Übung 11-1</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 296-303</p>
+<div class="def">
+Bei manuellen statischen Verfahren werden Software-Artefakte von Menschen <strong>gelesen</strong>, mit dem Ziel, Mängel aufzudecken — ohne dass Code ausgeführt wird. Ablauf: (1) gründliche Durchsicht auf Mängel (Defekte, Standardverstöße, verbesserungswürdige Lösungen), (2) Dokumentation/Diskussion der Mängel, (3) Beseitigung, (4) ggf. erneute Prüfung nach heiklen Korrekturen.
+</div>
+<p>Begriffe wie Durchsicht (review), Kollegendurchsicht (peer review), Inspektion (inspection), Durchgang (walkthrough) und Formelle Technische Durchsicht (FTR) werden uneinheitlich verwendet — im Zweifel einfach "Durchsicht" sagen und bei Bedarf präzisieren.</p>
+
+<h3>Vorteile von Durchsichten gegenüber Tests (Übung 11-1e)</h3>
+<ol>
+  <li><strong>Kein ausführbarer Code nötig:</strong> anwendbar auf jede Art von Dokument — Anforderungen, Entwürfe, Code, Testfälle, Dokumentation, sogar Projektpläne.</li>
+  <li><strong>Frühere Mängelaufdeckung:</strong> spart dadurch erheblich Folgeaufwand.</li>
+  <li><strong>Zusatznutzen:</strong> Kommunikation (Wissen über die Artefakte verbreitet sich im Team) und Ausbildung (Wissenstransfer über Technologie, guten Stil).</li>
+  <li><strong>Andere Mängelarten:</strong> Durchsichten finden auch Verstöße gegen Entwurfs-/Kodierrichtlinien und Stilprobleme, die ein reiner Verhaltenstest nicht aufdeckt.</li>
+  <li><strong>Empirisch mehr Defekte pro Stunde</strong> als Test (siehe unten).</li>
+</ol>
+
+<h3>Was Durchsichten können, was Tests nicht können (Übung 11-1b/c)</h3>
+<ul>
+  <li><strong>Nicht automatisierbar</strong> sind Prüfpunkte, die Verständnis der Absicht/Semantik statt reiner Syntax verlangen — z. B. ob ein <code>else</code>-Zweig inhaltlich das <em>richtige</em> tut, ob ein Kommentar den Code korrekt beschreibt, oder ob eine Entwurfsentscheidung im konkreten Kontext angemessen ist. Ein Werkzeug kann Muster erkennen, aber nicht beurteilen, ob die Absicht des Programmierers korrekt umgesetzt wurde.</li>
+  <li><strong>Durch Testen schwer aufzudeckende Defekte:</strong> vor allem <strong>Nebenläufigkeitsfehler</strong> (Verklemmungsgefahr, fehlende Synchronisation) — sie sind zeitabhängig/nichtdeterministisch und treten in einem einzelnen Testlauf oft gar nicht auf, während eine Durchsicht den fehlenden <code>synchronized</code>-Block direkt im Code sieht. Ähnlich: nicht geschlossene externe Ressourcen (Streams, Connections) — das Versagen (Ressourcenerschöpfung) zeigt sich oft erst nach vielen Wiederholungen, nicht in einem einzelnen Testfall.</li>
+</ul>
+
+<h3>Checkliste zur Durchsicht (Kategorien, Übung 11-1)</h3>
+<p>Die Übungs-Checkliste für Java-Code gliedert sich in folgende Kategorien (Auswahl typischer Prüfpunkte):</p>
+<table>
+<tr><th>Kategorie</th><th>Beispiel-Prüfpunkte</th></tr>
+<tr><td>Arithmetik</td><td>Über-/Unterlauf möglich? Division durch 0? Klammerung eindeutig?</td></tr>
+<tr><td>Schleifen</td><td>Variablen vor der Schleife korrekt initialisiert? Terminiert die Schleife garantiert?</td></tr>
+<tr><td>Abzweigungen</td><td>Vergleichsoperatoren korrekt? Fehlender <code>else</code>-Zweig korrekt (nicht-)behandelt? <code>default</code> bei <code>switch</code>?</td></tr>
+<tr><td>Datenfluss</td><td><code>null</code>-Fälle abgefangen? Parameterwertebereiche geprüft? <code>equals()</code> vs. <code>==</code>?</td></tr>
+<tr><td>Arrays</td><td>Indexzugriff außerhalb des gültigen Bereichs möglich?</td></tr>
+<tr><td>Funktionsaufrufe</td><td>Alle Rückgabewerte/Exceptions behandelt? Vorbedingungen der aufgerufenen Methode erfüllt? Stack-Overflow bei Rekursion?</td></tr>
+<tr><td>Multithreading</td><td>Zugriffe synchronisiert/<code>volatile</code>? Verklemmungsgefahr? <code>InterruptedException</code> behandelt?</td></tr>
+<tr><td>Ausnahmebehandlung</td><td>Kontrollfluss nach Exception korrekt fortgesetzt? Alle möglichen Exceptions abgefangen?</td></tr>
+<tr><td>Externe Ressourcen</td><td>Streams/Connections wieder geschlossen? Gepufferte Daten geflusht?</td></tr>
+</table>
+
+<h3>Durchsicht-Varianten (Grad der Formalität)</h3>
+<table>
+<tr><th>Variante</th><th>Charakteristik</th></tr>
+<tr><td><strong>Selbst-Begutachtung</strong> (sehr informell)</td><td>Autor·in sieht das eigene Produkt allein durch, mit etwas zeitlichem Abstand; kann sehr effektiv sein, verlangt aber Willen/Geduld</td></tr>
+<tr><td><strong>Peer Review</strong> (halbformell)</td><td>eine Kollegin/ein Kollege begutachtet das Ergebnis eigenständig und meldet Mängel zurück</td></tr>
+<tr><td><strong>Fagan-Inspektion</strong> (hochformell)</td><td>mehrstufiger Teamprozess (Planung, Einführung, Lesephase, gemeinsames Inspektionstreffen, Korrektur, Statistik) mit festen Rollen (Autor, Moderator, Schriftführer, Gutachter) — lohnt v. a. für Anforderungen/Architekturentwürfe</td></tr>
+<tr><td><strong>Perspektiven-basiertes Lesen</strong> (PBR)</td><td>mehrere Gutachter·innen prüfen dasselbe Dokument mit je einer anderen Rolle/Perspektive (Endnutzer·in, Entwerfer·in, Tester·in …) — jede Perspektive hat eigene Checkliste; senkt Überlappung, erhöht Gesamtausbeute</td></tr>
+<tr><td><strong>Feinkörnige, werkzeuggestützte Code Reviews</strong></td><td>heute am weitesten verbreitet: kleine, zusammengehörige Änderungen (z. B. Pull Requests) werden routinemäßig begutachtet, oft mit Pflicht-Freigaben über Versionsverwaltung; wenig Verwaltungsaufwand, aber Gesamtüberblick geht leicht verloren</td></tr>
+</table>
+
+<h3>Empirische Resultate zu Durchsichten</h3>
+<ul>
+  <li>Codedurchsichten finden <strong>mehr Defekte pro Stunde</strong> als Tests — und <strong>andere</strong> Defekte als Tests (ergänzen sich also).</li>
+  <li>Wichtigste Steuergröße ist die <strong>Begutachtungsgeschwindigkeit</strong>: für Code sind ca. 50–300 Zeilen pro Stunde günstig — deutlich schneller gelesen sinkt die Fundquote stark.</li>
+  <li><strong>Fagan-Inspektionen sind trotz hohem Formalitätsgrad eher ineffizient:</strong> große Überschneidung der von verschiedenen Gutachter·innen gefundenen Mängel, kein nachweisbarer Mehrwert durch das gemeinsame Treffen (getrennte Durchsicht reicht meist), zudem lange Kalenderlaufzeit (Prozessverzögerung).</li>
+  <li><strong>Selbstbegutachtung kann sehr effektiv sein</strong> (Beispiel: 45% Defekt-Entdeckungsquote in 2 Tagen nach 4 Monaten Arbeit — sparte vermutlich 1-2 Monate Testzeit), hängt aber stark von der Einstellung ("ich will Defekte finden") und etwas zeitlichem Abstand zur Entwicklung ab.</li>
+  <li>Durchsichten in <strong>frühen Phasen</strong> sparen besonders viel Aufwand.</li>
+  <li>Perspektiven-basiertes Lesen ist effektiver als "jeder sucht alles".</li>
+</ul>
+
+<h2>Automatische statische Verfahren</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeile 138</p>
+<ul>
+  <li><strong>Modellprüfung (model checking):</strong> für vollständig spezifizierte Zustandsautomaten kann der komplette Zustandsraum automatisch durchsucht werden, um Sicherheitseigenschaften zu prüfen ("kann Zustandsfolge A, B auftreten, obwohl das nicht erlaubt sein soll?"). Moderne Modellprüfer bewältigen auch riesige Zustandsräume (z. B. 10²⁰ Zustände) effizient. Allgemeiner: auch andere strukturierte Spezifikationen lassen sich auf Inkonsistenz oder Unvollständigkeit (z. B. fehlende Fallunterscheidungen) automatisch prüfen; Typprüfung in typisierten Programmiersprachen ist eine Form davon.</li>
+  <li><strong>Quelltextanalyse (static analysis):</strong> Werkzeuge (z. B. FindBugs für Java) klopfen Quellcode automatisch auf typische Schwachstellen ab (dubiose <code>catch</code>-Blöcke, fehlende <code>finally</code>-Klauseln, verdächtige <code>malloc</code>/<code>free</code>-Nutzung, Sicherheitslücken u. a.). Leistungsfähigkeit variiert stark zwischen Werkzeugen; ein zentrales Problem sind falsche Alarme (false positives).</li>
+</ul>
+
+</body>
+</html>

@@ -38,7 +38,7 @@
 <body>
 
 <h1>04 UML (Modeling with UML)</h1>
-<p class="src">Quelle: vl/04_UML.pdf — relevant für ub/03_ub_uml.pdf und fabiuebersicht.txt (UML-Zeile 43-47)</p>
+<p class="src">Quelle: vl/04_UML.pdf — relevant für ub/03_ub_uml.pdf und uebersicht.txt (UML-Zeile 43-47)</p>
 
 <h2>Modell-Grundbegriffe</h2>
 <div class="def">
@@ -83,14 +83,16 @@
 </ul>
 
 <h3>Sichtbarkeit (Visibility)</h3>
-<p class="src">ergänzt aus fabiuebersicht.txt — Standard-UML-Notation, in der VL nur am Beispiel <code>-history</code> gezeigt</p>
+<p class="src">ergänzt aus uebersicht.txt — Standard-UML-Notation, in der VL nur am Beispiel <code>-history</code> gezeigt</p>
 <table>
 <tr><th>Symbol</th><th>Bedeutung</th></tr>
-<tr><td><code>-</code></td><td>privat (private)</td></tr>
-<tr><td><code>+</code></td><td>öffentlich (public)</td></tr>
-<tr><td><code>#</code></td><td>geschützt (protected)</td></tr>
-<tr><td><code>~</code></td><td>paketsichtbar (package)</td></tr>
+<tr><td><code>-</code></td><td>privat (private) — nur für Class Implementor sichtbar</td></tr>
+<tr><td><code>#</code></td><td>geschützt (protected) — zusätzlich für Class Extender sichtbar</td></tr>
+<tr><td><code>~</code></td><td>paketsichtbar (package) — privat zum Paket statt zur Klasse; steht ein Paket für ein Modul, heißt das "öffentlich innerhalb des Moduls sichtbar"</td></tr>
+<tr><td><code>+</code></td><td>öffentlich (public) — voll sichtbar</td></tr>
 </table>
+<p class="src">Quelle: vl/13_Schnittstellenspezifikation.pdf</p>
+<p><strong>Unterschied zu Java:</strong> In Java ist <code>protected</code> zusätzlich im ganzen Paket sichtbar — das lässt sich in UML nicht ausdrücken (dort sind <code>#</code> und <code>~</code> getrennte Stufen). Der package-Default in Java begünstigt die Entstehung von Facade-Klassen (ein Paket = ein Modul: eine öffentliche Facade-Klasse + interne Klassen mit Paketsichtbarkeit, siehe <a href="11_Entwurfsmuster.html">11 Entwurfsmuster</a>).</p>
 
 <h3>Generalisierung</h3>
 <ul>
