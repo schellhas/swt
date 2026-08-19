@@ -6,7 +6,7 @@ Dieses Verzeichnis dient der Vorbereitung auf eine Softwaretechnik-Klausur (Univ
 
 [uebersicht.txt](uebersicht.txt) ist der Dreh- und Angelpunkt der gesamten Vorbereitung (hieß früher "fabiuebersicht.txt" — falls das an anderer Stelle noch auftaucht, ist der aktuelle Dateiname gemeint). Es ist die digitalisierte Abschrift des handgeschriebenen A3-Spickzettels eines Kommilitonen ("Fabi") — laut Aussage des Nutzers ein Vorzeigestudent. Der gesamte Stoff, an dem sich die Vorbereitung entlanghangelt, orientiert sich an diesem Dokument.
 
-**Aktueller Stand:** Trotz seiner zentralen Bedeutung wird uebersicht.txt aktuell noch **nicht** als aktiver Filter verwendet — die Arbeit hangelt sich bisher ausschließlich an ub/ entlang (siehe Workflow unten, Schritt 5 ist noch nicht gestartet). Die hohe Signifikanz des Dokuments bleibt davon unberührt, sie kommt nur erst in einer späteren Phase der Vorbereitung zum Tragen.
+**Aktueller Stand:** Alle ub/-Übungen sind durchgearbeitet (Schritt 1-4 des Workflows unten abgeschlossen). Schritt 5 (uebersicht.txt als aktiver Filter) läuft: ein erster Lückenschluss-Durchgang über das gesamte Dokument wurde bereits gemacht, jetzt wird zusätzlich systematisch in 8 Teilen (siehe Tabelle unten) nachgearbeitet, analog zum ub/-Workflow.
 
 Wichtige Eigenheiten beim Umgang damit:
 
@@ -39,6 +39,23 @@ Wichtige Eigenheiten beim Umgang damit:
 3. Aus den vl/-Folien die relevanten Inhalte (zu dem, was in der Übung + ggf. uebersicht.txt vorkommt) extrahieren und als eigene HTML-Datei in summaries/ ablegen.
 4. Dateiname orientiert sich am Namen/Thema der VL-Folie (nicht am ub-Dateinamen), z. B. Übung `08_ub_entwurfsmuster.pdf` → Folie `11_Entwurfsmuster.pdf`/`12_Entwurfsmuster2.pdf` → Summary-Datei zu "Entwurfsmuster". Pro VL-Thema eine Datei.
 5. Später wird derselbe Prozess mit uebersicht.txt als Filter statt/zusätzlich zu den Übungen wiederholt, um Lücken zu schließen, die die Übungen nicht abdecken.
+
+**8-Teile-Einteilung von uebersicht.txt (für Schritt 5):** Um uebersicht.txt aus Token-Budget-Gründen häppchenweise abzuarbeiten (analog "nächste Übung"), ist es in 8 Teile aufgeteilt — an thematischen Blockgrenzen (Leerzeilen im Dokument), sodass nie ein einzelner Block zerrissen wird. Aufruf z. B. mit "arbeite jetzt übersicht Teil 3 ab":
+
+| Teil | Zeilen | Themen |
+|---|---|---|
+| 1 | 1–49 | Aufgaben der SWT, Akteure/Stakeholder, Arten von Anforderungen, Validierung, Verifizierung, Wie baut man SW (Entwurfsprinzipien), Systemzerlegung, UML-Sichtbarkeit, Information Hiding |
+| 2 | 51–96 | OCL (Einstieg), Tests (Grundbegriffe), Wer soll testen?, 2 Stile von PM, Ziele der Softwareentwicklung, Prozesse (konventionell/agil), Aktivitätsdiagramm |
+| 3 | 98–142 | Anwendungsfall (Template), Wirkung von Modularisierung, Module beurteilen, OCL iterate, Qualitätssicherung (Überblick) |
+| 4 | 144–189 | Arten von Tests (Black-/White-Box, Zweigüberdeckung), Aufgaben des PM, Aufgabenzerlegung, Risiko, Anwendungs-/Technische Domäne |
+| 5 | 191–254 | Normales-/Radikales Vorgehen, Testverfahren-Notiz, Arten von Tests (Benutzbarkeit/Last/Leistung/Stress/Akzeptanz), Netzplan, Taxonomie "Die Welt der Softwaretechnik" |
+| 6 | 256–302 | Analysten/Entwerfer, Software/SWT-Definitionen, Dynamische Modellierung, Anwendungs-/Lösungsdomänenklasse, Problem-/Lösungsbereich, Anforderungsdokument, Architekturstile, Design by Contract, Entwurfsmuster-Block, Statische Verfahren |
+| 7 | 304–341 | Methoden für Anforderungserhebung, Konstruktive QS (Prozessmgmt-Leitlinien), Iterative Prozessmodelle (inkl. Scrum/XP), Universelle Prozessmodelle, Wiederverwendung |
+| 8 | 343–380 | Prinzipien zur Wiederverwendung, Softwareprozess/Prozessmodelle, Wasserfallmodell, Schwächen Wasserfallmodell, Strikte/Agile Modelle, Schlussgrafik |
+
+Teil 5 ist bewusst größer (der Taxonomie-Block ist mit 43 Zeilen allein schon fast ein ganzer Teil und gehört inhaltlich untrennbar zu "Normales/Radikales Vorgehen" direkt davor — beide stammen aus derselben Vorlesungseinheit vl/03).
+
+Für jeden Teil gilt derselbe Abgleich wie bei den Übungen: prüfen, was in den bestehenden Summaries schon abgedeckt ist, Lücken identifizieren, passende vl/-Quelle(n) heranziehen, bestehende Dateien ergänzen statt duplizieren (siehe unten).
 
 **Bestehende Summaries nachpflegen:** Es ist gängige Praxis, bereits erstellte Summary-Dateien später zu ergänzen statt nur neue anzulegen. Wenn z. B. nach Durcharbeiten aller Übungen mit uebersicht.txt als Filter weitergemacht wird (Schritt 5), landen dabei häufig Inhalte, die eigentlich zu einem bereits behandelten VL-Thema gehören (z. B. taucht beim Abgleich mit uebersicht.txt ein Punkt zu "Entwurfsmuster" auf, obwohl `summaries/Entwurfsmuster.html` schon existiert). In solchen Fällen die passende bestehende Datei identifizieren und dort ergänzen (an sinnvoller Stelle einfügen, nicht anhängen), statt eine neue/duplizierte Datei zu erzeugen. Vor dem Erstellen einer neuen Summary-Datei daher immer kurz prüfen, ob zum Thema schon eine existiert.
 

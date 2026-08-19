@@ -71,6 +71,14 @@
 <tr><td><strong>Gruppierung</strong></td><td>Äquivalenzklassen, Fehlerfälle, Randfälle (Heuristik)</td><td>Anweisungen, Bedingungen, Schleifen, Datenflüsse (siehe Abdeckungskriterien)</td></tr>
 </table>
 <p><strong>Äquivalenzklasse:</strong> disjunkte Menge von Programmeingaben, deren Werte zu (vermutlich) gleichartigem Verhalten führen — bei Black-Box-Tests beruht die Einteilung auf <em>Vermutungen</em> über das innere Verhalten, da man die Implementierung nicht kennt. <strong>Grenzwertbetrachtung (Randfälle):</strong> an der Grenze zwischen zwei Äquivalenzklassen "schlägt" das Verhalten um — je ein Testfall knapp links und rechts der Grenze. Bei <em>mehrdimensionalen</em> Äquivalenzklassen (z. B. zwei numerische Eingaben) werden die Grenzverläufe komplizierter: pro durchgehendem Grenzverlauf zwischen zwei Klassen genügen näherungsweise zwei Testfälle (je einer auf jeder Seite), eine vollständige Betrachtung müsste zusätzlich die Grenzpunkte selbst (Ecken, an denen mehrere Klassen zusammentreffen) gesondert behandeln.</p>
+<h3>Black-Box-Testfälle: Beispiel Dreieck-Klassifizierung</h3>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 159-165</p>
+<p>Testfallauswahl für eine Funktion, die drei Seitenlängen klassifiziert (z. B. als gleichseitig/gleichschenklig/rechtwinklig/normal) — drei Kategorien von Testfällen:</p>
+<ul>
+  <li><strong>Typische Vertreter einer Äquivalenzklasse:</strong> z. B. <code>(5,5,5) → Gleichseitig</code>, <code>(1,1,1) → Gleichseitig</code> — kleine, "gutartige" Beispielwerte.</li>
+  <li><strong>Randfälle/Grenzwerte:</strong> z. B. <code>(Max-int, Max-int, Max-int) → Gleichseitig</code> — prüft, ob die Implementierung auch an den Grenzen des Wertebereichs (z. B. Ganzzahlüberlauf) noch korrekt klassifiziert.</li>
+  <li><strong>"Quatsch"-Eingaben:</strong> Werte außerhalb des erwarteten Typs/Formats (z. B. <code>float</code> statt <code>int</code>, <code>char</code>) sind ebenfalls sinnvolle Testfälle — sie prüfen nicht die fachliche Klassifikationslogik, sondern die <strong>Fehlerbehandlung</strong> (error handling).</li>
+</ul>
 <p>Funktionstest verlangt oft erhebliche Kreativität ("was zählt als andersartig?"), deckt aber häufig auf, dass die Spezifikation unvollständig/unklar ist — <em>"oft wird erst beim Testen die Spezifikation richtig geklärt"</em>. Ein Black-Box-Test kann nicht zwischen unterschiedlich aufgebauten Implementierungen mit gleichem Verhalten unterscheiden — das kann nur der Strukturtest.</p>
 
 <h3>Abdeckungskriterien (Coverage)</h3>

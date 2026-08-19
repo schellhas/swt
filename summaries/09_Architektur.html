@@ -31,7 +31,18 @@
 <body>
 
 <h1>09 Architektur &amp; Modularisierung</h1>
-<p class="src">Quelle: vl/09_Architektur.pdf + other/The_41_View_Model_of_Architecture.pdf — relevant für ub/07_ub_architektur.pdf und uebersicht.txt (Zeilen 41, 49, 116-124, 282, 285-290)</p>
+<p class="src">Quelle: vl/09_Architektur.pdf + other/The_41_View_Model_of_Architecture.pdf — relevant für ub/07_ub_architektur.pdf und uebersicht.txt (Zeilen 31-41, 49, 116-124, 282, 285-290)</p>
+
+<h2>Prinzipien von Entwurf</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 31-39 ("Wie baut man eine SW?")</p>
+<p>Entwurf muss zwei Dinge klären: wie/wo/wodurch die funktionalen Anforderungen umgesetzt werden, und wie man dabei alle nichtfunktionalen Anforderungen erfüllt. Fünf Leitprinzipien dafür:</p>
+<ul>
+  <li><strong>Trennung von Belangen</strong> (separation of concerns): Probleme in Teile zerlegen, damit bei einem auftretenden Problem klar ist, wo man dafür nachsehen/ändern muss.</li>
+  <li><strong>Architektur:</strong> globale Struktur ("Grobentwurf") festlegen — insbesondere zum Erreichen der nichtfunktionalen Anforderungen (siehe unten).</li>
+  <li><strong>Modularisierung:</strong> Trennung von Belangen konkret umsetzen, indem Teile über Schnittstellen kombiniert werden ("Information Hiding", Lokalität) — siehe unten.</li>
+  <li><strong>Wiederverwendung:</strong> Architekturen und Entwurfsmuster nicht immer wieder neu erfinden, sondern Bewährtes nutzen (siehe <a href="23_Wiederverwendung.html">23 Wiederverwendung</a>).</li>
+  <li><strong>Dokumentation:</strong> sowohl Schnittstellen als auch die zugrunde liegenden Entwurfsentscheidungen und deren Begründungen festhalten.</li>
+</ul>
 
 <h2>Architekturebenen: Makro- vs. Mikroarchitektur (Übung 7-1)</h2>
 <div class="todo">
