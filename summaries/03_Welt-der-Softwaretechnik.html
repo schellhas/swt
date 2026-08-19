@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Die Welt der Softwaretechnik</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def { background: #f3f3f3; border-left: 3px solid #888; padding: .5rem .8rem; margin: .5rem 0; }
+  .src { color: #777; font-size: .85rem; }
+  table { border-collapse: collapse; margin: .5rem 0; width: 100%; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>03 Die Welt der Softwaretechnik</h1>
+<p class="src">Quelle: vl/03_Welt-der-Softwaretechnik.pdf — relevant für uebersicht.txt (Zeilen 191-254, "Normales/Radikales Vorgehen", Taxonomie)</p>
+
+<h2>Normales vs. radikales Vorgehen</h2>
+<p>Begriffe von Walter Vincenti (Luftfahrtingenieur): Ingenieurwesen funktioniert nur zuverlässig, wenn man sich auf Erfahrung stützen kann — Neues ist nur beherrschbar, wenn es Bekanntem genügend ähnelt (emergente Eigenschaften komplexer Systeme lassen sich nicht durch Theorie allein vorhersagen).</p>
+<div class="def">
+<strong>Normales Vorgehen:</strong> etwas so tun "wie üblich" — man weiß, wie es geht (Routine), versteht die Erfolgsfaktoren, kennt die typischen Risiken, kennt den Anwendbarkeitsbereich und darf zuversichtlich einen Erfolg erwarten.<br>
+<strong>Radikales Vorgehen:</strong> etwas "ganz anders" oder "ganz Neues" tun — man kennt nur grob, wie es geht, versteht nur teilweise, worauf es ankommt, kennt die Probleme noch nicht und kann allenfalls hoffen, Erfolg zu haben.
+</div>
+<p><strong>Fallbeispiel Tacoma Narrows Bridge (1940):</strong> Der weltbeste Brückenbau-Experte konstruierte eine Hängebrücke, bei der fast alle Parameter normal waren — außer der Schlankheit (extrem geringe Tragwerkbreite/-höhe im Verhältnis zur Spannweite), die weit außerhalb des erfahrenen Bereichs lag. Die Brücke entwickelte daraufhin unerwartete Längsschwingungen (eine <strong>emergente Eigenschaft</strong>, die aus dem Zusammenwirken der Teile entstand, nicht aus einem Einzelteil) und stürzte bei mäßigem Wind ein — obwohl jedes Einzelteil für sich korrekt dimensioniert war. Lehre: Ein einziger radikaler Aspekt (hier: Schlankheit) kann ein sonst normales Projekt zum Scheitern bringen.</p>
+<ul>
+  <li><strong>Nicht das ganze Projekt, sondern einzelne Aspekte</strong> (Produktteile, Arbeitsschritte) sind normal oder radikal — kaum ein Projekt ist frei von radikalen Anteilen, aber ein "normales" Projekt hat davon nur wenige und unbedeutende.</li>
+  <li><strong>Spannungsfeld:</strong> risikoarme Projekte (wenig radikal) können nicht sehr innovativ sein; innovative Projekte (viel radikal nötig) sind stets riskant. Der Umkehrschluss gilt aber nicht — viel radikales Vorgehen bedeutet nicht automatisch, dass man etwas Innovatives tut (Softwareentwickler neigen dazu, unnötig radikal vorzugehen, z. B. aus Lust an der "Herausforderung").</li>
+  <li><strong>Wichtigster Ansatz für normales Vorgehen: Wiederverwendung</strong> (von Komponenten, Entwürfen, Anforderungen, Prozesselementen, Werkzeugen) — sie senkt vor allem das Risiko (Kostensenkung ist ein willkommener Nebeneffekt).</li>
+  <li>Radikales Vorgehen ist nur akzeptabel, wenn es sich nicht umgehen lässt (z. B. echte Innovation, oder Mangel an passend erfahrenem Personal — dann besser: passende Person anheuern).</li>
+</ul>
+
+<h2>Taxonomie "Die Welt der Softwaretechnik"</h2>
+<p>Ein Orientierungsrahmen (nicht kanonisch), der SWT-Probleme und die dazu passenden Lösungsansätze einander gegenüberstellt:</p>
+<table>
+<tr><th>Welt der Problemstellungen</th><th>Welt der Lösungsansätze</th></tr>
+<tr><td>
+<strong>Produkt</strong> (Komplexitätsprobleme)
+<ul>
+<li>Anforderungen (Problemraum)</li>
+<li>Entwurf (Lösungsraum)</li>
+</ul>
+<strong>Prozess</strong> (psycho-soziale Probleme)
+<ul>
+<li>Kognitive Beschränkungen</li>
+<li>Mängel der Urteilskraft</li>
+<li>Kommunikation, Koordination</li>
+<li>Gruppendynamik</li>
+<li>Verborgene Ziele</li>
+<li>Fehler</li>
+</ul>
+</td><td>
+<strong>Technische Ansätze</strong> ("hart" — genau umrissen, aber allgemein)
+<ul>
+<li>Abstraktion</li>
+<li>Wiederverwendung</li>
+<li>Automatisierung</li>
+</ul>
+<strong>Methodische Ansätze</strong> ("weich" — vage, brauchen Urteilskraft)
+<ul>
+<li>Anforderungsermittlung</li>
+<li>Entwurf</li>
+<li>Qualitätssicherung</li>
+<li>Projektmanagement</li>
+</ul>
+</td></tr>
+</table>
+
+<h3>Produktprobleme (Komplexität)</h3>
+<p><strong>Komplexität</strong> = ein System besteht aus vielen Teilen <em>und</em> hat <strong>emergente Eigenschaften</strong> (Phänomene, die nicht aus den Einzelteilen, sondern erst aus deren Zusammenwirken verstehbar sind — vgl. Tacoma Narrows Bridge oben). Komplexitätsprobleme liegen im Problemraum (Anforderungen: <em>was</em> wollen wir bauen?) und/oder im Lösungsraum (Entwurf: <em>wie</em> strukturieren?). Teilprobleme bei Anforderungen: Fachexperten können Bedarf schwer ausdrücken, haben zu wenig Fantasie für SW-Möglichkeiten, verschiedene Gruppen bringen widersprüchliche Anforderungen ein, Terminologie zwischen Fach- und Technikexperten passt nicht zusammen, Anforderungen ändern sich laufend. Teilprobleme beim Entwurf: Lösungsmöglichkeiten erkennen, inakzeptable herausfiltern, Wirkung auf Qualitätseigenschaften verstehen, Prioritäten verstehen und gegeneinander abwägen ("Äpfel und Birnen", meist nur per — oft dubioser — Umrechnung in Kosten möglich).</p>
+
+<h3>Prozessprobleme (psycho-sozial)</h3>
+<p>Entstehen, weil Menschen Schwächen haben und zusammenarbeiten müssen — hängen kaum direkt vom Produkt ab:</p>
+<ul>
+  <li><strong>Kognitive Beschränkungen:</strong> Arbeitsgedächtnis fasst nur ca. 7±2 Elemente (chunks).</li>
+  <li><strong>Mängel der Urteilskraft:</strong> v. a. bei radikalem Vorgehen (emergente Eigenschaften schwer abschätzbar) und beim Rückgängigmachen falscher Entscheidungen (psychologische Hürden).</li>
+  <li><strong>Kommunikation/Koordination:</strong> Information kommt nicht immer korrekt/rechtzeitig bei der richtigen Person an — wegen kognitiver Grenzen oder sozialer Abneigungen (Introversion, Aversion gegen Personen, Zurückhalten schlechter Nachrichten).</li>
+  <li><strong>Gruppendynamik:</strong> z. B. Groupthink (kritische Fragen werden nicht mehr gestellt) oder selbsterfüllende Prophezeiungen ("Wir überziehen den Termin immer").</li>
+  <li><strong>Verborgene Ziele (hidden agendas):</strong> persönliche Ziele (Lernen, Spaß, Ansehen, früh Feierabend …), die teils den Projektinteressen zuwiderlaufen.</li>
+  <li><strong>Fehler:</strong> man will X tun, tut aber unbemerkt Y — Fehler sind nur eine Erscheinungsform der obigen Probleme, aber häufig/wichtig genug für eine eigene Kategorie. Führen zu Defekten in Artefakten, die wiederum zu Versagen der Software führen können.</li>
+</ul>
+
+<h3>Lösungsansätze</h3>
+<p><strong>Technische Ansätze ("hart"):</strong> lassen sich weit genug konkretisieren, um in Notationen/Werkzeuge überführt zu werden.</p>
+<ul>
+  <li><strong>Abstraktion:</strong> Konzentration auf wesentliche Eigenschaften durch Weglassen von Details — Kernprinzip der Informatik, Grundlage jeder Begriffsbildung (allgemeine Begriffe wie Sprachkonstrukte, vorhabensspezifische wie Modulnamen).</li>
+  <li><strong>Wiederverwendung:</strong> Spezialfall von Abstraktion — nicht nur den Begriff, sondern auch die Details mehrfach nutzen (Code, aber auch Anforderungen, Architekturen, Entwurfsmuster, Testfälle, Dokumentschablonen, Checklisten, Werkzeuge). <strong>Die Hauptquelle von Produktivitätsverbesserungen</strong> in der SWT.</li>
+  <li><strong>Automatisierung:</strong> wiederholte Tätigkeit dem Computer übertragen (spart Zeit, vermeidet triviale Fehler) — flexibel einsetzbar heißt Softwarewerkzeug, spezialisiert heißt Skript.</li>
+</ul>
+<p><strong>Methodische Ansätze ("weich"):</strong> nur schwach vorstrukturiert, brauchen menschliche Intelligenz zur Durchführung — kein Teil lässt sich abspalten und universell (technisch) lösen. Die vier Kategorien (Anforderungsermittlung, Entwurf, Qualitätssicherung, Projektmanagement) werden in den jeweiligen Themen dieser Vorlesung vertieft behandelt (siehe <a href="05_Anforderungserhebung.html">05 Anforderungserhebung</a>, <a href="09_Architektur.html">09 Architektur</a>, <a href="14_Analytische-QS.html">14 Analytische QS</a>, <a href="16_Konstruktive-QS.html">16 Konstruktive QS</a>, <a href="19_Projektmanagement.html">19 Projektmanagement</a>).</p>
+
+</body>
+</html>

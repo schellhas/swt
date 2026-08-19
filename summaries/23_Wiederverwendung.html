@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>23 Wiederverwendung</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def { background: #f3f3f3; border-left: 3px solid #888; padding: .5rem .8rem; margin: .5rem 0; }
+  .src { color: #777; font-size: .85rem; }
+  table { border-collapse: collapse; margin: .5rem 0; width: 100%; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>23 Wiederverwendung</h1>
+<p class="src">Quelle: vl/23_Wiederverwendung.pdf + vl/24_Wiederverwendung2.pdf — relevant für uebersicht.txt (Zeilen 339-347, "Wiederverwendung")</p>
+
+<h2>Grundlagen</h2>
+<p>Wiederverwendung ist <strong>das Erfolgsmodell der Softwaretechnik</strong> — die dramatisch gestiegene Produktivität heutiger Programmierer·innen (gemessen an produzierter Funktionalität, nicht an Codezeilen!) ist praktisch komplett darauf zurückzuführen: Bibliotheken/Komponenten, Betriebssysteme/Werkzeuge, Sprachen/Methoden. Datenpunkt: Gerald Weinberg schrieb 1956 ein Netzsimulationsprogramm in ~500 Stunden, 1979 dasselbe Programm erneut in 2,5 Stunden — ca. 25% Produktivitätszuwachs pro Jahr.</p>
+<p><strong>Prinzipien:</strong> Normales Vorgehen (Wiederverwendung senkt vor allem das <em>Risiko</em>, da man sich auf Erfahrung stützt — Kostensenkung gibt's gratis dazu, siehe <a href="03_Welt-der-Softwaretechnik.html">03 Welt der Softwaretechnik</a>); Universalität (fast alles ist wiederverwendbar — Anforderungen, Architekturen, Entwürfe, Testfälle, Dokumentschablonen, Checklisten, Prozesselemente); Abwägung (Gewinn an Produktivität/Qualität gegen Verlust an Flexibilität/Kontrolle sorgfältig abwägen).</p>
+
+<h3>Arten der Wiederverwendung</h3>
+<table>
+<tr><th>Dimension</th><th>Ausprägungen</th></tr>
+<tr><td><strong>Fokus</strong></td><td>produktorientiert (Anforderungen, Architekturen, Komponenten, Testfälle) vs. prozessorientiert (Aktivitäten/Rollen, Methoden, Werkzeuge, Maße, Erfahrungen)</td></tr>
+<tr><td><strong>Gegenstand</strong></td><td>Problem (funktionale/nichtfunktionale Anforderung, Dokumentschablone, Checkliste) vs. Lösung (konkrete Lösung wie Bibliothek/Quellcode, konkrete Lösungsidee wie Entwurfsmuster, allgemeine Lösungsidee wie Methode/Prinzip)</td></tr>
+<tr><td><strong>Ziel</strong></td><td>Aufwandsverminderung (jetzt und später — nur 1 statt N Lösungen pflegen), Qualitätsverbesserung, Risikoverminderung, Standardisierung, Fokussierung auf Kernkompetenz, schnellerer Markteintritt, Flexibilisierung</td></tr>
+</table>
+
+<h3>Risiken</h3>
+<p>Gelten vor allem für Wiederverwendung <em>ausführbarer Komponenten</em> (weniger bei Open Source, noch weniger bei reiner <em>Ideen</em>-Wiederverwendung wie Mustern):</p>
+<ul>
+  <li><strong>Produktrisiko:</strong> Qualität ungewiss (evtl. nicht hochwertig genug in relevanter Hinsicht), Eignung ungewiss (erfüllt die Anforderungen wirklich?), Flexibilität eingeschränkt (Mängel/Lücken nicht selbst korrigierbar).</li>
+  <li><strong>Lieferantenrisiko:</strong> Zwangsstandardisierung (Fremdentwicklung geht in ungelegene Richtung), Entwicklungsstillstand (Hersteller stellt Fortentwicklung ein).</li>
+</ul>
+<p><strong>Hindernisse für Wiederverwendung existierender Elemente:</strong> "Not invented here" (Ingenieure mögen keine fremden Lösungen), Ignoranz (man kennt die Alternativen nicht), Auswahlaufwand ("Nadel im Heuhaufen" bei vielen Kandidaten). <strong>Hindernisse bei der Produktion wiederverwendbarer Elemente:</strong> Zusatzaufwand (2-10× so viel Entwicklungsaufwand wie eine Einzellösung), Flexibilitätseinschränkung (Rücksicht auf mehrere Benutzer nötig), Bedarf an geeigneter Organisationsform (heute oft "Inner Source").</p>
+
+<h2>Muster als Wiederverwendungsform</h2>
+<p>Bis ca. 1994 galt Wiederverwendung fast nur auf Codeebene als praktikabel; die Idee der <strong>Entwurfsmuster</strong> (Paar aus Problem- und Lösungsbeschreibung, abstrakter und flexibler als eine konkrete Lösung) hat sich seither auf viele weitere Ebenen übertragen. Auch <strong>Prinzip</strong>, <strong>Methode</strong> und <strong>Verfahren</strong> lassen sich als Muster unterschiedlicher Abstraktionsstufe verstehen: Prinzip = sehr abstrakter, lebenslang gültiger Grundsatz; Methode = auf einen Bereich spezialisiert, ca. 10-20 Jahre relevant; Verfahren = präzise Vorschrift für sehr spezifischen Bereich (vgl. die gleiche Dreiteilung in <a href="17_Prozessmodelle.html">17 Prozessmodelle</a>/<a href="01_Einfuehrung.html">01 Einführung</a>).</p>
+<h3>Wiederkehrende Prinzipien als Muster</h3>
+<p>Abstraktion (Kernprinzip der Informatik: Beschreibe X durch etwas Einfacheres mit gleichen relevanten Eigenschaften), Strukturierung (Einzelteilen eine Rolle im Ganzen zuweisen), Hierarchisierung (Spezialfall von Strukturierung: Teile zu Zusammenfassungen bündeln, ggf. mehrstufig), Modularisierung (Spezialfall von Hierarchisierung/Abstraktion: in Module mit klarer Schnittstelle und geringer Kopplung zerlegen, vgl. <a href="09_Architektur.html">09 Architektur</a>), Lokalität (zusammengehörige Information an einem Ort versammeln, z. B. Javadoc), Konsistenz (Gleichartiges einheitlich handhaben), Angemessenheit (Aufwand muss den Nutzen rechtfertigen — Grundprinzip allen Ingenieurwesens), Wiederverwendung selbst (Spezialfall von Angemessenheit: nichts konstruieren, das schon existiert).</p>
+
+<h3>Beispiel Analysemuster: Organisationshierarchien</h3>
+<p>Illustriert, wie ein wiederkehrendes Domänenproblem (Personen und Organisationen einheitlich behandeln, hierarchisch strukturieren, ggf. nach mehreren Kriterien wie Funktion <em>und</em> Region) über zunehmend abstraktere Klassenmodelle gelöst wird — bis hin zur vollständigen Trennung von <strong>Metadaten</strong> (welche Beziehungen sind erlaubt, "Knowledge Level") und <strong>Inhaltsdaten</strong> ("Operational Level"). Zeigt exemplarisch, dass Analysemuster (anders als Entwurfsmuster) den Schwerpunkt auf Domänenobjekte und ihre Beziehungen legen, nicht auf Schnittstellen oder Abläufe.</p>
+
+<h3>Benutzbarkeitsmuster (kurz)</h3>
+<p>Regeln, wie sich interaktive Software verhalten sollte, um gut benutzbar zu sein — z. B. Undo/Redo unterstützen, Operationen abbrechbar machen, Eingaben auf Korrektheit prüfen, Systemzustand verständlich anzeigen, Suche flexibel über alle Daten ermöglichen, Hilfe kontextabhängig anbieten. <strong>Usability-supporting architectural patterns (USAP)</strong> verbinden solche Anforderungen mit konkreten Architekturmechanismen (Separation, Replication, Indirection, Models).</p>
+
+<h3>Prozessmuster (Beispiele)</h3>
+<p>Formulierbar auf Ebene Projektmanagement, "technische" Aufgaben oder organisatorische Rahmenbedingungen. Prinzip: "Wenn &lt;Situation&gt;, dann &lt;bewährte Handlung&gt;" — Muster beschreiben stets Bewährtes, nicht Neues:</p>
+<ul>
+  <li><strong>Baue Prototypen:</strong> bei unklaren Anforderungen/Bedienbarkeitsfragen ein kleines Wegwerf-System bauen, um daraus zu lernen — senkt das Risiko der anschließenden Entwicklung.</li>
+  <li><strong>Liefertermin festlegen:</strong> verbindlichen Kundentermin und einen etwas früheren internen Abschlusstermin setzen (erzeugt Puffer); Team bei Einhaltung belohnen.</li>
+  <li><strong>Liefertermin-Puffer beobachten:</strong> Restzeit-Schätzung laufend aktualisieren, Puffergröße überwachen, bei dauerhaftem Verschwinden gegensteuern.</li>
+  <li><strong>Keine kleinen Terminverzögerungen:</strong> bei negativem Puffer und Verzögerungstrend eine neue, ausreichend großzügige Schätzung machen statt wiederholt in kleinen Schritten zu verschieben.</li>
+  <li><strong>Gemeinsame Zustimmung zum neuen Plan:</strong> bei unhaltbarem Zeitplan alle Schlüsselpersonen zu einem Treffen versammeln, gemeinsam neuen Plan erarbeiten und sich darauf verpflichten.</li>
+  <li><strong>Umgang mit Ablenkungen:</strong> kleinere Störungen durch eine geopferte Einzelperson abfangen ("sacrifice one person"), große Krisen durch ein eigenes Team ("team per task") — der Rest arbeitet ungestört weiter.</li>
+  <li><strong>Programmieren in Episoden:</strong> Entwicklung in bewusst geplanten, nicht vorzeitig abgebrochenen Arbeitsabschnitten mit klarem Fertigstellungsziel — erzeugt hohe Qualität und planbaren Fortschritt.</li>
+</ul>
+<p>Verwandte Muster werden oft zu <strong>Mustersprachen</strong> zusammengefasst (Querverweise/Zusammenwirken dokumentiert), da in der Praxis meist mehrere Muster gemeinsam relevant sind.</p>
+
+<h3>Anti-Muster (Beispiele)</h3>
+<p>Anti-Muster sind ebenfalls wiederkehrende, aber ungünstige Lösungen — nützlich als Argumentationshilfe gegen drohende schlechte Entscheidungen:</p>
+<ul>
+  <li><strong>Analyse-Paralyse / Tod durch Planen:</strong> Perfektion in Anforderungsermittlung oder Planung anstreben und dabei enorm viel Zeit verschenken.</li>
+  <li><strong>Das Rad wiedererfinden:</strong> eine bewährte Lösung ignorieren und etwas Schlechteres selbst bauen — unnötiges radikales Vorgehen.</li>
+  <li><strong>Goldener Hammer:</strong> ein bekanntes Konzept übermäßig oft/unpassend einsetzen.</li>
+  <li><strong>Todesmarsch (death march):</strong> Zeitplan/Budget von vornherein so knapp, dass Erfolg praktisch unmöglich ist — oft ausgelöst durch <strong>Blendwerk (vaporware)</strong>, Verkauf von Nicht-Existierendem als existent.</li>
+  <li><strong>Entwurf per Komitee:</strong> zu viele Beteiligte verwässern die Architektur.</li>
+  <li><strong>Krake (the blob):</strong> ein Modul mit viel zu vielen Kopplungen/Aufgaben ("eierlegende Wollmilchsau").</li>
+</ul>
+
+</body>
+</html>

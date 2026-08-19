@@ -42,8 +42,14 @@
 <p class="src">Quelle: vl/08_Dynamische-Modellierung.pdf + other/statecharts_activitydiagrams.pdf — relevant für ub/06_ub_statische-dynamische-analyse.pdf (Aufgabe 6-2, 6-3) und uebersicht.txt (Zeile 279-280, "Anforderungsdokument")</p>
 
 <div class="todo">
-Die feineren Notationsdetails aus Übung 6-2 (<code>decisionInput</code>, <code>datastore</code>, multicast/multireceive-Knoten) stehen weiterhin nur im "Dictionary of Terms" des Buchs "The UML Reference Manual" (Rumbaugh/Jacobson/Booch), nicht in den Folien — dafür bei Bedarf dort nachschlagen. Die Kernnotation für Aktivitätsdiagramme (Knoten, Tokens, Kontrollfluss, Verzweigung/Parallelität, Datenflüsse) ist unten aus other/statecharts_activitydiagrams.pdf ergänzt.
+Die feineren Notationsdetails aus Übung 6-2 stehen im "Dictionary of Terms" des Buchs "The UML Reference Manual" (Rumbaugh/Jacobson/Booch), das hier nicht verfügbar ist — die folgenden vier Begriffe sind daher mit allgemeinem UML-Fachwissen rekonstruiert (nicht am Originalbuch verifiziert), passen aber zur Standard-UML-Aktivitätsdiagramm-Notation. Die Kernnotation für Aktivitätsdiagramme (Knoten, Tokens, Kontrollfluss, Verzweigung/Parallelität, Datenflüsse) ist unten aus other/statecharts_activitydiagrams.pdf ergänzt.
 </div>
+<ul>
+  <li><strong>decisionInput</strong> («decisionInput»-Stereotyp an einem Entscheidungsknoten/Raute): ein optionales zusätzliches Verhalten/Attribut, das der Entscheidungsknoten zur Auswertung der Guard-Bedingungen an den ausgehenden Kanten heranzieht, wenn dafür mehr Information nötig ist als nur der ankommende Token selbst (z. B. "neuer Zettel nötig?" — eine Frage, die nicht aus dem durchlaufenden Objekt allein beantwortbar ist, sondern eine separate Auswertung/Abfrage braucht).</li>
+  <li><strong>datastore</strong> («datastore»-Stereotyp an einem Objektknoten): modelliert einen dauerhaften Datenspeicher (z. B. Datenbank, Webserver, Ablage) — im Unterschied zu einem normalen Objektknoten wird ein hier abgelegter Token <em>nicht</em> verbraucht, wenn er ausgelesen wird, sondern bleibt für weitere Zugriffe erhalten.</li>
+  <li><strong>multicast</strong> (Objektfluss-Stereotyp): ein Token wird an <em>mehrere</em> Empfänger gleichzeitig verteilt (Auffächern eines Datenflusses auf mehrere parallele Ziele).</li>
+  <li><strong>multireceive</strong> (Objektfluss-Stereotyp): das Gegenstück — mehrere eingehende Objektflüsse werden an einem Knoten wieder zusammengeführt/gesammelt (z. B. wenn mehrere Akteure unabhängig voneinander Ergebnisse an eine Stelle zurückmelden).</li>
+</ul>
 
 <h2>Dynamic Model — Grundlagen</h2>
 <div class="def">

@@ -24,7 +24,15 @@
 <body>
 
 <h1>17 Software-Prozessmodelle</h1>
-<p class="src">Quelle: vl/17_Prozessmodelle.pdf — relevant für ub/12_ub_prozesse-prozessmodelle.pdf und uebersicht.txt (Zeilen 84-89)</p>
+<p class="src">Quelle: vl/17_Prozessmodelle.pdf — relevant für ub/12_ub_prozesse-prozessmodelle.pdf und uebersicht.txt (Zeilen 84-89, 323-337, 349-354)</p>
+
+<h2>Grundbegriffe: Prozess vs. Prozessmodell</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 349-354</p>
+<div class="def">
+<strong>Software-Prozess:</strong> die Abläufe, die in einem Softwareprojekt tatsächlich geschehen — entweder <em>deskriptiv</em> gemeint (beschreibt, was tatsächlich geschieht) oder <em>präskriptiv</em> (Vorschrift, wie es ablaufen soll). Auch Teile des Gesamtprozesses heißen oft "Prozess" (z. B. der Testprozess).<br>
+<strong>Software-Prozessmodell:</strong> eine Schablone, die die Gemeinsamkeiten der Abläufe in vielen verschiedenen Projekten erfasst — meistens präskriptiv gemeint.
+</div>
+<p>Prozesse werden über drei Hauptkonzepte beschrieben: <strong>Rolle</strong> (Abstraktion der Aufgabe einer Person in einer bestimmten Situation, z. B. "Entwerferin", "Tester" — eine Person kann mehrere Rollen haben), <strong>Aktivität/Praktik</strong> (Abstraktion für eine Sorte zielgerichteten Handelns, z. B. "Architekturentwurf", "Test eines Moduls") und <strong>Artefakt</strong> (Abstraktion für eine Sorte Arbeitsergebnis, z. B. "Klassendiagramm", "Testbericht"). Ein konkreter, vollständig detaillierter Prozess wäre unüberschaubar komplex — ein Prozess<em>modell</em> ist deshalb immer eine bewusste Vergröberung: zu grob, und alle Projekte sehen gleich aus (man lernt nichts); zu fein, und jedes Projekt hat einen einmaligen, nicht vorher definierten Prozess.</p>
 
 <h2>Das Wasserfallmodell (Übung 12-2a)</h2>
 <div class="def">
@@ -93,6 +101,24 @@ XP ist eine radikale <strong>agile Methode</strong> für eher kleine Projekte: e
 <tr><td>On-site Customer</td><td>entscheidungsbefugte/r Kundenvertreter·in stets im Team</td><td>Unklarheiten werden umgehend ausgeräumt</td></tr>
 <tr><td>Pair Programming</td><td>aller Code wird von zwei Personen gemeinsam geschrieben</td><td>jede Klasse ist mind. zwei Personen vertraut → mehr Flexibilität</td></tr>
 <tr><td>Testing</td><td>zu jedem Modul gründliche automatisierte Tests</td><td>erhöhte Bereitschaft, neue Anforderungen zu akzeptieren; weniger Angst vor Codeänderungen</td></tr>
+</table>
+
+<h2>Scrum</h2>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 328-330 — Scrum wird in vl/17 nur knapp als Beispiel genannt (reines Projektmanagement-Rahmenwerk, keine Entwicklungspraktiken wie XP), Rollen/Artefakte hier mit Fachwissen ergänzt</p>
+<p>Scrum ist neben XP die bekannteste agile Methode, deckt aber <em>nur</em> Projektmanagement ab (keine technischen Praktiken wie Pair Programming). Die Arbeit läuft in festen Zeitboxen (<strong>Sprints</strong>, oft 1–4 Wochen), an deren Ende jeweils ein potenziell auslieferbares Produktinkrement steht.</p>
+<ul>
+  <li><strong>Product Owner:</strong> verantwortet den Product Backlog (priorisierte Liste aller gewünschten Funktionen) und vertritt die Kundenperspektive.</li>
+  <li><strong>Scrum Master:</strong> sorgt dafür, dass das Team nach den Scrum-Regeln arbeitet und räumt Hindernisse aus dem Weg (moderierende, keine weisungsbefugte Rolle).</li>
+  <li><strong>Development Team:</strong> selbstorganisiertes Team, das die Umsetzung im Sprint übernimmt.</li>
+  <li><strong>Daily Scrum:</strong> kurzes tägliches Treffen (Stand-up) zur Fortschrittsbesprechung im Team.</li>
+</ul>
+
+<h2>Universelle/anpassbare Prozessmodelle</h2>
+<p>Modelle, die den Anspruch erheben, für (fast) jedes Projekt geeignet zu sein — beide sind sehr umfangreich und nicht leicht zu verstehen, können aber je nach Bedarf eher wasserfallartigen oder eher iterativen Charakter annehmen.</p>
+<table>
+<tr><th>Modell</th><th>Charakteristik</th></tr>
+<tr><td><strong>Rational Unified Process (RUP)</strong></td><td>modernes, evolutionäres (iteratives) Prozessmodell; Fortentwicklung von Objectory und dem Spiralmodell. Wird aus drei Perspektiven beschrieben: <em>dynamisch</em> (Phasen über Zeit: Inception/Elaboration/Construction/Transition), <em>statisch</em> (Aktivitäten/Workflows wie Requirements, Analysis&amp;Design, Implementation, Test) und <em>Praxis</em> (Empfehlungen wie Architecture-first, iterativer Lebenszyklus, Component-based Development). Wird in jedem Projekt gezielt zurechtgestutzt (getailored) — die volle RUP-Definition kennt z. B. ca. 30 Rollen.</td></tr>
+<tr><td><strong>V-Modell XT</strong></td><td>im Auftrag der deutschen Bundesregierung entwickeltes "Vorgehensmodell zur Softwareentwicklung"; sehr umfangreich (32 Rollen, 89 Aktivitäten in 21 Vorgehensbausteinen, 97 Artefaktarten). Anpassung ans Projekt durch Auswahl von Vorgehensbausteinen — 4 davon sind verpflichtend: Projektmanagement, Qualitätssicherung, Konfigurationsmanagement, Problem-/Änderungsmanagement. Charakter: stark planend und verwaltend, produktzentrisch (jedes Artefakt durchläuft Zustände "geplant" → "in Bearbeitung" → "vorgelegt" → fertig).</td></tr>
 </table>
 
 </body>

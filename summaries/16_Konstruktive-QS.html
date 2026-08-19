@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>16 Konstruktive Qualitätssicherung</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h3 { font-size: 1rem; margin-top: 1.2rem; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .2rem 0; }
+  .def { background: #f3f3f3; border-left: 3px solid #888; padding: .5rem .8rem; margin: .5rem 0; }
+  .src { color: #777; font-size: .85rem; }
+  table { border-collapse: collapse; margin: .5rem 0; width: 100%; }
+  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>16 Konstruktive Qualitätssicherung</h1>
+<p class="src">Quelle: vl/16_Konstruktive-QS.pdf — relevant für uebersicht.txt (Zeilen 128-143, 314-322, "Konstruktive Qualitätssicherung")</p>
+
+<h2>Einordnung</h2>
+<p><strong>Motto: "Vorbeugen ist besser als Heilen."</strong> Während <a href="14_Analytische-QS.html">Analytische QS</a> entstandene Mängel per Test/Durchsicht aufdeckt, will konstruktive QS von vornherein vermeiden, dass etwas falsch gemacht wird. Prämisse (weder hinreichend noch notwendig, aber ein starker typischer Zusammenhang): hohe Qualität erhält man in der Regel, wenn man geeignete Arbeitsweisen verwendet und sorgfältig durchführt. Konstruktive QS zielt auf <em>alle</em> Qualitätsmerkmale, v. a. aber auf interne (Wartbarkeit, Zuverlässigkeit, Effizienz) als Mittel zum Zweck der externen.</p>
+<p>Zwei Ausprägungen, je nach Fokus:</p>
+<ul>
+  <li><strong>Projektmanagement</strong> — auf ein einzelnes Produkt/Projekt hin orientiert, meist pragmatisch-ad-hoc ("Vorbeugen ist besser als auf die Füße kotzen") — siehe <a href="19_Projektmanagement.html">19 Projektmanagement</a>.</li>
+  <li><strong>Prozessmanagement</strong> — auf die Verbesserung des Prozesses einer ganzen Organisation auf längere Sicht ausgerichtet; abstrakter, mit Gefahr des "Verkünstelns".</li>
+</ul>
+<p>Als "Rohstoff" für beides dienen <strong>Prozessmodelle</strong>, die allgemein das Zusammenwirken von Rollen und Tätigkeiten beschreiben (siehe <a href="17_Prozessmodelle.html">17 Prozessmodelle</a>).</p>
+
+<h2>Gemeinsame Leitlinien von Projekt- und Prozessmanagement</h2>
+<ol>
+  <li>Gestalte den Konstruktionsprozess und sein Umfeld so, dass Qualitätsmängel seltener werden.</li>
+  <li>Beginne damit <em>vor</em> der eigentlichen Entwicklungsarbeit (Organisation, Arbeitsumfeld, Auswahl von Prozessen/Technologie/Strategie).</li>
+  <li>Beseitige bei entdeckten Mängeln nicht nur den Mangel selbst, sondern auch seine Ursache(n) und ggf. deren Ursache(n) — <strong>Urgrundanalyse</strong> (root cause analysis).</li>
+</ol>
+<p>Vorgehensweise: Arbeitsprozess vorab <strong>vorstrukturieren</strong> (Vereinbarungen/Vorgaben für Produkt und Vorgehen), laufenden Prozess <strong>überwachen und verbessern</strong> — konventionell eher quantitativ (Einhaltung der Vorgaben), agil mit Betonung auf Reflektion und schrittweiser Verbesserung.</p>
+
+<h2>Konventionell vs. agiles Prozessmanagement</h2>
+<table>
+<tr><th></th><th>Konventionell</th><th>Agil</th></tr>
+<tr><td>Bevorzugter Stil</td><td>gute Vorgaben machen, evtl. gelegentlich verbessern, <strong>durchsetzen</strong></td><td>Selbstorganisation, ständig reflektieren, <strong>schrittweise verbessern</strong></td></tr>
+<tr><td>Granularität</td><td>ganze Organisation</td><td>einzelnes Team (verschmilzt mit Projektmanagement)</td></tr>
+<tr><td>Folge</td><td>Neigung zu Bürokratisierung und Rigidität</td><td>Ergebnisse von Team zu Team recht verschieden</td></tr>
+</table>
+
+<h2>Arten von Prozessmanagement-Leitlinien</h2>
+<p>Organisationen müssen nicht bei Null anfangen — es gibt wiederverwendbare Leitlinien, worauf ein Prozessmanagement generell hinarbeiten sollte (auch Agile Methoden wie Scrum sind letztlich solche Leitlinien). Drei Arten, mit fließenden Übergängen:</p>
+<ul>
+  <li><strong>Prozessstandards:</strong> geben vor, wie gewisse Prozesse strukturiert und durchgeführt werden sollen.</li>
+  <li><strong>Qualitätsstandards:</strong> geben vor, wie gewisse Prozess<em>ergebnisse</em> beschaffen sein sollen.</li>
+  <li><strong>Prozessreifemodelle:</strong> beschreiben Aspekte, die für einen erfolgreichen Prozess optimiert werden müssen — aber nicht, wie der Prozess konkret aussieht.</li>
+</ul>
+
+<h3>CMMI — ein Prozessreifemodell</h3>
+<p>Capability Maturity Model Integration (Ur-Ahn: CMM-SW, 1980er, für große Organisationen/Militärtechnik entwickelt). Unterscheidet ~20 Prozessbereiche (z. B. Requirements Management, Project Planning, Validation) und <strong>5 Reifestufen</strong>, die eine Reihenfolge vorgeben (Aufstieg um eine Stufe dauert oft 1–3 Jahre):</p>
+<table>
+<tr><th>Stufe</th><th>Name</th><th>Charakteristik (Einblick des Managers in den Projektstatus)</th></tr>
+<tr><td>1</td><td>Initial</td><td>beliebiger Prozess — fast kein Einblick, Erfolge/Misserfolge gleichermaßen überraschend</td></tr>
+<tr><td>2</td><td>Managed ("wiederholbar")</td><td>gültiges Anforderungsdokument, Einblick nur punktuell über Meilensteine</td></tr>
+<tr><td>3</td><td>Defined</td><td>zusätzlich Qualitätsinformation aus Durchsichten, wohldefinierter Prozess</td></tr>
+<tr><td>4</td><td>Quantitatively Managed</td><td>kontinuierliche Einsicht durch Messungen</td></tr>
+<tr><td>5</td><td>Optimizing</td><td>selbstverbessernder Prozess, Einblick in Projekt- <em>und</em> Prozessschwächen</td></tr>
+</table>
+<p><strong>Empirische Befunde</strong> (Herbsleb/Goldenson 1996, zu CMM-SW): höhere Reifestufe korreliert mit besserer Termin-/Budgettreue, Kundenzufriedenheit, Mitarbeitermoral, Produktqualität und Produktivität. Wichtige Erfolgsfaktoren: hohes, sorgfältiges Interesse des oberen Managements an der Prozessverbesserung (starke positive Korrelation); ausgeprägte "Politik"/Machtspiele in der Firma (starke negative Korrelation).</p>
+<p><strong>Probleme/Risiken von CMMI:</strong> (1) aufwendig — Investitionen zahlen sich nicht sofort aus; (2) kleine Organisationen müssen vom Modell abweichen, da manche vorgesehenen Prozesse/Institutionen nur für große Organisationen tragbar sind; (3) hohe Reifestufen können risikoscheu machen (Tom DeMarco) — bei sehr innovativen (radikalen) Projekten sind bisherige Messungen nicht mehr aussagekräftig und definierte Prozesse oft nicht anwendbar, die Organisation fällt dann meist auf Stufe 2 zurück; sind Reifestufen zum Selbstzweck geworden, schreckt die Organisation tendenziell vor solchen Projekten zurück.</p>
+
+<h3>ISO 9000 — ein Qualitätsstandard</h3>
+<p>Normenreihe für zertifiziertes Qualitätsmanagement (für SW relevant: ISO 9000, ISO 9001). Beschreibt nur Mindestanforderungen (Prinzipien, Pflichten für Prozesse/Dokumentation) — mit nur einigen Dutzend Seiten viel knapper als CMMI (600 Seiten). Zertifikat wird von einem Auditor vergeben und ist 3 Jahre gültig. <strong>7 Grundsätze (ISO 9000:2015):</strong> Kundenorientierung, Verantwortlichkeit der Führung, Einbeziehung der Beteiligten, Prozessorientierung, kontinuierliche Verbesserung, Sachbezogenheit (faktenbasierte Entscheidungen), Lieferantenbeziehungen zum gegenseitigen Nutzen.</p>
+
+<h3>TQM (Total Quality Management)</h3>
+<p class="src">deckt sich mit uebersicht.txt Zeilen 128-143 ("Konstruktive Qualitätssicherung")</p>
+<div class="def">
+Definition (ISO 8402): "Auf der Mitwirkung <strong>aller</strong> ihrer Mitglieder basierende Führungsmethode einer Organisation, die Qualität in den Mittelpunkt stellt und durch Zufriedenheit der Kunden auf langfristigen Geschäftserfolg sowie auf Nutzen für die Mitglieder der Organisation und für die Gesellschaft zielt."
+</div>
+<p>Entwickelt in Japan in den 1980ern für die Fabrikation (z. B. Automobile); heute auch Grundlage der Agilen Methoden. Vier Prinzipien:</p>
+<ul>
+  <li><strong>Primat der Qualität:</strong> alle Arbeit soll sofort und immer 100% richtig getan werden; wo nötig werden dafür Prozesse verbessert.</li>
+  <li><strong>Zuständigkeit aller:</strong> jede·r Mitarbeitende ist voll für die Endqualität mit verantwortlich.</li>
+  <li><strong>Ständige Verbesserung (Kaizen):</strong> viele kleine Schritte führen allmählich zu stets guter Qualität.</li>
+  <li><strong>Internes Kunde/Lieferanten-Verhältnis:</strong> tut Mitarbeiter A etwas, das Mitarbeiter B benutzt, ist A Lieferant und B Kunde — A soll für hohe Zufriedenheit bei B sorgen; der Erfolg jedes Teams wird daran gemessen.</li>
+</ul>
+<p><strong>Eignung für Software:</strong> "Primat der Qualität" ist bei SW schwierig (niedrigste Mängelhäufigkeit kaum erreichbar, Anforderungen klären sich oft erst allmählich) — dennoch ist TQM ein guter Ansatz für <em>Prozess</em>verbesserung, und Agile Methoden gehen TQM-artig heran.</p>
+
+<h3>Prozessmanagement bei Agilen Methoden</h3>
+<p>Passiert hauptsächlich auf Teamebene und verschmilzt dadurch mit dem Projektmanagement. Die TQM-Ideen stecken implizit darin: alle sind zuständig, Verbesserung in vielen kleinen Schritten, Ziel ist Kundennutzen ("value"). Umsetzung über eingebaute <strong>Reflektionsschritte</strong>: bei Scrum die <strong>Retrospektive</strong> am Ende jeder Iteration (Was lief gut/schlecht, warum, was ändern wir?), moderiert von einer eigenen Rolle (Scrum Master/Coach).</p>
+<p><strong>Agile Retrospektiven — Ablauf:</strong> Anfang → Daten sammeln → Einsichten erzeugen → Entscheidungen treffen → Schluss (oft in spielerischen Formaten). Prinzipien: Vertraulichkeit ("What happens in Vegas, stays in Vegas"), Grundannahme "alle haben ihr Bestes gegeben". Typische Probleme: manche Teams blenden die Gefühlsebene aus, manche schaffen es nicht, einen konkreten Verbesserungsplan zu fassen.</p>
+
+<h2>Einstieg in Prozessmanagement: Empfehlung</h2>
+<p>Die TQM-Prinzipien sind der beste Startpunkt: (1) Qualität/Kundenzufriedenheit als Ziel — dem widerspricht niemand; (2) nur kleine Schritte verlangt — machbar; (3) alle machen mit — der wichtigste Trick. Bei Agilen Methoden sind alle drei Aspekte durch die Selbstorganisation eingebaut. Größte Hindernisse in der Praxis: Prozessmanagement wird wegen Zeitdrucks vernachlässigt, "der Elefant im Raum" bei Retrospektiven (Angst vor negativen Emotionen), und die Bedingungen für Kundenzufriedenheit sind bei Software oft schwer zu begreifen.</p>
+
+</body>
+</html>
