@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 02 eGK</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --h1-border: #333;
+    --h2: #222;
+    --muted: #777;
+    --def-bg: #f3f3f3;
+    --def-border: #888;
+    --code-bg: #eee;
+    --table-border: #ccc;
+    --todo-bg: #fff3cd;
+    --todo-border: #d4a017;
+    --link: #1a4fa0;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --h1-border: #666;
+    --h2: #ddd;
+    --muted: #9a9a9a;
+    --def-bg: #262626;
+    --def-border: #777;
+    --code-bg: #2e2e2e;
+    --table-border: #444;
+    --todo-bg: #4a3f14;
+    --todo-border: #d4a017;
+    --link: #7aa8ff;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  body { font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 02 eGK</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was bezeichnet man in der Softwaretechnik als 'Domäne'?",
+    type: "single",
+    options: [
+      { t: "Ausschließlich die Programmiersprache, in der die Software implementiert wird.", correct: false },
+      { t: "Das Umfeld und der Anwendungsbereich, in dem ein Softwareprojekt angesiedelt ist.", correct: true },
+      { t: "Die Menge aller Kund:innen eines Softwareprojekts.", correct: false },
+      { t: "Den Server, auf dem die Software später betrieben wird.", correct: false }
+    ]
+  },
+  {
+    q: "2. Was ist der Unterschied zwischen Anwendungsdomäne und technischer Domäne?",
+    type: "single",
+    options: [
+      { t: "Anwendungsdomäne = wozu die Software dienen soll (Problembereich); technische Domäne = mit welcher Technik sie realisiert wird (Lösungsbereich).", correct: true },
+      { t: "Anwendungsdomäne betrifft nur die Benutzeroberfläche, technische Domäne nur die Datenbank.", correct: false },
+      { t: "Beide Begriffe sind gleichbedeutend und werden synonym verwendet.", correct: false },
+      { t: "Anwendungsdomäne = Lösungsbereich, technische Domäne = Problembereich.", correct: false }
+    ]
+  },
+  {
+    q: "3. Wenn in der Vorlesung nur von „Domäne“ (ohne weiteren Zusatz) gesprochen wird, was ist meist gemeint?",
+    type: "single",
+    options: [
+      { t: "Die technische Domäne.", correct: false },
+      { t: "Die Anwendungsdomäne.", correct: true },
+      { t: "Beide Domänen gleichzeitig, ohne Unterscheidung.", correct: false },
+      { t: "Die Domäne des Betriebssystems.", correct: false }
+    ]
+  },
+  {
+    q: "4. Worin äußert sich die fachliche Komplexität einer Domäne (am Beispiel eGK)?",
+    type: "multi",
+    options: [
+      { t: "Fachbegriffe und „selbstverständliche“ Sachverhalte, die Außenstehenden nicht klar sind", correct: true },
+      { t: "Kultur, Standards, Verfahren/Prozesse und Rollen der Fachdomäne", correct: true },
+      { t: "Programmiersprachen und technische Komponenten", correct: false },
+      { t: "Datenbankschemata und Serverarchitektur", correct: false }
+    ]
+  },
+  {
+    q: "5. Warum ist bei komplexen Domänen (wie der eGK) die Zusammenarbeit von Fach- und Technikspezialist:innen nötig?",
+    type: "single",
+    options: [
+      { t: "Weil Technikspezialist:innen laut Vorschrift nie direkten Kontakt zu Kund:innen haben dürfen.", correct: false },
+      { t: "Weil sowohl fachliche als auch technische Komplexität sehr hoch sein können und kaum eine Person beides vollständig überblickt.", correct: true },
+      { t: "Weil Fachspezialist:innen die Software immer selbst implementieren müssen.", correct: false },
+      { t: "Weil dies gesetzlich für Gesundheitsprojekte vorgeschrieben ist.", correct: false }
+    ]
+  },
+  {
+    q: "6. Was zeigt das eGK-Beispiel bezüglich nichtfunktionaler Anforderungen?",
+    type: "single",
+    options: [
+      { t: "Nichtfunktionale Anforderungen spielen bei Großprojekten praktisch keine Rolle.", correct: false },
+      { t: "Die eigentliche Funktion ist oft simpel, aber Anforderungen wie Sicherheit, Verfügbarkeit und Skalierung machen das System erst richtig komplex.", correct: true },
+      { t: "Nichtfunktionale Anforderungen betreffen ausschließlich die Optik der Benutzeroberfläche.", correct: false },
+      { t: "Funktionale und nichtfunktionale Anforderungen sind bei der eGK identisch.", correct: false }
+    ]
+  },
+  {
+    q: "7. Was zeigt das eGK-Beispiel laut Vorlesung übergeordnet, unabhängig von den technischen Details?",
+    type: "single",
+    options: [
+      { t: "Wie man ein konkretes System vollständig implementiert.", correct: false },
+      { t: "Art und Menge des Wissens, das für ein echtes Großprojekt nötig ist.", correct: true },
+      { t: "Die genaue Verschlüsselungstechnik der elektronischen Signatur.", correct: false },
+      { t: "Die Kosten-Nutzen-Rechnung eines konkreten Gesundheitssystems.", correct: false }
+    ]
+  },
+  {
+    q: "8. Ordnen Sie zu: Welche Aufgaben der Softwaretechnik gehören zum Bereich 'Anforderungen'?",
+    type: "multi",
+    options: [
+      { t: "OB (Kosten/Nutzen-Analyse)", correct: true },
+      { t: "WAS (Anforderungen klären)", correct: true },
+      { t: "WIE (Entwurf)", correct: false },
+      { t: "Verwalten (Management)", correct: false }
+    ]
+  },
+  {
+    q: "9. Welchem Bereich der Softwaretechnik wird die Aufgabe 'Validieren' (analytische Qualitätssicherung) zugeordnet?",
+    type: "single",
+    options: [
+      { t: "Anforderungen", correct: false },
+      { t: "Entwurf/Implementierung", correct: false },
+      { t: "Qualitätssicherung", correct: true },
+      { t: "Management", correct: false }
+    ]
+  },
+  {
+    q: "10. Warum ist Domänenwissen für ein Softwareprojekt so wichtig?",
+    type: "single",
+    options: [
+      { t: "Ohne Verständnis der fachlichen Anforderungen kann man kaum garantieren, brauchbare Ergebnisse zu liefern — in mindestens einer Domäne sollte man sich auskennen.", correct: true },
+      { t: "Domänenwissen ersetzt vollständig die Notwendigkeit von Programmierkenntnissen.", correct: false },
+      { t: "Domänenwissen ist nur bei Individualsoftware relevant, nicht bei Standardsoftware.", correct: false },
+      { t: "Domänenwissen betrifft ausschließlich die Kund:innen, nie die Entwickler:innen.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

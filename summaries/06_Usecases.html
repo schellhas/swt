@@ -2,31 +2,80 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>06 Anwendungsfälle</title>
 <style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --h1-border: #333;
+    --h2: #222;
+    --muted: #777;
+    --def-bg: #f3f3f3;
+    --def-border: #888;
+    --code-bg: #eee;
+    --table-border: #ccc;
+    --todo-bg: #fff3cd;
+    --todo-border: #d4a017;
+    --link: #1a4fa0;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --h1-border: #666;
+    --h2: #ddd;
+    --muted: #9a9a9a;
+    --def-bg: #262626;
+    --def-border: #777;
+    --code-bg: #2e2e2e;
+    --table-border: #444;
+    --todo-bg: #4a3f14;
+    --todo-border: #d4a017;
+    --link: #7aa8ff;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
   body {
     font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
     max-width: 780px;
     margin: 2rem auto;
     padding: 0 1rem;
     line-height: 1.5;
-    color: #1a1a1a;
+    color: var(--fg);
   }
-  h1 { font-size: 1.6rem; border-bottom: 2px solid #333; padding-bottom: .3rem; }
-  h2 { font-size: 1.2rem; margin-top: 2rem; color: #222; }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid var(--h1-border); padding-bottom: .3rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: var(--h2); }
   h3 { font-size: 1rem; margin-top: 1.2rem; }
   ul { margin: .3rem 0 .8rem 1.2rem; }
   li { margin: .2rem 0; }
   .def {
-    background: #f3f3f3;
-    border-left: 3px solid #888;
+    background: var(--def-bg);
+    border-left: 3px solid var(--def-border);
     padding: .5rem .8rem;
     margin: .5rem 0;
   }
-  .src { color: #777; font-size: .85rem; }
+  .src { color: var(--muted); font-size: .85rem; }
   table { border-collapse: collapse; margin: .5rem 0; }
-  td, th { border: 1px solid #ccc; padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  td, th { border: 1px solid var(--table-border); padding: .3rem .6rem; text-align: left; vertical-align: top; }
   .qa { margin: .4rem 0; }
   .qa .q { font-weight: bold; }
   @media (max-width: 600px) {
@@ -35,6 +84,15 @@
 </style>
 </head>
 <body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
 
 <h1>06 Anwendungsfälle (Use Cases)</h1>
 <p class="src">Quelle: vl/06_Usecases.pdf — relevant für ub/05_ub_use-cases.pdf und uebersicht.txt (Zeilen 98-115, "Anwendungsfall")</p>
