@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 04 UML</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 04 UML</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was ist der Unterschied zwischen einem Modell, einer Sicht (view) und einer Notation?",
+    type: "single",
+    options: [
+      { t: "Ein Modell ist eine Abstraktion relevanter Aspekte eines Systems; eine Sicht zeigt ausgewählte Aspekte eines Modells (selbst wieder ein Modell); Notation ist das Regelwerk zur Darstellung.", correct: true },
+      { t: "Modell und Notation sind Synonyme, Sicht ist nur ein anderes Wort für Diagramm.", correct: false },
+      { t: "Eine Notation ist immer grafisch, ein Modell immer textuell.", correct: false },
+      { t: "Eine Sicht zeigt immer das komplette Modell ohne Auslassungen.", correct: false }
+    ]
+  },
+  {
+    q: "2. Welche UML-Diagrammarten zeigen eine dynamische Sicht?",
+    type: "multi",
+    options: [
+      { t: "Sequenzdiagramm", correct: true },
+      { t: "Zustandsdiagramm", correct: true },
+      { t: "Aktivitätsdiagramm", correct: true },
+      { t: "Klassendiagramm", correct: false }
+    ]
+  },
+  {
+    q: "3. Wie wird ein Objekt (Exemplar) in der UML-Notation von einer Klasse unterschieden?",
+    type: "single",
+    options: [
+      { t: "Der Objektname wird kursiv geschrieben, der Klassenname fett.", correct: false },
+      { t: "Notation als 'instanzname : Klassenname', wobei der gesamte Text unterstrichen ist; Klassennamen selbst sind nie unterstrichen.", correct: true },
+      { t: "Objekte werden als Kreis, Klassen als Rechteck dargestellt.", correct: false },
+      { t: "Es gibt keinen notationellen Unterschied, nur der Kontext entscheidet.", correct: false }
+    ]
+  },
+  {
+    q: "4. Was bedeutet die Multiplizität '2..*' an einem Assoziationsende?",
+    type: "single",
+    options: [
+      { t: "Genau 2 Objekte, nicht mehr und nicht weniger.", correct: false },
+      { t: "Mindestens 2 Objekte, nach oben unbegrenzt viele.", correct: true },
+      { t: "Höchstens 2 Objekte.", correct: false },
+      { t: "Die Angabe ist ungültig, da '*' nur allein stehen darf.", correct: false }
+    ]
+  },
+  {
+    q: "5. Wann braucht eine Assoziation eine eigene 'Assoziationsklasse'?",
+    type: "single",
+    options: [
+      { t: "Immer, wenn eine Assoziation eine Multiplizität ungleich 1 hat.", correct: false },
+      { t: "Wenn die Assoziation selbst Attribute trägt (z. B. ein Datum oder ein Level, das zur Beziehung zwischen zwei Objekten gehört, nicht zu einem der beiden Objekte allein).", correct: true },
+      { t: "Nur bei Generalisierungsbeziehungen.", correct: false },
+      { t: "Wenn zwei Klassen dieselbe Assoziation zweimal verwenden.", correct: false }
+    ]
+  },
+  {
+    q: "6. Welche Sichtbarkeitssymbole gibt es in UML und was bedeuten sie?",
+    type: "multi",
+    options: [
+      { t: "'-' = privat (nur für den Class Implementor sichtbar)", correct: true },
+      { t: "'+' = öffentlich (voll sichtbar)", correct: true },
+      { t: "'#' = geschützt (zusätzlich für Class Extender sichtbar)", correct: true },
+      { t: "'*' = paketsichtbar", correct: false }
+    ]
+  },
+  {
+    q: "7. Was ist der Unterschied zwischen UML-Sichtbarkeit und Java-Sichtbarkeit bei 'protected'?",
+    type: "single",
+    options: [
+      { t: "Es gibt keinen Unterschied, beide Systeme sind identisch definiert.", correct: false },
+      { t: "In Java ist 'protected' zusätzlich im ganzen Paket sichtbar; UML trennt das strikt in zwei Stufen (# für geschützt, ~ für paketsichtbar).", correct: true },
+      { t: "UML kennt kein Konzept von Sichtbarkeit, das ist rein javaspezifisch.", correct: false },
+      { t: "In UML ist '#' öffentlicher als '+'.", correct: false }
+    ]
+  },
+  {
+    q: "8. Wie wird eine Generalisierung ('erbt von') in UML notiert, und wie unterscheidet sie sich von einer Realization ('implements')?",
+    type: "single",
+    options: [
+      { t: "Generalisierung: durchgezogene Linie mit geschlossenem, nicht gefülltem Dreieck an der Elternklasse. Realization: gleiches Dreieck, aber gestrichelte Linie (Interface-Implementierung).", correct: true },
+      { t: "Beide werden identisch mit einer gefüllten Raute notiert.", correct: false },
+      { t: "Generalisierung wird gestrichelt, Realization durchgezogen dargestellt — also genau umgekehrt.", correct: false },
+      { t: "Realization gibt es in UML nicht, nur Generalisierung.", correct: false }
+    ]
+  },
+  {
+    q: "9. Was ist der Unterschied zwischen Aggregation und Komposition?",
+    type: "single",
+    options: [
+      { t: "Aggregation = offene Raute, Teile können unabhängig vom Ganzen existieren; Komposition = gefüllte Raute, Teile existieren nie ohne das Ganze (gesamte Lebenszeit gekoppelt).", correct: true },
+      { t: "Aggregation und Komposition sind zwei Namen für exakt dasselbe Konzept.", correct: false },
+      { t: "Komposition verwendet eine offene Raute, Aggregation eine gefüllte.", correct: false },
+      { t: "Nur Komposition ist eine Sonderform der Assoziation, Aggregation nicht.", correct: false }
+    ]
+  },
+  {
+    q: "10. Wie hängen UML-Modell, UML-Diagramm und UML-Metamodell zusammen?",
+    type: "single",
+    options: [
+      { t: "Ein Diagramm zeigt grafische Elemente, die Elemente des zugrunde liegenden Modells repräsentieren; die UML selbst (also welche Modellelemente es überhaupt geben darf) wird durch ein Metamodell beschrieben — jedes Modellelement ist Instanz einer Metaklasse.", correct: true },
+      { t: "Metamodell, Modell und Diagramm sind austauschbare Bezeichnungen für dasselbe Artefakt.", correct: false },
+      { t: "Das Metamodell wird aus konkreten Diagrammen automatisch generiert und existiert nur zur Laufzeit.", correct: false },
+      { t: "Ein Modell ist eine Instanz eines Diagramms.", correct: false }
+    ]
+  },
+  {
+    q: "11. Was unterscheidet eine konkrete von einer abstrakten Metaklasse im UML-Metamodell?",
+    type: "single",
+    options: [
+      { t: "Konkrete Metaklassen (Suffix '[Class]') beschreiben Modellelemente, die tatsächlich in UML-Modellen vorkommen; abstrakte Metaklassen ('[Abstract Class]') sind nur technische Hilfskonstrukte im Metamodell und tauchen in konkreten Modellen nicht direkt auf.", correct: true },
+      { t: "Abstrakte Metaklassen dürfen in Diagrammen verwendet werden, konkrete nicht.", correct: false },
+      { t: "Der Unterschied betrifft nur die Groß-/Kleinschreibung des Klassennamens.", correct: false },
+      { t: "Konkrete Metaklassen gibt es nur in Sequenzdiagrammen.", correct: false }
+    ]
+  },
+  {
+    q: "12. Was stellt die Vertikale in einem UML-Sequenzdiagramm dar, und was ist eine Lifeline?",
+    type: "single",
+    options: [
+      { t: "Die Vertikale stellt den Speicherverbrauch dar; die Lifeline zeigt den Objektnamen.", correct: false },
+      { t: "Die Vertikale stellt die Zeit dar (von oben nach unten); die Lifeline ist die gestrichelte, vertikale Linie unter dem Objektkopf, entlang derer sich das Objekt über die Zeit 'bewegt'.", correct: true },
+      { t: "Die Vertikale zeigt die Reihenfolge der Klassen im Klassendiagramm.", correct: false },
+      { t: "Lifeline und Aktivierung sind exakt dasselbe Notationselement.", correct: false }
+    ]
+  },
+  {
+    q: "13. Ist eine Nachricht (message) in einem Sequenzdiagramm dasselbe wie ein Methodenaufruf?",
+    type: "single",
+    options: [
+      { t: "Ja, beide Begriffe sind vollkommen austauschbar.", correct: false },
+      { t: "Nein — ein Methodenaufruf ist eine bestimmte Art von Nachricht (synchroner Aufruf mit gefüllter Pfeilspitze, mündet in eine Aktivierung); eine Nachricht ist allgemeiner und kann z. B. auch ein asynchrones Signal sein.", correct: true },
+      { t: "Nein, eine Nachricht kommt nur in Zustandsdiagrammen vor.", correct: false },
+      { t: "Ja, aber nur wenn die Nachricht gestrichelt gezeichnet ist.", correct: false }
+    ]
+  },
+  {
+    q: "14. Woran erkennt man, dass ein Sequenzdiagramm nur einen von vielen möglichen Abläufen zeigt?",
+    type: "single",
+    options: [
+      { t: "Sequenzdiagramme beschreiben per Definition nur Beispiele, keine vollständige Spezifikation — sichtbar z. B. an 'alt'-Fragmenten mit guard conditions, die zeigen, dass es alternative Abläufe gibt, von denen im Diagramm nur einer konkret ausgeführt wird.", correct: true },
+      { t: "Das lässt sich einem Sequenzdiagramm grundsätzlich nicht ansehen.", correct: false },
+      { t: "Nur an der Anzahl der beteiligten Objekte.", correct: false },
+      { t: "An der Farbe der Pfeile.", correct: false }
+    ]
+  },
+  {
+    q: "15. Wie werden Erzeugung (creation) und Zerstörung (destruction) eines Objekts in einem Sequenzdiagramm dargestellt?",
+    type: "single",
+    options: [
+      { t: "Erzeugung: gestrichelter Pfeil mit offener Spitze auf das neue Objekt. Zerstörung: die Lifeline endet mit einem X.", correct: true },
+      { t: "Beides wird mit derselben durchgezogenen Linie mit gefüllter Pfeilspitze dargestellt.", correct: false },
+      { t: "Erzeugung wird nie explizit dargestellt, nur Zerstörung.", correct: false },
+      { t: "Zerstörung wird durch eine gefüllte Raute markiert.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

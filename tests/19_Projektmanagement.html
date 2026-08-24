@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 19 Projektmanagement</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 19 Projektmanagement</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Woraus besteht das 'magische Dreieck' speziell bei Softwareprojekten, und warum nicht direkt aus Qualität/Kosten/Zeit wie im allgemeinen Fall?",
+    type: "single",
+    options: [
+      { t: "Umfang, Qualität (im engeren Sinn) und Projektdauer — weil bei Software die Kosten eng am Personalaufwand und damit an der Projektdauer hängen, treten sie kaum als eigenständige Entscheidungsgröße auf.", correct: true },
+      { t: "Genau wie im allgemeinen Fall: Qualität, Kosten, Zeit — bei Software gibt es keinerlei Besonderheit.", correct: false },
+      { t: "Personal, Hardware, Software — das sind die drei Ecken des Dreiecks.", correct: false },
+      { t: "Bei Software spielt Umfang keine Rolle, nur Kosten und Zeit zählen.", correct: false }
+    ]
+  },
+  {
+    q: "2. Wie unterscheiden sich planend-leitendes und agil-selbstorganisierendes Projektmanagement in der Führung?",
+    type: "single",
+    options: [
+      { t: "Planend-leitend: Projektleiter:in mit Weisungsbefugnis. Agil-selbstorganisierend: Selbstorganisation durch gemeinsames Entscheiden im Team.", correct: true },
+      { t: "Beide Stile setzen zwingend eine weisungsbefugte Projektleitung voraus.", correct: false },
+      { t: "Agiles Projektmanagement kennt grundsätzlich keinerlei Führungsstruktur.", correct: false },
+      { t: "Planend-leitendes Management ist nur für sehr kleine Teams geeignet.", correct: false }
+    ]
+  },
+  {
+    q: "3. Was ist der Unterschied zwischen dem Top-down- und dem Brainstorming-/Bottom-up-Ansatz bei der Aufgabenzerlegung (WBS), und in welcher Reihenfolge sollten sie kombiniert werden?",
+    type: "single",
+    options: [
+      { t: "Top-down bricht grobe Schritte schrittweise feiner herunter; Brainstorming trägt zunächst wild Aufgaben zusammen und ordnet sie danach — Brainstorming sollte VOR der Top-Down-Zerlegung erfolgen, sonst ist man betriebsblind.", correct: true },
+      { t: "Beide Ansätze schließen sich gegenseitig aus und dürfen nie kombiniert werden.", correct: false },
+      { t: "Top-Down muss immer zuerst erfolgen, Brainstorming ist danach überflüssig.", correct: false },
+      { t: "Bottom-up bedeutet, zuerst die feinste Detailebene und erst danach die Grobstruktur festzulegen.", correct: false }
+    ]
+  },
+  {
+    q: "4. Was ist der Unterschied zwischen einem Netzplan und einem Gantt-Chart?",
+    type: "single",
+    options: [
+      { t: "Der Netzplan zeigt die logischen Abhängigkeiten der Aufgaben als Diagramm ohne Zeitskala; das Gantt-Chart zeigt dieselben Aufgaben und Abhängigkeiten als Balken auf einer Zeitachse.", correct: true },
+      { t: "Beide Darstellungen zeigen exakt dieselbe Information auf identische Weise.", correct: false },
+      { t: "Ein Netzplan hat immer eine Zeitachse, ein Gantt-Chart nie.", correct: false },
+      { t: "Gantt-Charts zeigen nur Personalressourcen, keine Aufgaben.", correct: false }
+    ]
+  },
+  {
+    q: "5. Was ist der 'kritische Pfad' in einem Netzplan?",
+    type: "single",
+    options: [
+      { t: "Die Abfolge von Aufgaben, bei denen jede Verzögerung unmittelbar das Gesamtprojekt verzögert — es kann auch mehrere kritische Pfade gleichzeitig geben.", correct: true },
+      { t: "Der Pfad mit den wenigsten beteiligten Aufgaben.", correct: false },
+      { t: "Ein Pfad, der beliebig verzögert werden kann, ohne das Projekt zu beeinflussen.", correct: false },
+      { t: "Ein rein grafisches Element ohne inhaltliche Bedeutung.", correct: false }
+    ]
+  },
+  {
+    q: "6. Was ist die 'Pufferzeit' (slack time) einer Aufgabe, und was passiert, wenn man sie ausnutzt?",
+    type: "single",
+    options: [
+      { t: "Der zeitliche Spielraum einer Aufgabe außerhalb des kritischen Pfads, innerhalb dessen Verzögerungen das Gesamtprojekt (noch) nicht verzögern — das Ausnutzen eines Puffers verkleinert typischerweise die Pufferzeiten anderer, davon abhängiger Aufgaben.", correct: true },
+      { t: "Pufferzeit ist die Gesamtdauer des Projekts.", correct: false },
+      { t: "Aufgaben auf dem kritischen Pfad haben immer die größte Pufferzeit.", correct: false },
+      { t: "Das Ausnutzen von Pufferzeit hat niemals Auswirkungen auf andere Aufgaben.", correct: false }
+    ]
+  },
+  {
+    q: "7. Wie ist die 'kürzeste Projektlaufzeit' in einem Netzplan definiert?",
+    type: "single",
+    options: [
+      { t: "Als die Dauer des längsten Pfads durch den Netzplan (= des kritischen Pfads) von Start bis Ende.", correct: true },
+      { t: "Als die Summe der Dauern aller Aufgaben, unabhängig von Abhängigkeiten.", correct: false },
+      { t: "Als die Dauer des kürzesten Pfads durch den Netzplan.", correct: false },
+      { t: "Als die Anzahl der beteiligten Personen multipliziert mit der längsten Einzelaufgabe.", correct: false }
+    ]
+  },
+  {
+    q: "8. Was ist der 'maximal sinnvolle Personalbedarf' (P_max), und wodurch wird er bestimmt?",
+    type: "single",
+    options: [
+      { t: "Die größte Teamgröße, ab der zusätzliche Personen die Projektlaufzeit nicht mehr verkürzen können — bestimmt durch zwingend sequenzielle Aufgabenketten und durch Aufgaben mit fester Mindestpersonenzahl.", correct: true },
+      { t: "Die Gesamtzahl aller im Unternehmen verfügbaren Mitarbeiter:innen.", correct: false },
+      { t: "P_max ist immer identisch mit der Anzahl der Aufgaben im Netzplan.", correct: false },
+      { t: "P_max hängt ausschließlich vom Budget ab, nie von der Netzplanstruktur.", correct: false }
+    ]
+  },
+  {
+    q: "9. Was passiert mit der Projektlaufzeit, wenn weniger Personal als P_max eingesetzt wird?",
+    type: "single",
+    options: [
+      { t: "Die Projektlaufzeit verlängert sich, weil nicht mehr alle parallelisierbaren Aufgaben gleichzeitig bearbeitet werden können — man muss abwägen, welche Aufgaben nacheinander statt parallel laufen.", correct: true },
+      { t: "Die Projektlaufzeit bleibt exakt gleich, unabhängig von der Teamgröße.", correct: false },
+      { t: "Die Projektlaufzeit verkürzt sich automatisch, wenn weniger Personal eingesetzt wird.", correct: false },
+      { t: "Weniger Personal als P_max ist grundsätzlich unmöglich.", correct: false }
+    ]
+  },
+  {
+    q: "10. Welche Gesichtspunkte spielen laut Vorlesung bei der Entscheidung über die tatsächliche Teamgröße (zwischen 2 und P_max) eine Rolle?",
+    type: "multi",
+    options: [
+      { t: "Personalkosten", correct: true },
+      { t: "Projektlaufzeit/Time-to-Market", correct: true },
+      { t: "Kommunikationsaufwand bei größeren Teams", correct: true },
+      { t: "Die Lieblingsprogrammiersprache der Geschäftsführung", correct: false }
+    ]
+  },
+  {
+    q: "11. Wie ist 'Risikohöhe' definiert?",
+    type: "single",
+    options: [
+      { t: "Risikohöhe = Eintrittswahrscheinlichkeit × Schadenshöhe — lässt sich meist nur grob/qualitativ, nicht quantitativ bestimmen, reicht aber für Risikomanagement.", correct: true },
+      { t: "Risikohöhe = Anzahl der Projektmitglieder geteilt durch die Projektdauer.", correct: false },
+      { t: "Risikohöhe ist ausschließlich in Geldeinheiten exakt berechenbar.", correct: false },
+      { t: "Risikohöhe hängt nur von der Schadenshöhe ab, die Wahrscheinlichkeit spielt keine Rolle.", correct: false }
+    ]
+  },
+  {
+    q: "12. Welche drei Risikomanagement-Stile werden unterschieden, und welcher gilt als 'echtes' Risikomanagement?",
+    type: "single",
+    options: [
+      { t: "Ignorierend/optimistisch, reparierend (häufigster Stil, aber kein echtes Risikomanagement) und vorbeugend — nur der vorbeugende Stil ('If you don't attack the risks, the risks will attack you') gilt als echtes Risikomanagement.", correct: true },
+      { t: "Alle drei Stile sind gleichwertig und führen zu identischen Ergebnissen.", correct: false },
+      { t: "Der ignorierende Stil gilt laut Vorlesung als der beste Ansatz.", correct: false },
+      { t: "Reparierendes Management gilt als das einzig echte Risikomanagement.", correct: false }
+    ]
+  },
+  {
+    q: "13. Wie lauten die Schritte im Ablauf des Risikomanagements?",
+    type: "single",
+    options: [
+      { t: "Risiken identifizieren → bewerten (Wahrscheinlichkeit × erwarteter Schaden) → priorisieren → managen (Maßnahmen zur Senkung der Eintrittswahrscheinlichkeit bzw. Vorbereitung von Gegenmaßnahmen) → regelmäßig wiederholen/überprüfen.", correct: true },
+      { t: "Risiken werden einmalig zu Projektbeginn identifiziert und danach nie wieder betrachtet.", correct: false },
+      { t: "Der einzige Schritt im Risikomanagement ist das Bewerten der Schadenshöhe.", correct: false },
+      { t: "Priorisierung erfolgt vor der Identifikation der Risiken.", correct: false }
+    ]
+  },
+  {
+    q: "14. Warum sollte bei lang laufenden/iterativen Projekten nicht sofort die gesamte Aufgabenzerlegung bis ins letzte Detail erfolgen?",
+    type: "single",
+    options: [
+      { t: "Weil das übertriebenen Neuplanungsaufwand verursachen würde — spätere Phasen sehen ohnehin meist anders aus als ursprünglich gedacht; nahe Phasen werden genau, fernere nur grob zerlegt.", correct: true },
+      { t: "Weil eine detaillierte Zerlegung gesetzlich verboten ist.", correct: false },
+      { t: "Weil Aufgabenzerlegung grundsätzlich nur einmalig am Projektende sinnvoll ist.", correct: false },
+      { t: "Weil Detailplanung ausschließlich bei wasserfallartigen Projekten erlaubt ist.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

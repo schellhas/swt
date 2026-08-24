@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 11 Entwurfsmuster</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 11 Entwurfsmuster</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was ist der Unterschied zwischen einer Schnittstelle und einer Signatur?",
+    type: "single",
+    options: [
+      { t: "Die Signatur ist nur Name + Parameter + Rückgabetyp einer Operation; die Schnittstelle eines Moduls ist die Gesamtheit aller extern sichtbaren Eigenschaften — alle Signaturen plus deren Semantik (Vor-/Nachbedingungen).", correct: true },
+      { t: "Beide Begriffe sind exakt gleichbedeutend.", correct: false },
+      { t: "Die Signatur umfasst immer mehr Informationen als die Schnittstelle.", correct: false },
+      { t: "Eine Signatur bezieht sich auf ein ganzes Modul, eine Schnittstelle nur auf eine einzelne Operation.", correct: false }
+    ]
+  },
+  {
+    q: "2. Wie verhalten sich Kohäsion und Kopplung zueinander, und was ist für guten Entwurf jeweils erstrebenswert?",
+    type: "single",
+    options: [
+      { t: "Kohäsion beschreibt den Zusammenhalt innerhalb eines Moduls (hoch = gut), Kopplung die Abhängigkeit zwischen Modulen (niedrig = gut) — Ziel: hohe Kohäsion, niedrige Kopplung.", correct: true },
+      { t: "Beide sollten möglichst niedrig gehalten werden.", correct: false },
+      { t: "Beide sollten möglichst hoch gehalten werden.", correct: false },
+      { t: "Kohäsion und Kopplung sind Synonyme für dasselbe Konzept.", correct: false }
+    ]
+  },
+  {
+    q: "3. Wie unterscheiden sich Komponente, Entwurfsmuster und Architekturstil in ihrer Abstraktionsebene?",
+    type: "single",
+    options: [
+      { t: "Komponente: konkret, fertiger einsetzbarer Baustein. Entwurfsmuster: mittlere Ebene, Idee für wenige Klassen, muss adaptiert werden. Architekturstil: global, Grobstruktur für ganzes System/Subsystem.", correct: true },
+      { t: "Alle drei Begriffe beschreiben exakt dieselbe Abstraktionsebene.", correct: false },
+      { t: "Ein Architekturstil ist immer konkreter als eine Komponente.", correct: false },
+      { t: "Entwurfsmuster sind fertige, direkt einsetzbare Bausteine wie Komponenten.", correct: false }
+    ]
+  },
+  {
+    q: "4. Was ist der Kern eines Design Patterns laut Definition?",
+    type: "single",
+    options: [
+      { t: "Ein wiederkehrendes Problem plus eine Lösungsidee, die beliebig oft genutzt werden kann, aber nie exakt gleich — die Idee wird immer an den konkreten Kontext angepasst.", correct: true },
+      { t: "Ein fertiges Stück Code, das unverändert in jedes Projekt kopiert werden kann.", correct: false },
+      { t: "Eine rein theoretische Konstruktion ohne Bezug zu echten Systemen.", correct: false },
+      { t: "Ein Synonym für 'Framework'.", correct: false }
+    ]
+  },
+  {
+    q: "5. Welche drei Kategorien der Pattern-Taxonomie werden unterschieden, und wofür stehen sie?",
+    type: "single",
+    options: [
+      { t: "Strukturmuster (wie Objekte zu Strukturen komponiert werden), Verhaltensmuster (Algorithmen/Verantwortlichkeitsverteilung), Erzeugungsmuster (Objekterzeugung).", correct: true },
+      { t: "Funktionale, nichtfunktionale und technische Muster.", correct: false },
+      { t: "Analyse-, Entwurfs- und Implementierungsmuster.", correct: false },
+      { t: "Es gibt nur eine einzige Kategorie: 'Design Patterns'.", correct: false }
+    ]
+  },
+  {
+    q: "6. Welche Muster gehören zur Kategorie der Strukturmuster?",
+    type: "multi",
+    options: [
+      { t: "Adapter", correct: true },
+      { t: "Fassade", correct: true },
+      { t: "Proxy", correct: true },
+      { t: "Beobachter (Observer)", correct: false }
+    ]
+  },
+  {
+    q: "7. Welches Problem löst das Composite-Muster, und wie?",
+    type: "single",
+    options: [
+      { t: "Teil-Ganzes-Hierarchien beliebiger Tiefe darstellen, wobei Client Einzelteile und Kompositionen einheitlich behandeln soll — Lösung: gemeinsame Oberklasse Component mit Unterklassen Leaf und Composite.", correct: true },
+      { t: "Zwei inkompatible Schnittstellen kompatibel machen.", correct: false },
+      { t: "Zugriff auf ein teures Objekt kontrollieren.", correct: false },
+      { t: "Mehrere austauschbare Algorithmen zur Verfügung stellen.", correct: false }
+    ]
+  },
+  {
+    q: "8. Was ist der Unterschied zwischen einem Objekt-Adapter und einem Klassen-Adapter?",
+    type: "single",
+    options: [
+      { t: "Objekt-Adapter nutzt Delegation und Einfachvererbung (viel häufiger); Klassen-Adapter nutzt Mehrfachvererbung.", correct: true },
+      { t: "Beide sind identisch und unterscheiden sich nur im Namen.", correct: false },
+      { t: "Klassen-Adapter sind in der Praxis deutlich häufiger als Objekt-Adapter.", correct: false },
+      { t: "Ein Objekt-Adapter darf niemals delegieren.", correct: false }
+    ]
+  },
+  {
+    q: "9. Was ist die Kernidee des Bridge-Musters, und wann wird es typischerweise eingesetzt (im Vergleich zum Adapter)?",
+    type: "single",
+    options: [
+      { t: "Abstraktion und Implementierung sollen von vornherein unabhängig variieren können (zwei parallele Hierarchien) — wird up-front beim Entwurf eingesetzt, im Gegensatz zum Adapter, der nachträglich beim Reengineering eingesetzt wird.", correct: true },
+      { t: "Bridge wird ausschließlich nachträglich bei Legacy-Code eingesetzt, genau wie Adapter.", correct: false },
+      { t: "Bridge und Adapter sind komplett austauschbare Bezeichnungen für dasselbe Muster.", correct: false },
+      { t: "Bridge verbindet immer genau zwei Subsysteme über eine gemeinsame Oberklasse ohne Delegation.", correct: false }
+    ]
+  },
+  {
+    q: "10. Was leistet das Fassade-Muster?",
+    type: "single",
+    options: [
+      { t: "Es bietet eine vereinheitlichte, höherstufige Schnittstelle für ein Subsystem aus vielen Klassen und delegiert intern an die passenden Subsystemklassen, ohne dass Clients die interne Struktur kennen müssen.", correct: true },
+      { t: "Es ersetzt ein einzelnes Objekt durch ein funktional identisches Ersatzobjekt.", correct: false },
+      { t: "Es macht zwei inkompatible Schnittstellen kompatibel.", correct: false },
+      { t: "Es erzeugt Objekte aus einer Familie verwandter Klassen.", correct: false }
+    ]
+  },
+  {
+    q: "11. Welche drei Proxy-Varianten werden genannt, und wofür stehen sie?",
+    type: "multi",
+    options: [
+      { t: "Remote Proxy — Stellvertreter für ein entferntes Objekt", correct: true },
+      { t: "Virtual Proxy — Platzhalter, wenn Erzeugung teuer ist", correct: true },
+      { t: "Protection Proxy — kapselt Zugriffsrechte", correct: true },
+      { t: "Static Proxy — ersetzt Konstanten zur Kompilierzeit", correct: false }
+    ]
+  },
+  {
+    q: "12. Was ist die Kernidee des Command-Musters (Befehl)?",
+    type: "single",
+    options: [
+      { t: "Jede Aktion wird als Objekt mit fester Schnittstelle (z. B. execute()) verpackt, sodass Aktionen wie Daten behandelt werden können — herumgereicht, gespeichert, in Warteschlangen gepackt oder rückgängig gemacht.", correct: true },
+      { t: "Mehrere Klassen werden zu einer einzigen zusammengefasst.", correct: false },
+      { t: "Ein Objekt wird durch ein funktional identisches Ersatzobjekt ersetzt.", correct: false },
+      { t: "Es dient ausschließlich der Objekterzeugung.", correct: false }
+    ]
+  },
+  {
+    q: "13. Wie funktioniert das Observer-Muster (Beobachter)?",
+    type: "single",
+    options: [
+      { t: "Abhängige Objekte (Observer) registrieren sich mit derselben Schnittstelle beim beobachteten Objekt (Subject); bei Zustandsänderung ruft das Subject die update()-Methode auf allen Observern auf.", correct: true },
+      { t: "Ein zentrales Objekt fragt periodisch alle anderen Objekte ab, ob sich etwas geändert hat (Polling).", correct: false },
+      { t: "Es erlaubt nur genau einem einzigen Observer, sich zu registrieren.", correct: false },
+      { t: "Es ist ein Synonym für das Singleton-Muster.", correct: false }
+    ]
+  },
+  {
+    q: "14. Wofür wird das Strategy-Muster eingesetzt?",
+    type: "single",
+    options: [
+      { t: "Wenn es mehrere austauschbare Wege gibt, dieselbe Aufgabe zu lösen — ein Context-Objekt hält eine Referenz auf eine gemeinsame Strategy-Schnittstelle und delegiert daran, sodass Varianten frei/dynamisch gewählt werden können.", correct: true },
+      { t: "Um mehrere Objekte zu einer Teil-Ganzes-Hierarchie zusammenzufassen.", correct: false },
+      { t: "Um ein Objekt vor unautorisiertem Zugriff zu schützen.", correct: false },
+      { t: "Um zwei inkompatible Schnittstellen zu verbinden.", correct: false }
+    ]
+  },
+  {
+    q: "15. Was ist der Unterschied zwischen Abstract Factory und Builder?",
+    type: "single",
+    options: [
+      { t: "Abstract Factory erzeugt eine Familie von Produkten in einem Schritt; Builder erzeugt ein einzelnes komplexes Produkt über viele, stark variierende Schritte, gesteuert von einem Director.", correct: true },
+      { t: "Beide Muster sind exakt austauschbar und lösen dasselbe Problem auf identische Weise.", correct: false },
+      { t: "Builder erzeugt immer eine ganze Familie von Produkten, Abstract Factory nur ein einzelnes.", correct: false },
+      { t: "Abstract Factory gehört zu den Verhaltensmustern, Builder zu den Strukturmustern.", correct: false }
+    ]
+  },
+  {
+    q: "16. Welches Problem löst das Singleton-Muster, und in welche Taxonomie-Kategorie gehört es?",
+    type: "single",
+    options: [
+      { t: "Von einer Klasse darf zur Laufzeit höchstens ein global erreichbares Exemplar existieren (privater Konstruktor + statische Zugriffsmethode) — gehört zu den Erzeugungsmustern, da es nur um das Wie/Wie-oft der Erzeugung geht.", correct: true },
+      { t: "Es löst das Problem inkompatibler Schnittstellen und gehört zu den Strukturmustern.", correct: false },
+      { t: "Es verteilt Verantwortlichkeiten auf mehrere Objekte und gehört zu den Verhaltensmustern.", correct: false },
+      { t: "Es erlaubt beliebig viele Instanzen einer Klasse gleichzeitig.", correct: false }
+    ]
+  },
+  {
+    q: "17. Was ist ein verbreiteter Kritikpunkt am Singleton-Muster?",
+    type: "single",
+    options: [
+      { t: "Singletons wirken wie globale Variablen, erschweren Testbarkeit (kein Austausch durch Test-Doubles) und führen zu versteckter Kopplung — Dependency Injection wird oft als Alternative empfohlen.", correct: true },
+      { t: "Singletons sind niemals kritisiert worden und gelten als fehlerfrei.", correct: false },
+      { t: "Singletons können laut Kritik nur in funktionalen Programmiersprachen verwendet werden.", correct: false },
+      { t: "Der einzige Kritikpunkt ist ihr hoher Speicherverbrauch.", correct: false }
+    ]
+  },
+  {
+    q: "18. Worin unterscheiden sich Adapter und Proxy hinsichtlich der Beziehung zwischen Wrapper und Original?",
+    type: "single",
+    options: [
+      { t: "Adapter und Adaptee haben unterschiedliche Schnittstellen (Target ≠ Adaptee); Proxy hat dieselbe Schnittstelle wie das Objekt, das er vertritt (1:1).", correct: true },
+      { t: "Beide haben in jedem Fall exakt dieselbe Schnittstelle wie das zugrundeliegende Objekt.", correct: false },
+      { t: "Proxy verändert immer die Schnittstelle des Originalobjekts, Adapter nie.", correct: false },
+      { t: "Es gibt keinerlei Unterschied zwischen Adapter und Proxy.", correct: false }
+    ]
+  },
+  {
+    q: "19. Was besagt das Liskovsche Substitutionsprinzip im Zusammenhang mit Design by Contract über Vererbung?",
+    type: "single",
+    options: [
+      { t: "Eine überschreibende Methode darf höchstens die Vorbedingungen der Oberklasse verlangen und muss mindestens deren Nachbedingungen liefern — sonst funktioniert Code, der die Oberklasse nutzt, nicht mehr korrekt mit der Unterklasse.", correct: true },
+      { t: "Unterklassen dürfen beliebig strengere Vorbedingungen verlangen als ihre Oberklasse.", correct: false },
+      { t: "Das Prinzip gilt nur für abstrakte Klassen, nie für konkrete.", correct: false },
+      { t: "Es besagt, dass Vererbung grundsätzlich vermieden werden sollte.", correct: false }
+    ]
+  },
+  {
+    q: "20. Was ist Dependency Injection, und was ist ein Vorteil sowie ein Nachteil davon?",
+    type: "single",
+    options: [
+      { t: "Ein Objekt bekommt seine Abhängigkeiten von außen 'hineingereicht' (z. B. per Setter) statt sie selbst zu erzeugen. Vorteil: lose Kopplung und leichtere Testbarkeit. Nachteil: höhere Komplexität/Indirektion, oft zusätzliche Infrastruktur nötig.", correct: true },
+      { t: "Ein Objekt erzeugt alle seine Abhängigkeiten immer selbst im Konstruktor — das ist der Kern von Dependency Injection.", correct: false },
+      { t: "Dependency Injection hat ausschließlich Vorteile und keine Nachteile.", correct: false },
+      { t: "Dependency Injection ist ein Synonym für das Singleton-Muster.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

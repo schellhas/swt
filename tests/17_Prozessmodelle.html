@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 17 Prozessmodelle</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 17 Prozessmodelle</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was ist der Unterschied zwischen einem Software-Prozess und einem Software-Prozessmodell?",
+    type: "single",
+    options: [
+      { t: "Ein Prozess sind die tatsächlich (oder vorgeschrieben) ablaufenden Aktivitäten eines konkreten Projekts; ein Prozessmodell ist eine Schablone, die die Gemeinsamkeiten der Abläufe vieler verschiedener Projekte erfasst.", correct: true },
+      { t: "Beide Begriffe sind exakt austauschbar.", correct: false },
+      { t: "Ein Prozessmodell beschreibt nur ein einziges, konkretes Projekt, ein Prozess viele Projekte gleichzeitig.", correct: false },
+      { t: "Ein Prozess existiert nur in agilen Projekten, ein Prozessmodell nur in wasserfallartigen.", correct: false }
+    ]
+  },
+  {
+    q: "2. Welche drei Hauptkonzepte werden zur Beschreibung von Prozessen verwendet?",
+    type: "multi",
+    options: [
+      { t: "Rolle (z. B. 'Entwerferin', 'Tester')", correct: true },
+      { t: "Aktivität/Praktik (z. B. 'Architekturentwurf')", correct: true },
+      { t: "Artefakt (z. B. 'Klassendiagramm', 'Testbericht')", correct: true },
+      { t: "Budget (die exakte Kostenschätzung jeder Phase)", correct: false }
+    ]
+  },
+  {
+    q: "3. Was ist das Grundprinzip des Wasserfallmodells?",
+    type: "single",
+    options: [
+      { t: "Eine kleine Zahl von Grobaktivitäten wird der Reihe nach durchlaufen — jede Phase nur einmal, Phase N beginnt erst nach vollständigem Abschluss von Phase N-1 (dokumentgetrieben, mit Meilensteinen).", correct: true },
+      { t: "Alle Phasen laufen gleichzeitig und unabhängig voneinander ab.", correct: false },
+      { t: "Jede Phase wird beliebig oft wiederholt, bis der Kunde zufrieden ist.", correct: false },
+      { t: "Es gibt im Wasserfallmodell keine festgelegte Phasenreihenfolge.", correct: false }
+    ]
+  },
+  {
+    q: "4. Warum galt das Wasserfallmodell lange als 'ideales' Vorgehen?",
+    type: "single",
+    options: [
+      { t: "Es bietet maximale Planbarkeit und Kontrolle: klare Phasenstruktur, vollständige Dokumentation an jedem Übergang, eindeutige Verantwortlichkeiten und Meilensteine — wichtig für Vertragsgestaltung, Budgetierung und Koordination großer Teams.", correct: true },
+      { t: "Weil es garantiert, dass sich Anforderungen während des Projekts nie ändern.", correct: false },
+      { t: "Weil es keinerlei Dokumentation erfordert.", correct: false },
+      { t: "Weil es speziell für kleine, agile Teams entwickelt wurde.", correct: false }
+    ]
+  },
+  {
+    q: "5. Was ist das Problem mit 'Über die Mauer werfen' im Wasserfallmodell?",
+    type: "single",
+    options: [
+      { t: "Kommunikation läuft nur über Dokumente, oft mit Personalwechsel zwischen Phasen — Verständnis für Phase-N-Phänomene geht in Phase N+1 weitgehend verloren, wenn die Dokumente nicht gelesen werden.", correct: true },
+      { t: "Es beschreibt, dass jede Phase physisch in einem anderen Gebäude stattfindet.", correct: false },
+      { t: "Es ist ein Vorteil des Wasserfallmodells, kein Problem.", correct: false },
+      { t: "Es betrifft ausschließlich die Hardwarebeschaffung.", correct: false }
+    ]
+  },
+  {
+    q: "6. Was ist der Unterschied zwischen evolutionärem und inkrementellem Vorgehen?",
+    type: "single",
+    options: [
+      { t: "Beim evolutionären Vorgehen werden in jedem Schritt neue Teile hinzugefügt UND bestehende verändert; inkrementell ist ein Sonderfall, bei dem nur neue Teile hinzugefügt werden — Bestehendes wird (theoretisch) nie mehr verändert.", correct: true },
+      { t: "Beide Begriffe sind vollkommen austauschbar.", correct: false },
+      { t: "Inkrementelles Vorgehen erlaubt beliebige nachträgliche Änderungen, evolutionäres nicht.", correct: false },
+      { t: "Evolutionäres Vorgehen liefert nie eine funktionsfähige Zwischenversion.", correct: false }
+    ]
+  },
+  {
+    q: "7. Was ist die Grundidee des Spiralmodells?",
+    type: "single",
+    options: [
+      { t: "Ein Risikomodell: in jeder Iteration wird das getan, was am stärksten zur Verringerung des kritischsten Projektrisikos beiträgt — es verallgemeinert alle anderen Prozessmodelle als Spezialfälle.", correct: true },
+      { t: "Es ist ein Synonym für das reine Wasserfallmodell.", correct: false },
+      { t: "Es schreibt eine feste, unveränderliche Phasenreihenfolge ohne jede Risikobetrachtung vor.", correct: false },
+      { t: "Es kommt ausschließlich bei der Hardwareentwicklung zum Einsatz.", correct: false }
+    ]
+  },
+  {
+    q: "8. Wann sind laut Vorlesung stark planende Prozessmodelle eher geeignet, wann eher agile?",
+    type: "single",
+    options: [
+      { t: "Stark planend: wohldefiniertes Resultat in definierter Zeit, sehr große/verteilte Teams. Agil: hohe Unsicherheit über Anforderungen, häufige Änderungen von außen, stark radikales Vorgehen nötig.", correct: true },
+      { t: "Stark planende Modelle eignen sich ausschließlich für sehr kleine Ein-Personen-Projekte.", correct: false },
+      { t: "Agile Modelle sind immer und ohne Ausnahme die bessere Wahl.", correct: false },
+      { t: "Die Wahl des Prozessmodells hat keinerlei Bezug zu Anforderungsunsicherheit.", correct: false }
+    ]
+  },
+  {
+    q: "9. Wie unterscheiden sich konventionelle und agile Prozesse bezüglich der Kommunikation?",
+    type: "single",
+    options: [
+      { t: "Konventionell: Kommunikation läuft über Dokumente. Agil: Kommunikation läuft direkt zwischen Menschen.", correct: true },
+      { t: "Beide Ansätze kommunizieren ausschließlich über formelle Verträge.", correct: false },
+      { t: "Agile Prozesse verbieten jede schriftliche Dokumentation kategorisch.", correct: false },
+      { t: "Konventionelle Prozesse kommunizieren nur mündlich, nie schriftlich.", correct: false }
+    ]
+  },
+  {
+    q: "10. Was ist die Kernidee von Extreme Programming (XP)?",
+    type: "single",
+    options: [
+      { t: "Ein Satz von Praktiken, die bewährte Techniken der Softwareentwicklung bewusst 'ins Extrem' führen (z. B. Codedurchsichten → ständige Reviews durch Pair Programming) — alle Praktiken müssen diszipliniert eingehalten werden.", correct: true },
+      { t: "XP erlaubt es Entwickler:innen, beliebige Praktiken nach eigenem Ermessen wegzulassen.", correct: false },
+      { t: "XP ist identisch mit dem klassischen Wasserfallmodell.", correct: false },
+      { t: "XP schreibt vor, dass nie mehr als eine Person gleichzeitig am selben Code arbeiten darf.", correct: false }
+    ]
+  },
+  {
+    q: "11. Wie ist ein XP-Projekt zeitlich strukturiert, und was passiert am Ende einer Iteration?",
+    type: "single",
+    options: [
+      { t: "Es ist in Iterationen eingeteilt, die jeweils mit einer neuen Version des Softwaresystems enden; am Ende besprechen Kunde und Entwickler:innen im 'Planning Game', welche Funktionalitäten als Nächstes realisiert werden.", correct: true },
+      { t: "XP-Projekte haben keinerlei zeitliche Struktur und laufen als ein einziger durchgehender Block.", correct: false },
+      { t: "Am Ende jeder Iteration wird das gesamte bisherige Projekt verworfen und neu begonnen.", correct: false },
+      { t: "Iterationen in XP dauern immer exakt ein Jahr.", correct: false }
+    ]
+  },
+  {
+    q: "12. Auf welchem Medium formuliert der Kunde bei XP seine Wünsche, und wer definiert die Akzeptanztests?",
+    type: "single",
+    options: [
+      { t: "Der Kunde formuliert seine Wünsche auf User Stories und definiert selbst auch die Akzeptanztests, um am Ende jeder Iteration die Funktionalität zu prüfen.", correct: true },
+      { t: "Der Kunde schreibt ausführliche UML-Spezifikationen, die Entwickler:innen definieren die Akzeptanztests.", correct: false },
+      { t: "User Stories werden ausschließlich von den Entwickler:innen verfasst, nie vom Kunden.", correct: false },
+      { t: "Bei XP gibt es keine Akzeptanztests.", correct: false }
+    ]
+  },
+  {
+    q: "13. Welche XP-Praktiken für Entwickler:innen werden genannt?",
+    type: "multi",
+    options: [
+      { t: "Pair Programming", correct: true },
+      { t: "Continuous Integration", correct: true },
+      { t: "Collective Ownership (gemeinsame Verantwortung)", correct: true },
+      { t: "Verpflichtende Einzelbüros ohne Teamkommunikation", correct: false }
+    ]
+  },
+  {
+    q: "14. Was deckt Scrum ab, im Unterschied zu XP?",
+    type: "single",
+    options: [
+      { t: "Scrum deckt nur Projektmanagement ab (Rollen, Sprints, Meetings), aber keine technischen Entwicklungspraktiken wie Pair Programming, die XP zusätzlich vorschreibt.", correct: true },
+      { t: "Scrum und XP sind exakt dasselbe Rahmenwerk unter zwei Namen.", correct: false },
+      { t: "Scrum schreibt ausschließlich technische Praktiken vor, kein Projektmanagement.", correct: false },
+      { t: "Scrum verbietet die Verwendung von Sprints.", correct: false }
+    ]
+  },
+  {
+    q: "15. Welche drei Rollen kennt Scrum, und was macht der Scrum Master?",
+    type: "single",
+    options: [
+      { t: "Product Owner (verantwortet Product Backlog), Scrum Master (sorgt für Einhaltung der Scrum-Regeln, räumt Hindernisse aus dem Weg — moderierend, nicht weisungsbefugt) und Development Team (selbstorganisiert, setzt im Sprint um).", correct: true },
+      { t: "Der Scrum Master hat die volle Weisungsbefugnis über das gesamte Team wie ein klassischer Projektleiter.", correct: false },
+      { t: "Scrum kennt nur eine einzige Rolle: den Product Owner.", correct: false },
+      { t: "Das Development Team wird von außen fremdbestimmt, nicht selbstorganisiert.", correct: false }
+    ]
+  },
+  {
+    q: "16. Was ist eine Gemeinsamkeit von RUP (Rational Unified Process) und V-Modell XT?",
+    type: "single",
+    options: [
+      { t: "Beide sind universelle/anpassbare Prozessmodelle mit dem Anspruch, für (fast) jedes Projekt geeignet zu sein — beide sind sehr umfangreich und werden je nach Projekt gezielt zurechtgestutzt (getailored).", correct: true },
+      { t: "Beide Modelle verbieten jede Form von Dokumentation.", correct: false },
+      { t: "Beide Modelle sind ausschließlich für sehr kleine Ein-Personen-Projekte gedacht.", correct: false },
+      { t: "RUP und V-Modell XT sind rein agile Methoden ohne jede Planung.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

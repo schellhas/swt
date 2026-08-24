@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 16 Konstruktive Qualitätssicherung</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 16 Konstruktive Qualitätssicherung</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was ist die Grundidee konstruktiver Qualitätssicherung, und wie unterscheidet sie sich von analytischer QS?",
+    type: "single",
+    options: [
+      { t: "'Vorbeugen ist besser als Heilen': konstruktive QS will von vornherein vermeiden, dass etwas falsch gemacht wird, während analytische QS bereits entstandene Mängel per Test/Durchsicht aufdeckt.", correct: true },
+      { t: "Beide Ansätze sind identisch und nur unterschiedlich benannt.", correct: false },
+      { t: "Konstruktive QS deckt Mängel auf, analytische QS verhindert sie im Voraus.", correct: false },
+      { t: "Konstruktive QS kommt nur nach der Auslieferung zum Einsatz.", correct: false }
+    ]
+  },
+  {
+    q: "2. Welche drei Ausprägungen konstruktiver QS werden je nach Fokus unterschieden?",
+    type: "multi",
+    options: [
+      { t: "Test- und Durchsicht-Management (plant, wann/wie analytische QS eingesetzt wird)", correct: true },
+      { t: "Projektmanagement (produkt-/projektorientiert, meist pragmatisch)", correct: true },
+      { t: "Prozessmanagement (auf die ganze Organisation ausgerichtet)", correct: true },
+      { t: "Versionsverwaltung (Verwaltung von Code-Repositories)", correct: false }
+    ]
+  },
+  {
+    q: "3. Was besagt die 'Urgrundanalyse' (root cause analysis) als eine der gemeinsamen Leitlinien von Projekt- und Prozessmanagement?",
+    type: "single",
+    options: [
+      { t: "Bei entdeckten Mängeln soll nicht nur der Mangel selbst, sondern auch seine Ursache(n) und ggf. deren Ursache(n) beseitigt werden.", correct: true },
+      { t: "Mängel sollen grundsätzlich ignoriert werden, solange sie nicht zu Versagen führen.", correct: false },
+      { t: "Nur der letzte in einer Kette von Mängeln muss behoben werden, die Ursachen sind irrelevant.", correct: false },
+      { t: "Urgrundanalyse bezieht sich ausschließlich auf Hardwarefehler.", correct: false }
+    ]
+  },
+  {
+    q: "4. Wie unterscheidet sich konventionelles von agilem Prozessmanagement?",
+    type: "single",
+    options: [
+      { t: "Konventionell: gute Vorgaben machen und durchsetzen, auf ganze Organisation ausgerichtet (Neigung zu Bürokratisierung). Agil: Selbstorganisation, ständige Reflexion, schrittweise Verbesserung auf Teamebene (verschmilzt mit Projektmanagement).", correct: true },
+      { t: "Beide Ansätze sind auf die exakt gleiche Granularität (immer die ganze Organisation) ausgerichtet.", correct: false },
+      { t: "Agiles Prozessmanagement setzt immer auf strikte Durchsetzung von Vorgaben.", correct: false },
+      { t: "Konventionelles Prozessmanagement verzichtet grundsätzlich auf jede Dokumentation.", correct: false }
+    ]
+  },
+  {
+    q: "5. Welche drei Arten von Prozessmanagement-Leitlinien werden unterschieden?",
+    type: "single",
+    options: [
+      { t: "Prozessstandards (wie Prozesse strukturiert/durchgeführt werden sollen), Qualitätsstandards (wie Prozessergebnisse beschaffen sein sollen) und Prozessreifemodelle (welche Aspekte optimiert werden müssen, aber nicht wie).", correct: true },
+      { t: "Nur eine einzige Art: gesetzliche Vorschriften.", correct: false },
+      { t: "Technische, finanzielle und rechtliche Standards.", correct: false },
+      { t: "Prozessstandards und Qualitätsstandards sind identisch definiert.", correct: false }
+    ]
+  },
+  {
+    q: "6. Was ist CMMI, und wie viele Reifestufen kennt es?",
+    type: "single",
+    options: [
+      { t: "Ein Prozessreifemodell (Capability Maturity Model Integration) mit 5 Reifestufen, die eine feste Reihenfolge vorgeben (Aufstieg um eine Stufe dauert oft 1-3 Jahre).", correct: true },
+      { t: "Ein Qualitätsstandard mit genau 2 Zertifizierungsstufen.", correct: false },
+      { t: "Ein Synonym für ISO 9000.", correct: false },
+      { t: "Ein reines Softwarewerkzeug zur automatischen Code-Analyse.", correct: false }
+    ]
+  },
+  {
+    q: "7. Was kennzeichnet die höchste CMMI-Reifestufe 'Optimizing' (Stufe 5)?",
+    type: "single",
+    options: [
+      { t: "Ein selbstverbessernder Prozess mit Einblick sowohl in Projekt- als auch in Prozessschwächen.", correct: true },
+      { t: "Ein beliebiger Prozess ohne jeden Einblick in den Projektstatus.", correct: false },
+      { t: "Nur punktueller Einblick über Meilensteine.", correct: false },
+      { t: "Stufe 5 existiert laut CMMI gar nicht, die höchste Stufe ist 4.", correct: false }
+    ]
+  },
+  {
+    q: "8. Was fanden Herbsleb/Goldenson (1996) empirisch zu CMM-SW heraus?",
+    type: "single",
+    options: [
+      { t: "Höhere Reifestufe korreliert mit besserer Termin-/Budgettreue, Kundenzufriedenheit, Mitarbeitermoral, Produktqualität und Produktivität — starke positive Korrelation mit Management-Interesse, starke negative mit ausgeprägten 'Politik'/Machtspielen.", correct: true },
+      { t: "Die Reifestufe eines Unternehmens hat keinerlei messbaren Effekt auf irgendeine Projektkennzahl.", correct: false },
+      { t: "Höhere Reifestufen korrelieren ausschließlich negativ mit Produktqualität.", correct: false },
+      { t: "Die Studie fand nur einen Zusammenhang zwischen Reifestufe und Unternehmensgröße.", correct: false }
+    ]
+  },
+  {
+    q: "9. Welches Risiko nennt Tom DeMarco im Zusammenhang mit hohen CMMI-Reifestufen?",
+    type: "single",
+    options: [
+      { t: "Hohe Reifestufen können risikoscheu machen — bei sehr innovativen (radikalen) Projekten sind bisherige Messungen nicht mehr aussagekräftig, definierte Prozesse oft nicht anwendbar, und die Organisation schreckt tendenziell vor solchen Projekten zurück.", correct: true },
+      { t: "Hohe Reifestufen garantieren, dass ein Unternehmen niemals scheitern kann.", correct: false },
+      { t: "DeMarco kritisiert, dass CMMI zu wenig Dokumentation verlangt.", correct: false },
+      { t: "Das einzige von DeMarco genannte Risiko betrifft die Zertifizierungskosten.", correct: false }
+    ]
+  },
+  {
+    q: "10. Was ist ISO 9000 im Vergleich zu CMMI?",
+    type: "single",
+    options: [
+      { t: "Ein Qualitätsstandard, der nur Mindestanforderungen beschreibt — mit nur einigen Dutzend Seiten deutlich knapper als CMMI (600 Seiten); das Zertifikat wird von einem Auditor vergeben und ist 3 Jahre gültig.", correct: true },
+      { t: "ISO 9000 ist umfangreicher als CMMI und beschreibt exakt denselben Inhalt.", correct: false },
+      { t: "ISO 9000 ist ein Prozessreifemodell mit 5 Stufen, genau wie CMMI.", correct: false },
+      { t: "ISO-9000-Zertifikate sind unbegrenzt gültig.", correct: false }
+    ]
+  },
+  {
+    q: "11. Welche Grundsätze gehören zu den 7 Grundsätzen von ISO 9000:2015?",
+    type: "multi",
+    options: [
+      { t: "Kundenorientierung", correct: true },
+      { t: "Kontinuierliche Verbesserung", correct: true },
+      { t: "Prozessorientierung", correct: true },
+      { t: "Maximale Codezeilenanzahl pro Modul", correct: false }
+    ]
+  },
+  {
+    q: "12. Was ist die Kerndefinition von TQM (Total Quality Management, nach ISO 8402)?",
+    type: "single",
+    options: [
+      { t: "Eine auf der Mitwirkung ALLER Mitglieder basierende Führungsmethode, die Qualität in den Mittelpunkt stellt und durch Kundenzufriedenheit auf langfristigen Geschäftserfolg sowie Nutzen für Mitglieder und Gesellschaft zielt.", correct: true },
+      { t: "Eine Methode, bei der ausschließlich die Qualitätssicherungsabteilung für Qualität verantwortlich ist.", correct: false },
+      { t: "Ein rein technisches Testverfahren ohne organisatorischen Bezug.", correct: false },
+      { t: "TQM ist identisch mit CMMI Stufe 5.", correct: false }
+    ]
+  },
+  {
+    q: "13. Welche vier Prinzipien von TQM werden genannt?",
+    type: "multi",
+    options: [
+      { t: "Primat der Qualität (alle Arbeit soll sofort und immer 100% richtig getan werden)", correct: true },
+      { t: "Zuständigkeit aller (jede·r ist für die Endqualität mitverantwortlich)", correct: true },
+      { t: "Ständige Verbesserung (Kaizen) in vielen kleinen Schritten", correct: true },
+      { t: "Zentrale Kontrolle durch eine einzelne Qualitätsabteilung", correct: false }
+    ]
+  },
+  {
+    q: "14. Warum ist das Prinzip 'Primat der Qualität' bei Software besonders schwierig umzusetzen?",
+    type: "single",
+    options: [
+      { t: "Weil die niedrigste Mängelhäufigkeit kaum erreichbar ist und sich Anforderungen oft erst allmählich klären — dennoch ist TQM ein guter Ansatz für Prozessverbesserung, und agile Methoden gehen TQM-artig heran.", correct: true },
+      { t: "Weil Software grundsätzlich niemals Mängel enthalten kann.", correct: false },
+      { t: "Weil TQM ausschließlich für die Automobilindustrie entwickelt wurde und auf Software gar nicht anwendbar ist.", correct: false },
+      { t: "Weil Qualität bei Software laut Vorlesung irrelevant ist.", correct: false }
+    ]
+  },
+  {
+    q: "15. Wie äußert sich Prozessmanagement bei agilen Methoden konkret, z. B. bei Scrum?",
+    type: "single",
+    options: [
+      { t: "Es verschmilzt mit dem Projektmanagement auf Teamebene und wird über eingebaute Reflektionsschritte umgesetzt — bei Scrum die Retrospektive am Ende jeder Iteration (Was lief gut/schlecht, warum, was ändern wir?), moderiert vom Scrum Master.", correct: true },
+      { t: "Agile Methoden verzichten komplett auf jede Form von Prozessmanagement.", correct: false },
+      { t: "Retrospektiven finden nur einmalig am Ende des gesamten Projekts statt.", correct: false },
+      { t: "Prozessmanagement bei agilen Methoden wird ausschließlich vom Product Owner durchgeführt.", correct: false }
+    ]
+  },
+  {
+    q: "16. Warum werden die TQM-Prinzipien als bester Startpunkt für den Einstieg in Prozessmanagement empfohlen?",
+    type: "single",
+    options: [
+      { t: "Weil Qualität/Kundenzufriedenheit als Ziel niemand widerspricht, nur kleine Schritte verlangt werden (machbar) und alle mitmachen (der wichtigste Trick) — bei agilen Methoden sind alle drei Aspekte durch Selbstorganisation bereits eingebaut.", correct: true },
+      { t: "Weil TQM die einzige gesetzlich vorgeschriebene Methode ist.", correct: false },
+      { t: "Weil TQM keinerlei Veränderung der bestehenden Arbeitsweise erfordert.", correct: false },
+      { t: "Weil TQM ausschließlich für sehr große Organisationen geeignet ist.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

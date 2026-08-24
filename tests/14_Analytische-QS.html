@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 14 Analytische Qualitätssicherung</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 14 Analytische Qualitätssicherung</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was ist der Unterschied zwischen Verifizieren und Validieren?",
+    type: "single",
+    options: [
+      { t: "Verifizieren prüft, ob ein Produkt den spezifischen Anforderungen/Design-Vorgaben entspricht ('bauen wir das Produkt richtig?'); Validieren prüft, ob es die tatsächlichen Nutzerbedürfnisse erfüllt ('bauen wir das richtige Produkt?').", correct: true },
+      { t: "Beide Begriffe sind exakt gleichbedeutend.", correct: false },
+      { t: "Verifizieren betrifft nur die Benutzeroberfläche, Validieren nur die Datenbank.", correct: false },
+      { t: "Validieren findet immer vor der Implementierung statt, Verifizieren immer danach.", correct: false }
+    ]
+  },
+  {
+    q: "2. Was unterscheidet konstruktive von analytischer Qualitätssicherung?",
+    type: "single",
+    options: [
+      { t: "Konstruktive QS ist vorbeugend (verhindert, dass Mängel entstehen); analytische QS ist prüfend (deckt bereits entstandene Mängel auf, z. B. durch Test oder Durchsicht).", correct: true },
+      { t: "Beide Ansätze sind identisch definiert.", correct: false },
+      { t: "Analytische QS verhindert Mängel, konstruktive QS deckt sie auf.", correct: false },
+      { t: "Konstruktive QS kommt nur nach der Auslieferung zum Einsatz.", correct: false }
+    ]
+  },
+  {
+    q: "3. Wie hängen Fehler, Defekt und Versagen zusammen?",
+    type: "single",
+    options: [
+      { t: "Ein Fehler (Falschtun/Versäumnis der Entwickler:innen) führt zu einem Defekt (fehlerhaftes Element im Programm), der wiederum zu Versagen (beobachtbares falsches Verhalten) führen kann — muss aber nicht.", correct: true },
+      { t: "Versagen führt immer zuerst zu einem Fehler, der dann einen Defekt verursacht.", correct: false },
+      { t: "Alle drei Begriffe sind Synonyme.", correct: false },
+      { t: "Ein Defekt führt zwangsläufig immer zu Versagen.", correct: false }
+    ]
+  },
+  {
+    q: "4. Woraus besteht ein Testfall, und wann ist er 'erfolgreich'?",
+    type: "single",
+    options: [
+      { t: "Ein Tupel (Systemzustand, Eingaben, erwartetes Systemverhalten) — erfolgreich ist ein Testfall, wenn eine Abweichung vom erwarteten Verhalten gefunden wird (ein Defekt wurde entdeckt), nicht wenn er 'besteht'.", correct: true },
+      { t: "Ein Testfall besteht nur aus der Eingabe, ohne erwartetes Verhalten.", correct: false },
+      { t: "Ein Testfall ist erfolgreich, wenn das tatsächliche mit dem erwarteten Verhalten übereinstimmt.", correct: false },
+      { t: "Der Erfolg eines Testfalls hängt nur von der Ausführungsgeschwindigkeit ab.", correct: false }
+    ]
+  },
+  {
+    q: "5. Was unterscheidet Funktionstest (Black-Box) von Strukturtest (White-Box)?",
+    type: "single",
+    options: [
+      { t: "Funktionstest basiert auf der Spezifikation/Schnittstelle (man 'guckt nicht hinein'), Strukturtest auf der Implementierung (man 'guckt hinein') — mit dem Ziel, alle Elemente der Implementierung abzudecken.", correct: true },
+      { t: "Beide Testarten nutzen exakt dieselbe Grundlage und dasselbe Ziel.", correct: false },
+      { t: "Strukturtest kann nur auf kompilierten Binärdateien angewendet werden.", correct: false },
+      { t: "Funktionstest ist immer aufwändiger als Strukturtest.", correct: false }
+    ]
+  },
+  {
+    q: "6. Was ist eine Äquivalenzklasse, und was sind Randfälle (Grenzwerte)?",
+    type: "single",
+    options: [
+      { t: "Eine Äquivalenzklasse ist eine disjunkte Menge von Eingaben mit vermutlich gleichartigem Verhalten; Randfälle liegen an der Grenze zwischen zwei Klassen, wo das Verhalten 'umschlägt' — je ein Testfall knapp links und rechts der Grenze.", correct: true },
+      { t: "Äquivalenzklassen und Randfälle sind identisch definiert.", correct: false },
+      { t: "Randfälle sind ausschließlich bei Strukturtests relevant, nie bei Funktionstests.", correct: false },
+      { t: "Eine Äquivalenzklasse muss immer aus genau einem einzigen Wert bestehen.", correct: false }
+    ]
+  },
+  {
+    q: "7. Am Beispiel der Dreieck-Klassifizierung: Welche drei Kategorien von Black-Box-Testfällen werden unterschieden?",
+    type: "multi",
+    options: [
+      { t: "Typische Vertreter einer Äquivalenzklasse (z. B. (5,5,5) → Gleichseitig)", correct: true },
+      { t: "Randfälle/Grenzwerte (z. B. Max-int-Werte)", correct: true },
+      { t: "'Quatsch'-Eingaben außerhalb des erwarteten Typs (prüfen Fehlerbehandlung)", correct: true },
+      { t: "Zufällig generierte Eingaben ohne jede Systematik", correct: false }
+    ]
+  },
+  {
+    q: "8. Was bedeuten die Abdeckungskriterien C0, C1 und C2?",
+    type: "single",
+    options: [
+      { t: "C0 (Anweisungsüberdeckung): jede Anweisung mindestens einmal ausgeführt. C1 (Bedingungs-/Zweigüberdeckung): jede Steuerbedingung mindestens einmal wahr und einmal falsch. C2 (Schleifenüberdeckung): jede Schleife 0-fach, 1-fach und mehrfach durchlaufen.", correct: true },
+      { t: "C0, C1 und C2 sind exakt gleichbedeutend und austauschbar.", correct: false },
+      { t: "C2 ist das schwächste Kriterium, C0 das stärkste.", correct: false },
+      { t: "Diese Kriterien gelten nur für Black-Box-Tests, nie für White-Box-Tests.", correct: false }
+    ]
+  },
+  {
+    q: "9. Warum ist C1 (Zweigüberdeckung) in der Regel das strengere Kriterium gegenüber C0 (Anweisungsüberdeckung), und wann gilt das nicht?",
+    type: "single",
+    options: [
+      { t: "Wer C1 erreicht, hat meist automatisch auch C0 erreicht — Ausnahme: nicht erreichbarer Code (z. B. ein 'assert false' in einem nie ausgeführten Zweig), der C0 unerreichbar macht, ohne C1 zu beeinflussen.", correct: true },
+      { t: "C0 ist immer strenger als C1, ohne jede Ausnahme.", correct: false },
+      { t: "Beide Kriterien sind komplett unabhängig voneinander und schließen sich gegenseitig aus.", correct: false },
+      { t: "C1 lässt sich nur bei Schleifen anwenden, nie bei if-Anweisungen.", correct: false }
+    ]
+  },
+  {
+    q: "10. Was ist Vor- und Nachteil des Bottom-Up- gegenüber dem Top-Down-Testansatz?",
+    type: "single",
+    options: [
+      { t: "Bottom-Up testet nur 'reale', relevante Zusammenhänge, braucht aber Testtreiber für noch fehlende aufrufende Module; Top-Down testet anschauliche, nutzernahe Abläufe, braucht aber Stummel für noch fehlende aufgerufene Module.", correct: true },
+      { t: "Beide Ansätze benötigen niemals Stummel oder Testtreiber.", correct: false },
+      { t: "Top-Down beginnt immer bei den elementarsten Modulen, Bottom-Up beim Hauptprogramm.", correct: false },
+      { t: "Es gibt keinerlei Unterschied zwischen beiden Ansätzen.", correct: false }
+    ]
+  },
+  {
+    q: "11. Warum sollte laut der 'goldenen Regel' möglichst nicht die Entwicklerin/der Entwickler selbst den eigenen Code testen — und was ist die Ausnahme?",
+    type: "single",
+    options: [
+      { t: "Zwei Gründe: man weist sich nur ungern selbst Unzulänglichkeiten nach, und bei einem Fehlverständnis der Spezifikation enthalten Code UND selbstgeschriebene Tests oft dieselben falschen Annahmen. Ausnahme: Test-Driven Development (TDD), da die Tests vor dem Code entstehen.", correct: true },
+      { t: "Es gibt keinen nachvollziehbaren Grund für diese Regel.", correct: false },
+      { t: "Der einzige Grund ist reine Zeitersparnis, keine psychologischen Aspekte.", correct: false },
+      { t: "TDD verstärkt das Problem noch zusätzlich, statt es zu lösen.", correct: false }
+    ]
+  },
+  {
+    q: "12. Welche drei Vorteile bringt automatisiertes Testen laut Vorlesung?",
+    type: "multi",
+    options: [
+      { t: "Mehr Testen (höhere Abdeckung des Verhaltensraums)", correct: true },
+      { t: "Wiederholtes Testen (auch später eingefügte Defekte werden bei jedem Lauf erneut geprüft)", correct: true },
+      { t: "Zuverlässigeres Testen (manuelles Testen ist selbst fehleranfällig)", correct: true },
+      { t: "Vollständige Eliminierung jeglicher Notwendigkeit von Durchsichten", correct: false }
+    ]
+  },
+  {
+    q: "13. Was ist der Unterschied zwischen Lasttest und Stresstest?",
+    type: "single",
+    options: [
+      { t: "Beide schicken massenhafte Eingaben; Lasttest prüft normale/hohe, aber gültige Last, Stresstest prüft bewusst extreme/entartete Bedingungen (Überlast, massenhaft unsinnige Eingaben).", correct: true },
+      { t: "Lasttest und Stresstest sind exakt dasselbe Verfahren unter zwei Namen.", correct: false },
+      { t: "Stresstest betrifft nur die Benutzeroberfläche, Lasttest nur die Datenbank.", correct: false },
+      { t: "Lasttest prüft extreme Bedingungen, Stresstest nur normale Nutzung.", correct: false }
+    ]
+  },
+  {
+    q: "14. Worin unterscheidet sich das Erfolgskriterium von Funktionstest und Akzeptanztest?",
+    type: "single",
+    options: [
+      { t: "Funktionstest: erfolgreich, wenn ein Defekt gefunden wird. Akzeptanztest: erfolgreich, wenn KEINE (nennenswerten) Mängel mehr gefunden werden — eine Zielumkehr.", correct: true },
+      { t: "Beide Testarten haben identische Erfolgskriterien.", correct: false },
+      { t: "Akzeptanztest ist erfolgreich, wenn möglichst viele Defekte gefunden werden, genau wie Funktionstest.", correct: false },
+      { t: "Funktionstest wird nur nach Auslieferung durchgeführt, Akzeptanztest während der Entwicklung.", correct: false }
+    ]
+  },
+  {
+    q: "15. Was ist der grundsätzliche Ablauf einer Durchsicht (Review)?",
+    type: "single",
+    options: [
+      { t: "Software-Artefakte werden von Menschen gelesen (ohne Codeausführung): gründliche Durchsicht auf Mängel → Dokumentation/Diskussion der Mängel → Beseitigung → ggf. erneute Prüfung nach heiklen Korrekturen.", correct: true },
+      { t: "Eine Durchsicht erfordert immer ein lauffähiges, kompiliertes Programm.", correct: false },
+      { t: "Durchsichten bestehen ausschließlich aus automatisierten Werkzeugläufen ohne menschliche Beteiligung.", correct: false },
+      { t: "Nach einer Durchsicht werden gefundene Mängel grundsätzlich nicht weiterverfolgt.", correct: false }
+    ]
+  },
+  {
+    q: "16. Welche Vorteile haben Durchsichten gegenüber Tests?",
+    type: "multi",
+    options: [
+      { t: "Anwendbar auf jede Art von Dokument, auch ohne ausführbaren Code (Anforderungen, Entwürfe, Projektpläne)", correct: true },
+      { t: "Finden empirisch mehr Defekte pro Stunde als Tests", correct: true },
+      { t: "Finden auch Verstöße gegen Entwurfs-/Kodierrichtlinien, die ein Verhaltenstest nicht aufdeckt", correct: true },
+      { t: "Benötigen grundsätzlich keinerlei menschliche Beteiligung", correct: false }
+    ]
+  },
+  {
+    q: "17. Welche Art von Defekten deckt eine Durchsicht typischerweise besser auf als ein Test, und warum?",
+    type: "single",
+    options: [
+      { t: "Nebenläufigkeitsfehler (z. B. fehlende Synchronisation) — sie sind zeitabhängig/nichtdeterministisch und treten in einem einzelnen Testlauf oft gar nicht auf, während eine Durchsicht den fehlenden synchronized-Block direkt im Code sieht.", correct: true },
+      { t: "Rein arithmetische Rundungsfehler, die Tests grundsätzlich nie finden können.", correct: false },
+      { t: "Durchsichten sind bei jeder Art von Defekt immer effektiver als Tests, ohne Ausnahme.", correct: false },
+      { t: "Durchsichten können ausschließlich Syntaxfehler finden, keine semantischen Probleme.", correct: false }
+    ]
+  },
+  {
+    q: "18. Was unterscheidet eine Fagan-Inspektion von Perspektiven-basiertem Lesen (PBR)?",
+    type: "single",
+    options: [
+      { t: "Fagan-Inspektion ist ein hochformeller, mehrstufiger Teamprozess mit festen Rollen und gemeinsamem Treffen; PBR lässt mehrere Gutachter:innen dasselbe Dokument aus je einer anderen Perspektive (mit eigener Checkliste) prüfen, was die Überlappung senkt und die Gesamtausbeute erhöht.", correct: true },
+      { t: "Beide Verfahren sind identisch und unterscheiden sich nur im Namen.", correct: false },
+      { t: "PBR ist informeller als Selbst-Begutachtung.", correct: false },
+      { t: "Fagan-Inspektion verzichtet komplett auf feste Rollen.", correct: false }
+    ]
+  },
+  {
+    q: "19. Was zeigen empirische Resultate zur Fagan-Inspektion, obwohl sie hochformell ist?",
+    type: "single",
+    options: [
+      { t: "Sie ist trotz hohem Formalitätsgrad eher ineffizient: große Überschneidung der von verschiedenen Gutachter:innen gefundenen Mängel, kein nachweisbarer Mehrwert durch das gemeinsame Treffen, dazu lange Kalenderlaufzeit.", correct: true },
+      { t: "Sie ist empirisch immer die effektivste aller Durchsicht-Varianten.", correct: false },
+      { t: "Sie findet nachweislich mehr einzigartige Defekte als jede andere Methode.", correct: false },
+      { t: "Formalität korreliert laut den Studien linear mit der Fundquote.", correct: false }
+    ]
+  },
+  {
+    q: "20. Was ist der Unterschied zwischen Modellprüfung (model checking) und Quelltextanalyse (static analysis) als automatische statische Verfahren?",
+    type: "single",
+    options: [
+      { t: "Modellprüfung durchsucht bei vollständig spezifizierten Zustandsautomaten den kompletten Zustandsraum auf Sicherheitseigenschaften; Quelltextanalyse-Werkzeuge (z. B. FindBugs) klopfen Quellcode automatisch auf typische Schwachstellen ab — mit dem bekannten Problem falscher Alarme (false positives).", correct: true },
+      { t: "Beide Verfahren sind exakt dasselbe und nur unterschiedlich benannt.", correct: false },
+      { t: "Modellprüfung funktioniert nur bei kompiliertem Maschinencode.", correct: false },
+      { t: "Quelltextanalyse kann laut Vorlesung niemals falsche Alarme erzeugen.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

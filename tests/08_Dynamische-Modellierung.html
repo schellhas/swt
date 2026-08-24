@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 08 Dynamische Modellierung</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 08 Dynamische Modellierung</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was ist ein 'dynamisches Modell' laut Vorlesung?",
+    type: "single",
+    options: [
+      { t: "Eine Sammlung mehrerer Verhaltensdiagramme (State-Machine-, Aktivitäts-, Sequenzdiagramme) — meist mindestens eines pro wichtiger Klasse mit relevantem dynamischen Verhalten.", correct: true },
+      { t: "Ein einzelnes Klassendiagramm, das sich zur Laufzeit automatisch verändert.", correct: false },
+      { t: "Ein Synonym für Objektdiagramm.", correct: false },
+      { t: "Ausschließlich Sequenzdiagramme, alle anderen Diagrammtypen zählen nicht dazu.", correct: false }
+    ]
+  },
+  {
+    q: "2. Welche Regel gilt für den Nachrichtenaustausch zwischen Entity-, Control- und Boundary-Objekten in Sequenzdiagrammen?",
+    type: "single",
+    options: [
+      { t: "Entity-Objekte sollten nie Boundary- oder Control-Objekte aufrufen — der Zugriff geht von Control/Boundary auf Entity, nicht umgekehrt.", correct: true },
+      { t: "Boundary-Objekte dürfen niemals mit Control-Objekten kommunizieren.", correct: false },
+      { t: "Es gibt keine Einschränkungen, jedes Objekt darf jedes andere beliebig aufrufen.", correct: false },
+      { t: "Nur Entity-Objekte dürfen Nachrichten empfangen.", correct: false }
+    ]
+  },
+  {
+    q: "3. Was entsteht in der zugehörigen Klasse, wenn ein Objekt in einem Sequenzdiagramm eine Nachricht (Event) empfängt?",
+    type: "single",
+    options: [
+      { t: "Eine öffentliche Operation, deren Name meist dem Namen des Events entspricht.", correct: true },
+      { t: "Ein neues Attribut mit dem Namen des Events.", correct: false },
+      { t: "Eine neue Unterklasse.", correct: false },
+      { t: "Nichts — Sequenzdiagramme haben keinen Einfluss auf das Klassendiagramm.", correct: false }
+    ]
+  },
+  {
+    q: "4. Was unterscheidet den 'Fork'- vom 'Stair'-Stil (Jacobson) bei der Verhaltensverteilung, und wovon handelt diese Entscheidung?",
+    type: "single",
+    options: [
+      { t: "Fork: viel Verhalten in einem zentralen (Control-)Objekt, unterstützt Änderungen gut. Stair: dezentral verteiltes Verhalten, lokal einfach überschaubar. Es ist eine Entwurfs-, keine Analysefrage.", correct: true },
+      { t: "Fork und Stair sind zwei Namen für exakt denselben Entwurfsstil.", correct: false },
+      { t: "Diese Unterscheidung betrifft ausschließlich Zustandsdiagramme.", correct: false },
+      { t: "Fork ist immer die bessere Wahl, Stair sollte nie verwendet werden.", correct: false }
+    ]
+  },
+  {
+    q: "5. Auf wie viele Klassen bezieht sich ein einzelnes Zustandsdiagramm?",
+    type: "single",
+    options: [
+      { t: "Immer auf genau eine Klasse — ein Objektmodell mit mehreren Klassen kann entsprechend mehrere Zustandsdiagramme haben.", correct: true },
+      { t: "Auf alle Klassen des Systems gleichzeitig.", correct: false },
+      { t: "Nur auf Lösungsklassen, nie auf Problembereichsklassen.", correct: false },
+      { t: "Auf keine Klasse, sondern nur auf einzelne Objekte.", correct: false }
+    ]
+  },
+  {
+    q: "6. Wie unterscheiden sich Notation und Semantik einer Aktion an einer Transition von einer entry-Aktion in einem Zustand?",
+    type: "single",
+    options: [
+      { t: "Eine Transition-Aktion (Notation: Event[Guard]/Aktion auf dem Pfeil) wird einmal während des Übergangs ausgeführt; eine entry-Aktion (im Zustandskästchen notiert) wird einmal ausgeführt, sobald der Zustand betreten wird — unabhängig davon, über welche Transition.", correct: true },
+      { t: "Beide werden exakt gleich oft und zum gleichen Zeitpunkt ausgeführt.", correct: false },
+      { t: "Eine entry-Aktion wird bei jedem Zustandsübergang im gesamten Diagramm ausgeführt, unabhängig vom Zustand.", correct: false },
+      { t: "Transition-Aktionen werden kontinuierlich wiederholt, solange der Zustand aktiv ist.", correct: false }
+    ]
+  },
+  {
+    q: "7. Was ist der Unterschied zwischen einer internen Transition und einer Selbsttransition bezüglich entry/exit-Verhalten?",
+    type: "single",
+    options: [
+      { t: "Bei einer internen Transition werden entry/exit NICHT ausgelöst (der Zustand wird nicht verlassen); bei einer Selbsttransition werden sie WOHL ausgelöst (der Zustand wird formal verlassen und sofort wieder betreten).", correct: true },
+      { t: "Beide lösen entry/exit auf exakt dieselbe Weise aus.", correct: false },
+      { t: "Interne Transitionen gibt es in UML-Zustandsdiagrammen nicht.", correct: false },
+      { t: "Eine Selbsttransition wird nie mit einem Event verknüpft.", correct: false }
+    ]
+  },
+  {
+    q: "8. Was ist ein 'Zustand' im Sinne eines UML-Zustandsdiagramms?",
+    type: "single",
+    options: [
+      { t: "Eine Abstraktion der Attributwerte eines (späteren) Implementierungsobjekts — eine 'passende' Äquivalenzklasse von Attributwert-Konfigurationen, die für das aktuelle Ziel nicht weiter unterschieden werden müssen.", correct: true },
+      { t: "Ein Synonym für 'Klasse'.", correct: false },
+      { t: "Ein exakter Speicherabzug aller Variablenwerte eines Programms.", correct: false },
+      { t: "Ein Zustand hat per Definition keine Dauer.", correct: false }
+    ]
+  },
+  {
+    q: "9. Was unterscheidet eine 'Activity' von einer 'Action' innerhalb eines Zustandsautomaten?",
+    type: "single",
+    options: [
+      { t: "Eine Activity ist eine zusammengesetzte Operation, die durch ein eigenes Aktivitätsdiagramm weiter beschrieben werden kann; eine Action ist elementar und wird vom Zustandsautomaten nicht weiter zerlegt.", correct: true },
+      { t: "Beide Begriffe sind exakt gleichbedeutend.", correct: false },
+      { t: "Eine Action kann immer weiter in Aktivitäten zerlegt werden, eine Activity nie.", correct: false },
+      { t: "Activities kommen nur in Klassendiagrammen vor.", correct: false }
+    ]
+  },
+  {
+    q: "10. Was ist ein 'Composite State' (zusammengesetzter Zustand)?",
+    type: "single",
+    options: [
+      { t: "Ein Zustand, der selbst wieder als eigener kleiner Zustandsautomat mit eigenem Start-/Endpunkt ausmodelliert werden kann — im übergeordneten Diagramm nur als ein Zustand angedeutet.", correct: true },
+      { t: "Ein Zustand, der nie verlassen werden kann.", correct: false },
+      { t: "Ein Synonym für 'Activity Final Node'.", correct: false },
+      { t: "Ein Zustand, der ausschließlich in Aktivitätsdiagrammen vorkommt.", correct: false }
+    ]
+  },
+  {
+    q: "11. Was ist der Unterschied zwischen 'System Concurrency' und 'Object Concurrency'?",
+    type: "single",
+    options: [
+      { t: "System Concurrency ist Nebenläufigkeit zwischen Objekten (jeder Zustandsautomat läuft konzeptuell parallel zu allen anderen); Object Concurrency ist Nebenläufigkeit innerhalb eines Objekts (parallele Zustands-Regions mit fork/join).", correct: true },
+      { t: "Beide Begriffe bezeichnen exakt denselben Sachverhalt.", correct: false },
+      { t: "System Concurrency gibt es nur in Aktivitätsdiagrammen, nicht in Zustandsdiagrammen.", correct: false },
+      { t: "Object Concurrency bezieht sich nur auf die Kommunikation zwischen verschiedenen Klassen.", correct: false }
+    ]
+  },
+  {
+    q: "12. Was bedeutet der Stereotyp «datastore» an einem Objektknoten in einem Aktivitätsdiagramm?",
+    type: "single",
+    options: [
+      { t: "Er modelliert einen dauerhaften Datenspeicher — ein dort abgelegter Token wird beim Auslesen NICHT verbraucht, sondern bleibt für weitere Zugriffe erhalten.", correct: true },
+      { t: "Er markiert einen Knoten, der niemals einen Token empfangen kann.", correct: false },
+      { t: "Er bedeutet, dass mehrere Empfänger gleichzeitig beliefert werden («multicast»).", correct: false },
+      { t: "Er kommt ausschließlich in Zustandsdiagrammen vor.", correct: false }
+    ]
+  },
+  {
+    q: "13. Wann startet in einem Aktivitätsdiagramm eine Aktivität mit mehreren eingehenden Pfeilen (implizites Join-Verhalten)?",
+    type: "single",
+    options: [
+      { t: "Sobald irgendein einzelner Input einen Token erhalten hat.", correct: false },
+      { t: "Erst wenn ALLE Inputs des Knotens jeweils einen Token erhalten haben.", correct: true },
+      { t: "Nie automatisch — das muss immer explizit mit einem Guard modelliert werden.", correct: false },
+      { t: "Nur wenn der Knoten als «datastore» markiert ist.", correct: false }
+    ]
+  },
+  {
+    q: "14. Was ist der Unterschied zwischen Activity Final Node und Flow Final Node in einem Aktivitätsdiagramm?",
+    type: "single",
+    options: [
+      { t: "Der Activity Final Node löscht ALLE Tokens im Diagramm (auch parallele Flüsse werden gestoppt); der Flow Final Node löscht nur den ankommenden Token und hat keinen Einfluss auf parallele Flüsse.", correct: true },
+      { t: "Beide Knotentypen verhalten sich exakt identisch.", correct: false },
+      { t: "Der Flow Final Node beendet immer das gesamte Diagramm, der Activity Final Node nur einen einzelnen Pfad.", correct: false },
+      { t: "Diese Knoten existieren nur in Zustandsdiagrammen, nicht in Aktivitätsdiagrammen.", correct: false }
+    ]
+  },
+  {
+    q: "15. Über welche zwei Notationsformen können in einem Aktivitätsdiagramm Datenflüsse (komplexe Objekte statt einfacher Kontroll-Tokens) dargestellt werden?",
+    type: "single",
+    options: [
+      { t: "Pin-Notation (kleine benannte Kästchen am Rand der Aktivität) oder explizite Objekt-Knoten (eigene Kästchen zwischen den Aktivitäten).", correct: true },
+      { t: "Nur über Farben — grüne Pfeile für Daten, schwarze für Kontrolle.", correct: false },
+      { t: "Nur über «datastore»-Stereotypen, andere Notationen sind nicht vorgesehen.", correct: false },
+      { t: "Datenflüsse können in UML-Aktivitätsdiagrammen grundsätzlich nicht dargestellt werden.", correct: false }
+    ]
+  },
+  {
+    q: "16. Wann 'dominiert' laut Vorlesung das statische bzw. das dynamische Modell — mit welchen Beispielen wird das illustriert?",
+    type: "single",
+    options: [
+      { t: "Bei einem einfachen Datenbanksystem (simple Operationen, komplexe Datenstrukturen) dominiert das statische Objektmodell; bei einem Telefonvermittlungssystem (Verhalten zu komplex für Use Cases) dominiert das dynamische Modell (Statecharts).", correct: true },
+      { t: "Das dynamische Modell dominiert immer, unabhängig vom Systemtyp.", correct: false },
+      { t: "Ein Modell 'dominiert', wenn es die wenigsten Informationen enthält.", correct: false },
+      { t: "Datenbanksysteme werden ausschließlich mit dynamischen Modellen beschrieben.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

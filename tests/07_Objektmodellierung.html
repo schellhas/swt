@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 07 Objektmodellierung</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 07 Objektmodellierung</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was unterscheidet eine Problembereichsklasse (application domain class) von einer Lösungsklasse (solution domain class)?",
+    type: "single",
+    options: [
+      { t: "Eine Problembereichsklasse ist eine Abstraktion in der Anwendungsdomäne (kommt in Analyse- UND Entwurfsmodell vor); eine Lösungsklasse wird aus rein technischen Gründen eingeführt und kommt nur im Entwurfsmodell vor.", correct: true },
+      { t: "Beide Begriffe sind Synonyme und austauschbar.", correct: false },
+      { t: "Lösungsklassen kommen nur im Analysemodell vor, Problembereichsklassen nur im Entwurfsmodell.", correct: false },
+      { t: "Der Unterschied betrifft nur die Namenskonvention, nicht die Semantik.", correct: false }
+    ]
+  },
+  {
+    q: "2. Welche der folgenden sind typische Beispiele für Lösungsklassen (solution domain classes)?",
+    type: "multi",
+    options: [
+      { t: "DatabaseConnection", correct: true },
+      { t: "Parser", correct: true },
+      { t: "Buffer", correct: true },
+      { t: "Prescription", correct: false }
+    ]
+  },
+  {
+    q: "3. Was beschreibt das Analysemodell laut Vorlesung, und was NICHT?",
+    type: "single",
+    options: [
+      { t: "Es beschreibt ausschließlich Problembereichsklassen — es ist explizit kein Lösungsentwurf ('It is not meant to be a solution design!').", correct: true },
+      { t: "Es beschreibt ausschließlich Lösungsklassen und technische Details.", correct: false },
+      { t: "Es ist identisch mit dem Entwurfsmodell und enthält dieselben Klassen.", correct: false },
+      { t: "Es beschreibt nur die Benutzeroberfläche des Systems.", correct: false }
+    ]
+  },
+  {
+    q: "4. Was ist der Unterschied zwischen einem Klassendiagramm und einem Objektdiagramm (Instance Diagram)?",
+    type: "single",
+    options: [
+      { t: "Ein Klassendiagramm beschreibt alle möglichen Zustände der Daten (Spezifikation); ein Objektdiagramm zeigt ein konkretes Set von Objekten/Beziehungen für ein Beispiel, Szenario oder einen Testfall (Illustration).", correct: true },
+      { t: "Beide zeigen exakt dieselbe Information, nur in unterschiedlicher Notation.", correct: false },
+      { t: "Ein Objektdiagramm zeigt alle möglichen Zustände, ein Klassendiagramm nur ein Beispiel.", correct: false },
+      { t: "Objektdiagramme werden nur in der Implementierungsphase verwendet.", correct: false }
+    ]
+  },
+  {
+    q: "5. Wie unterscheiden sich Entity-, Control- und Boundary-Objekte hinsichtlich Änderungshäufigkeit?",
+    type: "single",
+    options: [
+      { t: "Entity-Objekte ändern sich am seltensten, Boundary-Objekte am häufigsten — Control-Objekte liegen dazwischen.", correct: true },
+      { t: "Alle drei Objektarten ändern sich gleich häufig.", correct: false },
+      { t: "Boundary-Objekte ändern sich am seltensten, Entity-Objekte am häufigsten.", correct: false },
+      { t: "Nur Control-Objekte können sich überhaupt ändern.", correct: false }
+    ]
+  },
+  {
+    q: "6. Wofür passt der Begriff 'Model, View, Controller' (MVC) laut Vorlesung eigentlich nur, obwohl er oft für die Entity/Control/Boundary-Dreiteilung verwendet wird?",
+    type: "single",
+    options: [
+      { t: "MVC passt eigentlich nur innerhalb von GUIs, also für Lösungsklassen — nicht für die allgemeinere Entity/Control/Boundary-Unterscheidung im Analysemodell.", correct: true },
+      { t: "MVC ist identisch mit Entity/Control/Boundary und beliebig austauschbar in jedem Kontext.", correct: false },
+      { t: "MVC bezieht sich ausschließlich auf Datenbankentwürfe.", correct: false },
+      { t: "MVC wird nur in Zustandsdiagrammen verwendet.", correct: false }
+    ]
+  },
+  {
+    q: "7. Bei Abbotts Textanalyse (noun-verb analysis): Welchem UML-Element entspricht ein possessives Verb wie 'has a' oder 'consists of'?",
+    type: "single",
+    options: [
+      { t: "Inheritance", correct: false },
+      { t: "Aggregation", correct: true },
+      { t: "Attribute", correct: false },
+      { t: "Constraint", correct: false }
+    ]
+  },
+  {
+    q: "8. Welchem UML-Element entspricht bei Abbotts Textanalyse ein klassifizierendes Verb wie 'is a' oder 'kind of'?",
+    type: "single",
+    options: [
+      { t: "Aggregation", correct: false },
+      { t: "Operation", correct: false },
+      { t: "Inheritance", correct: true },
+      { t: "Object", correct: false }
+    ]
+  },
+  {
+    q: "9. Warum sollten 'Ravioli-Modelle' in Klassendiagrammen vermieden werden?",
+    type: "single",
+    options: [
+      { t: "Weil zu viele Klassen in einem Diagramm die Übersicht zerstören — Faustregel: 5 bis 10 Klassen pro Diagramm.", correct: true },
+      { t: "Weil Klassendiagramme grundsätzlich keine Assoziationen enthalten dürfen.", correct: false },
+      { t: "Weil dieser Begriff sich nur auf Objektdiagramme bezieht.", correct: false },
+      { t: "Weil zu wenige Klassen ein Diagramm nutzlos machen.", correct: false }
+    ]
+  },
+  {
+    q: "10. Was ist mit der Aussage 'Analysten sind an der Struktur interessiert, Entwerfer sind an der Lösung interessiert' gemeint?",
+    type: "single",
+    options: [
+      { t: "Analyst:innen modellieren, welche Konzepte/Taxonomien in der Anwendungsdomäne existieren; Entwerfer:innen nehmen diese Struktur als gegeben und suchen dazu passende Lösungsklassen/Schnittstellen.", correct: true },
+      { t: "Analyst:innen und Entwerfer:innen verfolgen exakt dieselben Ziele und nutzen dieselben Diagramme auf identische Weise.", correct: false },
+      { t: "Entwerfer:innen interessieren sich nur für die Anwendungsdomäne, Analyst:innen nur für Technik.", correct: false },
+      { t: "Nur Analyst:innen dürfen Klassendiagramme erstellen.", correct: false }
+    ]
+  },
+  {
+    q: "11. Welche drei Rollen von Implementor:innen werden unterschieden, und was interessiert die 'Class-User/Client'-Rolle?",
+    type: "single",
+    options: [
+      { t: "Class Implementor, Class Extender, Class-User/Client — der Client interessiert sich nur an der Schnittstelle (Signaturen, Vor-/Nachbedingungen), nicht an der Implementierung.", correct: true },
+      { t: "Es gibt nur eine einzige Implementor-Rolle, die alles abdeckt.", correct: false },
+      { t: "Der Class-User/Client muss die vollständige interne Implementierung der Klasse kennen.", correct: false },
+      { t: "Class Extender und Class-User sind identisch definiert.", correct: false }
+    ]
+  },
+  {
+    q: "12. Wie unterscheidet sich der Einsatzzweck von Klassendiagrammen zwischen Analyse und Entwurf (Übung 6-1c)?",
+    type: "single",
+    options: [
+      { t: "Analyse: Anwendungsdomäne verstehen und modellieren, Anforderungen abbilden. Entwurf: Schnittstellen (erst Subsysteme/Architektur, dann Klassen) so spezifizieren, dass alle Anforderungen erfüllbar sind.", correct: true },
+      { t: "Beide Phasen verfolgen exakt denselben Einsatzzweck.", correct: false },
+      { t: "Analyse dient der Implementierung, Entwurf der Anforderungserhebung.", correct: false },
+      { t: "Im Entwurf werden keine Klassendiagramme mehr verwendet.", correct: false }
+    ]
+  },
+  {
+    q: "13. Wie unterscheidet sich die Semantik einer Assoziation zwischen Analysemodell und Entwurfsmodell?",
+    type: "single",
+    options: [
+      { t: "Im Analysemodell: Beziehung zwischen Objekten in der Realität. Im Entwurfsmodell: Erreichbarkeit von Instanzen ('reachability').", correct: true },
+      { t: "Assoziationen haben in beiden Modellen exakt dieselbe Bedeutung.", correct: false },
+      { t: "Im Analysemodell bedeutet eine Assoziation Vererbung, im Entwurfsmodell Aggregation.", correct: false },
+      { t: "Assoziationen kommen nur im Entwurfsmodell vor, nie im Analysemodell.", correct: false }
+    ]
+  },
+  {
+    q: "14. Warum ist Vorsicht geboten, wenn Vererbung im Entwurfsmodell nur zur Wiederverwendung von Oberklassencode genutzt wird, ohne dass eine echte Subtyp-Beziehung besteht?",
+    type: "single",
+    options: [
+      { t: "Das führt oft zu großen Problemen — Vererbung sollte im Analysemodell eine echte Typtaxonomie widerspiegeln, im Entwurf ist reine Code-Wiederverwendung ohne Subtyp-Beziehung riskant.", correct: true },
+      { t: "Das ist völlig unproblematisch und in der UML explizit empfohlen.", correct: false },
+      { t: "Vererbung darf im Entwurfsmodell grundsätzlich gar nicht verwendet werden.", correct: false },
+      { t: "Das Problem betrifft ausschließlich Aggregationen, nicht Vererbung.", correct: false }
+    ]
+  },
+  {
+    q: "15. Wie verändert sich das Klassendiagramm typischerweise beim Übergang vom Analyse- zum Entwurfsmodell?",
+    type: "single",
+    options: [
+      { t: "Das Entwurfsmodell lässt oft etliche Problembereichsklassen weg (weil für das technische System nicht relevant) und enthält üblicherweise viele zusätzliche Lösungsklassen.", correct: true },
+      { t: "Das Entwurfsmodell ist immer identisch mit dem Analysemodell — es darf nichts verändert werden.", correct: false },
+      { t: "Das Entwurfsmodell enthält grundsätzlich weniger Klassen als das Analysemodell.", correct: false },
+      { t: "Lösungsklassen tauchen bereits im Analysemodell auf und werden im Entwurf nur verfeinert.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

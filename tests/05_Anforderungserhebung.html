@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 05 Anforderungserhebung</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 05 Anforderungserhebung</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Warum sind Requirements 'Festlegungen, keine Fakten'?",
+    type: "single",
+    options: [
+      { t: "Weil Requirements nie schriftlich fixiert werden dürfen.", correct: false },
+      { t: "Weil sie ausdrücken, was jemand braucht bzw. will — es gibt oft kein formell auferlegtes Dokument, sondern es reicht, dass irgendjemand zufriedengestellt werden will; Aufgeschriebenes kann trotzdem den Nutzer nicht zufriedenstellen.", correct: true },
+      { t: "Weil sie ausschließlich aus mathematischen Beweisen abgeleitet werden.", correct: false },
+      { t: "Weil Requirements identisch mit Domain Properties sind.", correct: false }
+    ]
+  },
+  {
+    q: "2. Ordnen Sie die vier grundlegenden Requirement-Typen ihrer Bedeutung zu: Was ist eine 'Safety/Security'-Anforderung?",
+    type: "single",
+    options: [
+      { t: "Eine Beschreibung dessen, was das System tun soll (funktionale Anforderung).", correct: false },
+      { t: "Eine Art nichtfunktionaler Anforderung, die festlegt, welches Verhalten das System niemals zeigen darf ('shall not'-Eigenschaften).", correct: true },
+      { t: "Eine vom Kunden vorgegebene Technologie-Einschränkung (z. B. 'muss in Java geschrieben sein').", correct: false },
+      { t: "Ein Requirement, das nur die Performance des Systems betrifft.", correct: false }
+    ]
+  },
+  {
+    q: "3. Was sind 'Constraints' (auch 'Pseudo-Requirements' genannt)?",
+    type: "single",
+    options: [
+      { t: "Funktionale Anforderungen, die besonders schwer umzusetzen sind.", correct: false },
+      { t: "Von Kunde oder Umgebung auferlegte Einschränkungen, oft bezüglich der zu verwendenden Technologie (Sprache, Betriebssystem, Middleware).", correct: true },
+      { t: "Anforderungen, die später wieder gestrichen werden.", correct: false },
+      { t: "Ein anderer Name für Domain Properties.", correct: false }
+    ]
+  },
+  {
+    q: "4. Welche vier Schritte umfasst der RE-Prozess laut Vorlesung, und in welcher Reihenfolge?",
+    type: "single",
+    options: [
+      { t: "Requirements Elicitation → Requirements Specification → Requirements Validation → Requirements Management", correct: true },
+      { t: "Requirements Management → Requirements Elicitation → Requirements Validation → Requirements Specification", correct: false },
+      { t: "Requirements Specification → Requirements Elicitation → Requirements Management → Requirements Validation", correct: false },
+      { t: "Es gibt nur einen einzigen RE-Schritt: Requirements Elicitation.", correct: false }
+    ]
+  },
+  {
+    q: "5. Wie hängen Domain Properties (D), Requirements (R) und Spezifikation (S) formal zusammen?",
+    type: "single",
+    options: [
+      { t: "R + S ⟹ D — die Requirements zusammen mit der Spezifikation ergeben die Domain Properties.", correct: false },
+      { t: "S + D ⟹ R — die Spezifikation erfüllt zusammen mit den Domain Properties die Requirements. Ist das Domänenmodell falsch, kann diese Schlussfolgerung trotz korrekter Spezifikation scheitern.", correct: true },
+      { t: "D ⟹ S — Domain Properties bestimmen die Spezifikation vollständig, Requirements spielen keine Rolle.", correct: false },
+      { t: "Die drei Begriffe sind synonym und beliebig austauschbar.", correct: false }
+    ]
+  },
+  {
+    q: "6. Was ist der zentrale Unterschied zwischen Verifizierung und Validierung?",
+    type: "single",
+    options: [
+      { t: "Verifizierung prüft, ob das Programm die Spezifikation erfüllt (Äquivalenz zweier formaler Modelle); Validierung prüft umfassender, ob das System die tatsächlichen Erwartungen der realen Welt erfüllt.", correct: true },
+      { t: "Beide Begriffe bezeichnen exakt denselben Vorgang, nur zu unterschiedlichen Projektphasen.", correct: false },
+      { t: "Verifizierung betrifft nur die Benutzeroberfläche, Validierung nur die Datenbank.", correct: false },
+      { t: "Validierung findet ausschließlich vor der Implementierung statt, Verifizierung nur danach.", correct: false }
+    ]
+  },
+  {
+    q: "7. Welche Kriterien werden zur Validierung von Requirements herangezogen?",
+    type: "multi",
+    options: [
+      { t: "Completeness (alle Szenarien inkl. Ausnahmefällen beschrieben)", correct: true },
+      { t: "Unambiguousness (nicht vage — alle plausiblen Interpretationen sind akzeptable Lösungen)", correct: true },
+      { t: "Traceability (jede Systemfunktion lässt sich auf ein Requirement zurückführen)", correct: true },
+      { t: "Popularity (möglichst viele Stakeholder müssen dafür gestimmt haben)", correct: false }
+    ]
+  },
+  {
+    q: "8. 'Requirements should specify what without specifying how' — was ist damit gemeint?",
+    type: "single",
+    options: [
+      { t: "'What' bezieht sich auf den Zweck des Systems (Anwendungsdomäne, extern); 'How' auf Struktur/Verhalten des Systems (Lösungsdomäne, intern) — die Grenze dazwischen bilden Schnittstellen.", correct: true },
+      { t: "'What' und 'How' sind komplett unabhängige Konzepte ohne jede Beziehung zueinander.", correct: false },
+      { t: "'How' beschreibt immer die Anwendungsdomäne, 'What' immer die technische Domäne.", correct: false },
+      { t: "Die Unterscheidung zwischen 'What' und 'How' ist in jeder Abstraktionsebene absolut eindeutig.", correct: false }
+    ]
+  },
+  {
+    q: "9. Bei der W6H-Technik zur Problemidentifikation: Welche Frage liefert die 'Stakeholders'?",
+    type: "single",
+    options: [
+      { t: "Which problem needs solving?", correct: false },
+      { t: "Whose problem is it?", correct: true },
+      { t: "How might a SW system help?", correct: false },
+      { t: "What might prevent solving it?", correct: false }
+    ]
+  },
+  {
+    q: "10. Was versteht man unter 'Tacit Knowledge' als Schwierigkeit der Anforderungserhebung?",
+    type: "single",
+    options: [
+      { t: "Wissen, das absichtlich geheim gehalten wird, um die eigene Position zu stärken.", correct: false },
+      { t: "Expert:innen kennen ihr eigenes Wissen oft nicht bewusst — sie können Einzelfälle lösen, aber keine allgemeine Regel dafür formulieren ('say-do'-Problem).", correct: true },
+      { t: "Wissen, das nur in schriftlicher Form existiert und nie mündlich weitergegeben wird.", correct: false },
+      { t: "Ein Synonym für Domain Properties.", correct: false }
+    ]
+  },
+  {
+    q: "11. Was ist der Hauptnachteil der Erhebungsmethode 'Introspection' (sich hinsetzen und überlegen, was die Requirements sein könnten)?",
+    type: "single",
+    options: [
+      { t: "Sie ist extrem zeitaufwendig und teuer.", correct: false },
+      { t: "Sie ist oft nicht anwendbar und kann stark in die Irre führen, da die eigenen Vorstellungen selten mit denen echter Nutzer:innen übereinstimmen ('Users are not like us!').", correct: true },
+      { t: "Sie erfordert zwingend einen geschulten Moderator.", correct: false },
+      { t: "Sie funktioniert nur bei Fragebögen, nicht bei Interviews.", correct: false }
+    ]
+  },
+  {
+    q: "12. Welche Vor-/Nachteile hat 'Teilnehmende Beobachtung' (participant observation) als Erhebungsmethode?",
+    type: "single",
+    options: [
+      { t: "Sehr günstig und schnell, aber liefert kaum verlässliche Details.", correct: false },
+      { t: "Stark kontextualisiert und deckt Details auf, die andere Methoden nicht finden — aber extrem zeitaufwendig, das entstehende 'rich picture' ist schwer zu analysieren, und es droht die Gefahr des 'going native'.", correct: true },
+      { t: "Funktioniert nur bei rein digitalen Produkten ohne menschliche Nutzer.", correct: false },
+      { t: "Ist identisch mit einem Fragebogen, nur mündlich durchgeführt.", correct: false }
+    ]
+  },
+  {
+    q: "13. Welche fünf Grundlagendisziplinen nennt das Paper von Nuseibeh & Easterbrook als Basis für Requirements Engineering?",
+    type: "multi",
+    options: [
+      { t: "Kognitionspsychologie", correct: true },
+      { t: "Anthropologie", correct: true },
+      { t: "Soziologie", correct: true },
+      { t: "Betriebswirtschaftslehre", correct: false }
+    ]
+  },
+  {
+    q: "14. Welche fünf Kernaktivitäten des RE nennt das Paper von Nuseibeh & Easterbrook?",
+    type: "multi",
+    options: [
+      { t: "Eliciting (Erheben)", correct: true },
+      { t: "Modelling & Analysing", correct: true },
+      { t: "Agreeing", correct: true },
+      { t: "Debugging", correct: false }
+    ]
+  },
+  {
+    q: "15. Was ist laut dem Paper eine der 'radikalen Ideen' der 1990er zum Requirements Engineering?",
+    type: "single",
+    options: [
+      { t: "RE sollte sich ausschließlich auf die Funktionalität des neuen Systems konzentrieren und die Umgebung ignorieren.", correct: false },
+      { t: "Der Versuch, ein vollständig konsistentes Requirements-Modell zu bauen, ist meist aussichtslos — RE muss Widersprüche zwischen Stakeholdern aktiv analysieren und auflösen, statt sie zu verstecken.", correct: true },
+      { t: "Modellierung und Analyse funktionieren am besten völlig isoliert vom sozialen Kontext.", correct: false },
+      { t: "Formale Methoden sollten komplett durch informelle Interviews ersetzt werden.", correct: false }
+    ]
+  },
+  {
+    q: "16. Warum ist die Unterscheidung zwischen Konzept- und Exemplarebene bei der Domänenmodellierung wichtig (Übung 4-3)?",
+    type: "single",
+    options: [
+      { t: "Weil nur Exemplare in ein Klassendiagramm aufgenommen werden dürfen.", correct: false },
+      { t: "Weil ein einzelnes konkretes Vorkommnis (z. B. 'die eine Theke im 1. OG') kein Domänenkonzept ist — ein Konzept ist die allgemeine Kategorie (z. B. 'es gibt Theken, die jeweils einen Standort haben'), von der das Vorkommnis nur eine Instanz ist.", correct: true },
+      { t: "Weil Konzepte nur in der Lösungswelt, Exemplare nur in der Problemwelt vorkommen.", correct: false },
+      { t: "Weil es in der Domänenmodellierung keine Exemplare geben darf.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

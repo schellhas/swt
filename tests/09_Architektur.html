@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 09 Architektur</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 09 Architektur</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Welche fünf Leitprinzipien des Entwurfs nennt die Vorlesung?",
+    type: "multi",
+    options: [
+      { t: "Trennung von Belangen (separation of concerns)", correct: true },
+      { t: "Architektur (globale Struktur festlegen)", correct: true },
+      { t: "Modularisierung", correct: true },
+      { t: "Objektorientierung als einziges verbindliches Paradigma", correct: false }
+    ]
+  },
+  {
+    q: "2. Was ist der Unterschied zwischen Makro- und Mikroarchitektur?",
+    type: "single",
+    options: [
+      { t: "Makroarchitektur betrifft die grobe, globale Struktur (Bausteine/Komponenten und ihre Schnittstellen); Mikroarchitektur betrifft die interne Struktur innerhalb eines einzelnen Bausteins (Klassen, Entwurfsmuster).", correct: true },
+      { t: "Beide Begriffe sind Synonyme für dasselbe Konzept.", correct: false },
+      { t: "Makroarchitektur beschreibt nur die Benutzeroberfläche, Mikroarchitektur nur die Datenbank.", correct: false },
+      { t: "Mikroarchitektur ist immer größer und umfassender als Makroarchitektur.", correct: false }
+    ]
+  },
+  {
+    q: "3. Welches Merkmal kennzeichnet laut Vorlesung den 'Ebenenwechsel' zwischen Makro- und Mikroarchitektur?",
+    type: "single",
+    options: [
+      { t: "Die Bausteingrenze bzw. dessen Schnittstelle — von außen (makro) ist ein Baustein nur über seine Schnittstelle sichtbar, von innen (mikro) betrachtet man die dahinterliegende, verborgene Umsetzung.", correct: true },
+      { t: "Der Wechsel der Programmiersprache.", correct: false },
+      { t: "Die Anzahl der beteiligten Entwickler:innen.", correct: false },
+      { t: "Der Übergang von der Analyse- zur Testphase.", correct: false }
+    ]
+  },
+  {
+    q: "4. Warum ist die Unterscheidung zwischen Makro- und Mikroentscheidungen wichtig?",
+    type: "single",
+    options: [
+      { t: "Makroentscheidungen (z. B. Architekturstil, Komponentenwahl) sind global und teuer zu ändern; Mikroentscheidungen (z. B. Entwurfsmuster innerhalb einer Komponente) sind lokal und leichter revidierbar.", correct: true },
+      { t: "Beide Entscheidungsarten sind gleich teuer zu ändern.", correct: false },
+      { t: "Mikroentscheidungen betreffen immer das Gesamtsystem, Makroentscheidungen nur einzelne Klassen.", correct: false },
+      { t: "Die Unterscheidung hat keinerlei praktische Relevanz für den Entwurfsprozess.", correct: false }
+    ]
+  },
+  {
+    q: "5. Warum ist ein 'Architekturbild' laut Vorlesung NICHT dasselbe wie 'die Architektur'?",
+    type: "single",
+    options: [
+      { t: "Ein einzelnes Bild zeigt nur wenige, oft ungenau wiedergegebene Aspekte — eine vollständige Architekturbeschreibung braucht mehrere Bilder (Sichten) plus ergänzenden Text.", correct: true },
+      { t: "Architekturbilder sind grundsätzlich falsch und sollten nie verwendet werden.", correct: false },
+      { t: "Ein Architekturbild zeigt immer die komplette Implementierung im Detail.", correct: false },
+      { t: "Es gibt keinen Unterschied — beide Begriffe sind identisch.", correct: false }
+    ]
+  },
+  {
+    q: "6. Für welche nichtfunktionale Anforderung ist die Mehrschicht-Architektur (Layered) besonders geeignet, und warum?",
+    type: "single",
+    options: [
+      { t: "Für hohe Portabilität — weil einzelne Schichten (z. B. die technische Basis) austauschbar sind, ohne die anderen Schichten zu betreffen.", correct: true },
+      { t: "Für Echtzeitverhalten — weil Schichten Reaktionszeiten garantieren.", correct: false },
+      { t: "Für minimalen Speicherverbrauch — Schichten reduzieren grundsätzlich den Ressourcenbedarf.", correct: false },
+      { t: "Für maximale Nebenläufigkeit — jede Schicht läuft immer in einem eigenen Prozess.", correct: false }
+    ]
+  },
+  {
+    q: "7. Was ist ein Vorteil und was ein Nachteil eines ereignisgesteuerten Architekturstils (Event-based)?",
+    type: "single",
+    options: [
+      { t: "Vorteil: flexibel und änderungsfreundlich (dezentrale Steuerung, Teilnehmer registrieren sich für Ereignisse). Nachteil: das Gesamtverhalten ist schwer nachvollziehbar.", correct: true },
+      { t: "Vorteil: garantierte Echtzeit-Reaktionszeiten. Nachteil: hoher Speicherverbrauch.", correct: false },
+      { t: "Vorteil: es gibt keine Nachteile bei diesem Stil.", correct: false },
+      { t: "Vorteil: sehr einfach nachvollziehbares Verhalten. Nachteil: unflexibel bei Änderungen.", correct: false }
+    ]
+  },
+  {
+    q: "8. Für welche Anwendungsfälle eignet sich der Architekturstil 'Datenflussnetze' (Pipes-and-Filters), und wofür eher nicht?",
+    type: "single",
+    options: [
+      { t: "Geeignet für Bioinformatik, Signalverarbeitung, Grafikpipelines; ungeeignet für Echtzeit mit komplexer Steuerung.", correct: true },
+      { t: "Geeignet ausschließlich für GUI-Anwendungen mit komplexer Benutzerinteraktion.", correct: false },
+      { t: "Geeignet für alle nichtfunktionalen Anforderungen gleichermaßen, ohne Einschränkung.", correct: false },
+      { t: "Ungeeignet für jede Art von Datenverarbeitung.", correct: false }
+    ]
+  },
+  {
+    q: "9. Welcher Architekturstil eignet sich laut Vorlesung am ehesten für Echtzeitverhalten (zugesicherte Reaktionszeiten)?",
+    type: "single",
+    options: [
+      { t: "Keiner der Standardstile direkt — es sind eher spezialisierte Echtzeitarchitekturen mit fester Prozess-/Task-Planung nötig; ereignisgesteuerte Systeme mit vielen Teilnehmern sind eher ungünstig.", correct: true },
+      { t: "Immer Pipes-and-Filters, da dieser Stil per Definition Echtzeitfähigkeit garantiert.", correct: false },
+      { t: "Client/Server ist immer die beste Wahl für Echtzeitsysteme.", correct: false },
+      { t: "Web-Architektur, da sie am modernsten ist.", correct: false }
+    ]
+  },
+  {
+    q: "10. Was sind 'Standardarchitekturen' (z. B. QUASAR, Jakarta EE, RM-ODP), und welchen Effekt hat ihr Einsatz?",
+    type: "single",
+    options: [
+      { t: "Fertige, detailliertere Referenzlösungen für ganze Anwendungsbereiche — ihr Einsatz senkt den Entwurfsaufwand enorm (normaler statt radikaler Entwurf).", correct: true },
+      { t: "Sie sind rein akademische Konzepte ohne praktische Anwendung.", correct: false },
+      { t: "Sie ersetzen vollständig die Notwendigkeit, überhaupt eine Architektur zu entwerfen.", correct: false },
+      { t: "Sie gelten nur für Echtzeitsysteme.", correct: false }
+    ]
+  },
+  {
+    q: "11. Was ist ein 'Modul' laut Vorlesung, und was hat das mit Information Hiding zu tun?",
+    type: "single",
+    options: [
+      { t: "Eine Einheit zusammengehörender Programmelemente, die dieselben Entwurfsentscheidungen betreffen; ein Modul verbirgt diese Entscheidungen ('Geheimnisse') hinter seiner Schnittstelle — das ist Information Hiding.", correct: true },
+      { t: "Ein Modul ist identisch mit einer einzelnen Klasse — jede Klasse ist automatisch ein Modul.", correct: false },
+      { t: "Information Hiding bedeutet, dass ein Modul keine Schnittstelle besitzen darf.", correct: false },
+      { t: "Ein Modul hat per Definition immer eine feste, vorgeschriebene Größe.", correct: false }
+    ]
+  },
+  {
+    q: "12. Welcher verbreitete Irrtum über Java-Interfaces wird in der Vorlesung genannt?",
+    type: "single",
+    options: [
+      { t: "Ein Java-Interface ist keine vollständige Schnittstelle im Sinne von Information Hiding — es enthält nur Signaturen, keine Semantik/Verträge.", correct: true },
+      { t: "Java-Interfaces sind vollständige Schnittstellen inklusive aller Vor- und Nachbedingungen.", correct: false },
+      { t: "Java-Interfaces dürfen laut Vorlesung nie verwendet werden.", correct: false },
+      { t: "Ein Java-Interface ist identisch mit einem Architekturstil.", correct: false }
+    ]
+  },
+  {
+    q: "13. Wofür steht die 'Logical View' im 4+1-Sichtenmodell von Kruchten, und für wen ist sie relevant?",
+    type: "single",
+    options: [
+      { t: "Objektorientiertes Modell des Systems (Schlüsselabstraktionen, Klassen, Beziehungen), trägt v. a. die funktionalen Anforderungen — relevant für Endnutzer:innen und Funktionalität.", correct: true },
+      { t: "Abbildung der Software auf Hardware-Knoten — relevant für Systemingenieur:innen.", correct: false },
+      { t: "Nebenläufigkeit und Prozesskommunikation — relevant für Integrator:innen.", correct: false },
+      { t: "Statische Organisation in der Entwicklungsumgebung — relevant für Programmierer:innen.", correct: false }
+    ]
+  },
+  {
+    q: "14. Welche Sicht des 4+1-Modells beschreibt die Abbildung der Software auf Hardware/Knoten (Deployment) und betrifft v. a. Verfügbarkeit/Fehlertoleranz?",
+    type: "single",
+    options: [
+      { t: "Development View", correct: false },
+      { t: "Physical View (Verteilungssicht)", correct: true },
+      { t: "Process View", correct: false },
+      { t: "Logical View", correct: false }
+    ]
+  },
+  {
+    q: "15. Warum heißt das Sichtenmodell '4+1' und nicht einfach '5'?",
+    type: "single",
+    options: [
+      { t: "Weil die Szenarien/Anwendungsfallsicht keine eigenständige, gleichrangige Sicht ist, sondern eine verbindende, fünfte Sicht, die die anderen vier illustriert, treibt und validiert.", correct: true },
+      { t: "Weil eine der vier Kernsichten optional ist und meist weggelassen wird.", correct: false },
+      { t: "Weil das Modell ursprünglich nur vier Sichten hatte und die fünfte nachträglich per Zufall ergänzt wurde, ohne besonderen Zweck.", correct: false },
+      { t: "Weil '4+1' rein historisch aus Marketinggründen gewählt wurde.", correct: false }
+    ]
+  },
+  {
+    q: "16. Wie ist das Vorgehen beim 4+1-Sichtenmodell laut Vorlesung typischerweise organisiert?",
+    type: "single",
+    options: [
+      { t: "Iterativ und szenariogetrieben: kleine Menge kritischer Szenarien wählen → Architektur grob entwerfen (alle vier Sichten) → implementieren/testen/messen → nächste Iteration mit mehr Szenarien, bis stabil.", correct: true },
+      { t: "Alle fünf Sichten müssen immer vollständig in einem einzigen Schritt vor jeder Implementierung fertiggestellt werden.", correct: false },
+      { t: "Die Physical View muss bei jedem System zwingend vollständig ausgeprägt sein, auch bei Ein-Prozessor-Systemen.", correct: false },
+      { t: "Das Vorgehen ist rein sequenziell ohne jede Iteration.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

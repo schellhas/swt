@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 23 Wiederverwendung</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 23 Wiederverwendung</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Worauf ist laut Vorlesung die dramatisch gestiegene Produktivität heutiger Programmierer:innen praktisch komplett zurückzuführen?",
+    type: "single",
+    options: [
+      { t: "Auf Wiederverwendung (Bibliotheken/Komponenten, Betriebssysteme/Werkzeuge, Sprachen/Methoden) — gemessen an produzierter Funktionalität, nicht an Codezeilen.", correct: true },
+      { t: "Ausschließlich auf schnellere Hardware, unabhängig von Software-Wiederverwendung.", correct: false },
+      { t: "Auf größere Entwicklerteams.", correct: false },
+      { t: "Auf strengere gesetzliche Vorschriften für Softwarequalität.", correct: false }
+    ]
+  },
+  {
+    q: "2. Welche drei Prinzipien der Wiederverwendung werden genannt?",
+    type: "single",
+    options: [
+      { t: "Normales Vorgehen (senkt vor allem das Risiko), Universalität (fast alles ist wiederverwendbar) und Abwägung (Produktivitätsgewinn gegen Flexibilitätsverlust abwägen).", correct: true },
+      { t: "Geschwindigkeit, Kosten, Umfang — dieselben drei Ecken wie das magische Dreieck.", correct: false },
+      { t: "Wiederverwendung kennt laut Vorlesung keine grundlegenden Prinzipien.", correct: false },
+      { t: "Automatisierung, Dokumentation, Zertifizierung.", correct: false }
+    ]
+  },
+  {
+    q: "3. Was ist laut Vorlesung der primäre Effekt von Wiederverwendung, und was nur ein 'willkommener Nebeneffekt'?",
+    type: "single",
+    options: [
+      { t: "Primär senkt Wiederverwendung das Risiko (man stützt sich auf Erfahrung); Kostensenkung ist nur ein willkommener Nebeneffekt.", correct: true },
+      { t: "Primär senkt Wiederverwendung die Kosten; Risikosenkung ist nur ein Nebeneffekt.", correct: false },
+      { t: "Wiederverwendung hat weder Effekt auf Risiko noch auf Kosten.", correct: false },
+      { t: "Wiederverwendung erhöht das Risiko, senkt aber garantiert die Kosten.", correct: false }
+    ]
+  },
+  {
+    q: "4. Welche zwei Dimensionen entlang derer sich Arten der Wiederverwendung unterscheiden lassen, werden genannt?",
+    type: "single",
+    options: [
+      { t: "Fokus (produktorientiert vs. prozessorientiert) und Gegenstand (Problem vs. Lösung).", correct: true },
+      { t: "Nur Kosten und Zeit.", correct: false },
+      { t: "Nur die Programmiersprache, in der wiederverwendet wird.", correct: false },
+      { t: "Wiederverwendung lässt sich laut Vorlesung nicht sinnvoll kategorisieren.", correct: false }
+    ]
+  },
+  {
+    q: "5. Was ist der Unterschied zwischen Produktrisiko und Lieferantenrisiko bei der Wiederverwendung ausführbarer Komponenten?",
+    type: "single",
+    options: [
+      { t: "Produktrisiko betrifft die Komponente selbst (ungewisse Qualität/Eignung, eingeschränkte Flexibilität); Lieferantenrisiko betrifft den externen Anbieter (Zwangsstandardisierung, Entwicklungsstillstand).", correct: true },
+      { t: "Beide Risikoarten sind identisch definiert.", correct: false },
+      { t: "Produktrisiko betrifft nur Open-Source-Software, Lieferantenrisiko nur kommerzielle.", correct: false },
+      { t: "Lieferantenrisiko existiert laut Vorlesung nicht bei Softwarekomponenten.", correct: false }
+    ]
+  },
+  {
+    q: "6. Welche Hindernisse für die Wiederverwendung bereits existierender Elemente werden genannt?",
+    type: "multi",
+    options: [
+      { t: "'Not invented here' (Ingenieure mögen keine fremden Lösungen)", correct: true },
+      { t: "Ignoranz (man kennt die Alternativen nicht)", correct: true },
+      { t: "Auswahlaufwand ('Nadel im Heuhaufen' bei vielen Kandidaten)", correct: true },
+      { t: "Zu geringe Bildschirmauflösung der Entwicklungsumgebung", correct: false }
+    ]
+  },
+  {
+    q: "7. Warum ist die Produktion wiederverwendbarer Elemente aufwändiger als eine Einzellösung?",
+    type: "single",
+    options: [
+      { t: "Sie erfordert 2-10× so viel Entwicklungsaufwand wie eine Einzellösung, weil Rücksicht auf mehrere Benutzer:innen genommen werden muss (Flexibilitätseinschränkung), und braucht eine geeignete Organisationsform (heute oft 'Inner Source').", correct: true },
+      { t: "Es gibt keinen Mehraufwand — wiederverwendbare Elemente sind immer genauso schnell zu bauen wie Einzellösungen.", correct: false },
+      { t: "Der Mehraufwand entsteht ausschließlich durch gesetzliche Zertifizierungspflichten.", correct: false },
+      { t: "Wiederverwendbare Elemente sind grundsätzlich günstiger zu produzieren als Einzellösungen.", correct: false }
+    ]
+  },
+  {
+    q: "8. Was ist ein Entwurfsmuster laut dieser Einordnung, und seit wann etwa hat sich diese Idee auf weitere Ebenen übertragen?",
+    type: "single",
+    options: [
+      { t: "Ein Paar aus Problem- und Lösungsbeschreibung, abstrakter und flexibler als eine konkrete Lösung — bis ca. 1994 galt Wiederverwendung fast nur auf Codeebene als praktikabel, seither hat sich die Musteridee auf viele weitere Ebenen übertragen.", correct: true },
+      { t: "Ein fertiges, unveränderliches Stück Code ohne jede Anpassung.", correct: false },
+      { t: "Muster gab es laut Vorlesung schon seit den 1960er Jahren auf allen Abstraktionsebenen.", correct: false },
+      { t: "Ein Entwurfsmuster ist identisch mit einem Architekturstil.", correct: false }
+    ]
+  },
+  {
+    q: "9. Wie lassen sich Prinzip, Methode und Verfahren als Muster unterschiedlicher Abstraktionsstufe einordnen?",
+    type: "single",
+    options: [
+      { t: "Prinzip: sehr abstrakter, lebenslang gültiger Grundsatz. Methode: auf einen Bereich spezialisiert, ca. 10-20 Jahre relevant. Verfahren: präzise Vorschrift für einen sehr spezifischen Bereich.", correct: true },
+      { t: "Alle drei Begriffe sind exakt gleichbedeutend und beliebig austauschbar.", correct: false },
+      { t: "Ein Verfahren ist abstrakter als ein Prinzip.", correct: false },
+      { t: "Methoden gelten laut Vorlesung für immer, Prinzipien nur wenige Jahre.", correct: false }
+    ]
+  },
+  {
+    q: "10. Welche wiederkehrenden Prinzipien werden als 'Muster' aufgeführt?",
+    type: "multi",
+    options: [
+      { t: "Abstraktion", correct: true },
+      { t: "Modularisierung", correct: true },
+      { t: "Angemessenheit (Aufwand muss den Nutzen rechtfertigen)", correct: true },
+      { t: "Maximale Parallelisierung aller Entwicklungsschritte", correct: false }
+    ]
+  },
+  {
+    q: "11. Was unterscheidet ein Analysemuster (Beispiel: Organisationshierarchien) von einem Entwurfsmuster?",
+    type: "single",
+    options: [
+      { t: "Ein Analysemuster legt den Schwerpunkt auf Domänenobjekte und ihre Beziehungen (z. B. Trennung von Metadaten/'Knowledge Level' und Inhaltsdaten/'Operational Level'), nicht auf Schnittstellen oder Abläufe wie ein Entwurfsmuster.", correct: true },
+      { t: "Analysemuster und Entwurfsmuster sind exakt dasselbe Konzept.", correct: false },
+      { t: "Analysemuster befassen sich ausschließlich mit Benutzeroberflächen.", correct: false },
+      { t: "Entwurfsmuster legen den Fokus immer auf Domänenobjekte, Analysemuster auf Schnittstellen.", correct: false }
+    ]
+  },
+  {
+    q: "12. Was sind 'Usability-supporting architectural patterns' (USAP)?",
+    type: "single",
+    options: [
+      { t: "Sie verbinden Benutzbarkeitsanforderungen (z. B. Undo/Redo, Abbrechbarkeit) mit konkreten Architekturmechanismen wie Separation, Replication, Indirection und Models.", correct: true },
+      { t: "Sie sind ein Synonym für Entwurfsmuster wie Adapter oder Proxy.", correct: false },
+      { t: "USAP betreffen ausschließlich die Datenbankschicht einer Anwendung.", correct: false },
+      { t: "USAP sind ein reines Projektmanagement-Werkzeug ohne technischen Bezug.", correct: false }
+    ]
+  },
+  {
+    q: "13. Was ist die Grundstruktur eines Prozessmusters, und was zeichnet Prozessmuster generell aus?",
+    type: "single",
+    options: [
+      { t: "'Wenn <Situation>, dann <bewährte Handlung>' — Prozessmuster beschreiben stets Bewährtes, nicht Neues, z. B. 'Baue Prototypen' bei unklaren Anforderungen.", correct: true },
+      { t: "Prozessmuster beschreiben ausschließlich neue, noch unerprobte Vorgehensweisen.", correct: false },
+      { t: "Prozessmuster gelten nur für die technische Implementierung, nie für Projektmanagement.", correct: false },
+      { t: "Ein Prozessmuster hat keine feste Struktur und wird frei formuliert.", correct: false }
+    ]
+  },
+  {
+    q: "14. Was empfiehlt das Prozessmuster 'Umgang mit Ablenkungen' bei kleineren Störungen bzw. großen Krisen?",
+    type: "single",
+    options: [
+      { t: "Kleinere Störungen durch eine geopferte Einzelperson abfangen ('sacrifice one person'), große Krisen durch ein eigenes Team ('team per task') — der Rest arbeitet ungestört weiter.", correct: true },
+      { t: "Bei jeder Störung, egal wie klein, das gesamte Team von der eigentlichen Arbeit abziehen.", correct: false },
+      { t: "Störungen grundsätzlich ignorieren, unabhängig von ihrer Größe.", correct: false },
+      { t: "Nur bei kleinen Störungen ein eigenes Team einsetzen, bei großen Krisen einzelne Personen opfern.", correct: false }
+    ]
+  },
+  {
+    q: "15. Wozu werden verwandte Prozessmuster oft zu 'Mustersprachen' zusammengefasst?",
+    type: "single",
+    options: [
+      { t: "Weil in der Praxis meist mehrere Muster gemeinsam relevant sind — Mustersprachen dokumentieren die Querverweise/das Zusammenwirken zwischen ihnen.", correct: true },
+      { t: "Weil jedes Muster für sich allein niemals anwendbar ist.", correct: false },
+      { t: "Mustersprachen sind ein Synonym für Programmiersprachen.", correct: false },
+      { t: "Um die Anzahl der Muster künstlich zu reduzieren.", correct: false }
+    ]
+  },
+  {
+    q: "16. Welche der folgenden sind Beispiele für Anti-Muster?",
+    type: "multi",
+    options: [
+      { t: "Analyse-Paralyse / Tod durch Planen", correct: true },
+      { t: "Todesmarsch (death march), oft ausgelöst durch Blendwerk/Vaporware", correct: true },
+      { t: "Krake ('the blob') — ein Modul mit viel zu vielen Kopplungen/Aufgaben", correct: true },
+      { t: "Pair Programming", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 13 Schnittstellenspezifikation (OCL)</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 13 Schnittstellenspezifikation (OCL)</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was versteht man unter 'Information Hiding', und in welchem Zusammenhang steht es zum 'Need to know'-Prinzip?",
+    type: "single",
+    options: [
+      { t: "Ein Modul verbirgt seine internen Entwurfsentscheidungen hinter der Schnittstelle; das Need-to-know-Prinzip begründet dies: etwas nur dann öffentlich machen, wenn es jemand voraussichtlich braucht — ungenutzt exponierte Details können nicht mehr gefahrlos geändert werden.", correct: true },
+      { t: "Information Hiding bedeutet, dass ein Modul keinerlei Schnittstelle besitzen darf.", correct: false },
+      { t: "Need-to-know ist das genaue Gegenteil von Information Hiding und wird nie zusammen verwendet.", correct: false },
+      { t: "Information Hiding betrifft ausschließlich Passwörter und Zugangsdaten.", correct: false }
+    ]
+  },
+  {
+    q: "2. Warum ist Information Hiding sinnvoll?",
+    type: "single",
+    options: [
+      { t: "Weil man bei guten Entwürfen die Entwurfsentscheidungen verbirgt, die sich öfter ändern — bei Änderungen muss dann meist nur ein Modul angepasst werden, während die stabile Schnittstelle bestehen bleibt.", correct: true },
+      { t: "Weil es Software grundsätzlich schneller macht.", correct: false },
+      { t: "Weil es gesetzlich für alle Softwareprojekte vorgeschrieben ist.", correct: false },
+      { t: "Weil dadurch keine Dokumentation mehr nötig ist.", correct: false }
+    ]
+  },
+  {
+    q: "3. Was ist das 'Design by Contract'-Prinzip, und wozu dient es?",
+    type: "single",
+    options: [
+      { t: "Für jede Klasse/Operation wird ein Vertrag festgelegt: 'Hältst du die Voraussetzungen ein, garantiere ich die Wirkung' — es macht die Schnittstellenerwartungen zwischen Aufrufer und Modul explizit und präzise.", correct: true },
+      { t: "Ein juristischer Vertrag, den Entwickler:innen vor Projektbeginn unterschreiben müssen.", correct: false },
+      { t: "Ein Synonym für Versionskontrolle.", correct: false },
+      { t: "Ein Prinzip, das ausschließlich für grafische Benutzeroberflächen gilt.", correct: false }
+    ]
+  },
+  {
+    q: "4. Wie hängen die Begriffe Constraint, Precondition, Postcondition und Invariante zusammen?",
+    type: "single",
+    options: [
+      { t: "Ein Vertrag besteht aus Constraints (booleschen Ausdrücken); Preconditions sind das, was der Aufrufer garantieren muss, Postconditions das, was die Operation garantiert, und Invarianten gelten für jedes Objekt zu jedem Zeitpunkt (außer während einer Operation) — die Invariante ist implizit Teil jeder öffentlichen Postcondition.", correct: true },
+      { t: "Diese vier Begriffe sind völlig unabhängig voneinander und stehen in keinem Zusammenhang.", correct: false },
+      { t: "Eine Precondition ist ein Sonderfall einer Postcondition.", correct: false },
+      { t: "Invarianten gelten nur genau während der Ausführung einer Operation, sonst nie.", correct: false }
+    ]
+  },
+  {
+    q: "5. Welche Eigenschaft hat OCL als Sprache, die Kontrollfluss betrifft?",
+    type: "single",
+    options: [
+      { t: "OCL ist deklarativ — man kann damit keinen Kontrollfluss (Schleifen, Sprünge o. Ä.) ausdrücken.", correct: true },
+      { t: "OCL ist eine vollständige imperative Programmiersprache mit Schleifen und bedingten Sprüngen.", correct: false },
+      { t: "OCL ersetzt UML-Klassendiagramme vollständig.", correct: false },
+      { t: "OCL kann nur zur Beschreibung von Benutzeroberflächen verwendet werden.", correct: false }
+    ]
+  },
+  {
+    q: "6. Wie lautet die Grundsyntax einer OCL-Invariante, und was bedeutet 'self' darin?",
+    type: "single",
+    options: [
+      { t: "'context <Klasse> inv: <Bedingung>' — self bezeichnet das jeweilige Exemplar der Klasse und kann bei eindeutigem Kontext weggelassen werden.", correct: true },
+      { t: "'invariant <Klasse> { <Bedingung> }' — self bezeichnet immer die Oberklasse.", correct: false },
+      { t: "Invarianten benötigen in OCL keinerlei Kontextangabe.", correct: false },
+      { t: "self bezeichnet in einer Invariante immer die aufrufende Methode.", correct: false }
+    ]
+  },
+  {
+    q: "7. Wofür wird das Schlüsselwort '@pre' in einer OCL-Postcondition verwendet?",
+    type: "single",
+    options: [
+      { t: "Um innerhalb einer post-Bedingung auf den Wert eines Ausdrucks VOR dem Aufruf zuzugreifen, z. B. 'getNumPlayers() = getNumPlayers@pre() + 1'.", correct: true },
+      { t: "Um eine Invariante zu markieren.", correct: false },
+      { t: "Um eine Precondition komplett zu ersetzen.", correct: false },
+      { t: "@pre wird nur in der context-Zeile einer Klasse verwendet.", correct: false }
+    ]
+  },
+  {
+    q: "8. Warum muss man bei OCL-Verträgen manchmal explizit 'alles andere bleibt gleich' angeben (z. B. 'zugelassen = zugelassen@pre')?",
+    type: "single",
+    options: [
+      { t: "Weil OCL-Verträge implizit die Annahme 'alles andere bleibt gleich' machen — wird das nicht explizit angegeben, ist der Vertrag unvollständig, weil ungenannte Attribute sich theoretisch beliebig ändern dürften.", correct: true },
+      { t: "Weil OCL sonst automatisch alle Attribute auf null setzt.", correct: false },
+      { t: "Weil diese Angabe rein stilistisch ist und keinerlei semantische Bedeutung hat.", correct: false },
+      { t: "Weil das Schlüsselwort @pre sonst einen Syntaxfehler verursacht.", correct: false }
+    ]
+  },
+  {
+    q: "9. Wofür steht das Schlüsselwort 'result' in einer OCL-Postcondition?",
+    type: "single",
+    options: [
+      { t: "Es bezeichnet den zurückgegebenen Wert einer Operation mit Rückgabewert, z. B. 'post: result = aufgaben.punktzahl->sum()'.", correct: true },
+      { t: "Es bezeichnet den Namen der aufrufenden Klasse.", correct: false },
+      { t: "Es wird nur in Invarianten verwendet, nie in Postconditions.", correct: false },
+      { t: "Es ist ein Synonym für 'self'.", correct: false }
+    ]
+  },
+  {
+    q: "10. Was bedeutet der OCL-Operator 'implies' (a implies b)?",
+    type: "single",
+    options: [
+      { t: "Gilt a, muss auch b gelten; gilt a nicht, ist der gesamte Ausdruck automatisch wahr — unabhängig vom Wert von b.", correct: true },
+      { t: "Es ist ein Synonym für 'and': beide Seiten müssen gleichzeitig wahr sein.", correct: false },
+      { t: "Es bedeutet, dass a und b niemals gleichzeitig wahr sein dürfen.", correct: false },
+      { t: "Es wird nur bei Zahlenvergleichen verwendet, nie bei booleschen Ausdrücken.", correct: false }
+    ]
+  },
+  {
+    q: "11. Wann verwendet man in OCL den Punkt (.) und wann den Pfeil (->) zur Navigation?",
+    type: "single",
+    options: [
+      { t: "Punkt für den Zugriff auf ein einzelnes Objekt; Pfeil für den Zugriff auf Operationen einer Collection (wenn über eine 'viele'-Assoziation navigiert wird).", correct: true },
+      { t: "Beide Symbole sind in OCL vollkommen austauschbar.", correct: false },
+      { t: "Der Pfeil wird nur für Zahlen verwendet, der Punkt nur für Zeichenketten.", correct: false },
+      { t: "Punkt und Pfeil unterscheiden nur, ob man vorwärts oder rückwärts durch eine Assoziation navigiert.", correct: false }
+    ]
+  },
+  {
+    q: "12. Welche vier Collection-Arten kennt OCL, und wodurch unterscheiden sie sich?",
+    type: "multi",
+    options: [
+      { t: "Set — keine Duplikate, unsortiert", correct: true },
+      { t: "Bag — Duplikate erlaubt, unsortiert", correct: true },
+      { t: "OrderedSet — keine Duplikate, sortiert", correct: true },
+      { t: "Map — Schlüssel-Wert-Paare, in OCL nicht vorgesehen", correct: false }
+    ]
+  },
+  {
+    q: "13. Was ist der Unterschied zwischen den OCL-Quantoren 'forAll' und 'exists'?",
+    type: "single",
+    options: [
+      { t: "forAll(v | expr) ist wahr, wenn expr für ALLE Elemente der Collection gilt; exists(v | expr) ist wahr, wenn expr für MINDESTENS EIN Element gilt.", correct: true },
+      { t: "Beide Quantoren sind exakt gleichbedeutend und austauschbar.", correct: false },
+      { t: "exists prüft alle Elemente, forAll nur ein einziges.", correct: false },
+      { t: "forAll kann nur auf Sets angewendet werden, exists nur auf Sequences.", correct: false }
+    ]
+  },
+  {
+    q: "14. Wofür wird 'Klasse.allInstances()' in OCL verwendet, und wann ist es NICHT nötig?",
+    type: "single",
+    options: [
+      { t: "Es liefert die Menge aller Exemplare einer Klasse (z. B. um zu prüfen, dass keine zwei Studierenden dieselbe Matrikelnummer teilen) — es ist NICHT nötig für Bedingungen, die nur 'self' selbst betreffen (z. B. eine reine Formatprüfung eines einzelnen Attributs).", correct: true },
+      { t: "allInstances() ist bei jeder einzelnen OCL-Invariante zwingend erforderlich.", correct: false },
+      { t: "allInstances() darf ausschließlich in Preconditions verwendet werden.", correct: false },
+      { t: "allInstances() liefert immer nur ein einzelnes Objekt, nie eine Menge.", correct: false }
+    ]
+  },
+  {
+    q: "15. Was ist laut Vorlesung die Faustregel zur Schwierigkeit von Preconditions, Invarianten und Postconditions in der Praxis?",
+    type: "single",
+    options: [
+      { t: "Preconditions und Invarianten lassen sich meist leicht ausdrücken; Postconditions sind oft schwierig — eine unvollständige Postcondition (mit erklärendem Kommentar) ist meist besser als gar keine.", correct: true },
+      { t: "Postconditions sind immer am einfachsten zu formulieren, Invarianten am schwierigsten.", correct: false },
+      { t: "Alle drei Vertragsteile sind in der Praxis gleich schwer zu formulieren.", correct: false },
+      { t: "Eine unvollständige Postcondition sollte grundsätzlich weggelassen werden.", correct: false }
+    ]
+  },
+  {
+    q: "16. Was ist der Vorteil, in einer Klasse eigene 'Prädikat-Methoden' (z. B. isPlayerAccepted(p)) einzuführen?",
+    type: "single",
+    options: [
+      { t: "Sie vereinfachen OCL-Ausdrücke, da man den entsprechenden booleschen Ausdruck nicht jedes Mal komplett ausschreiben muss.", correct: true },
+      { t: "Sie ersetzen vollständig die Notwendigkeit von Invarianten.", correct: false },
+      { t: "Sie sind nur in Java, nicht aber in OCL verwendbar.", correct: false },
+      { t: "Prädikat-Methoden dürfen laut Konvention niemals einen Rückgabewert haben.", correct: false }
+    ]
+  },
+  {
+    q: "17. In welchen vier Schritten ergänzt der Objektentwurf (Object Design) die aus der Anforderungsanalyse kommenden, noch typlosen Attribute/Operationen?",
+    type: "single",
+    options: [
+      { t: "Verbleibende Attribute/Operationen identifizieren → Sichtbarkeit ergänzen → Typsignaturen ergänzen → Verträge (Contracts) ergänzen.", correct: true },
+      { t: "Nur ein einziger Schritt ist nötig: Verträge in OCL schreiben.", correct: false },
+      { t: "Testfälle schreiben → Code implementieren → Dokumentation → Deployment.", correct: false },
+      { t: "Architekturstil wählen → Komponenten identifizieren → Schnittstellen entwerfen → Verträge schreiben.", correct: false }
+    ]
+  },
+  {
+    q: "18. Welche nativen Sprachmechanismen werden als Parallele zu OCL-Contracts genannt?",
+    type: "multi",
+    options: [
+      { t: "Eiffel: require, ensure, invariant", correct: true },
+      { t: "Java: assert", correct: true },
+      { t: "JContract (Preprocessor mit Javadoc-Tags @pre/@post/@invariant)", correct: true },
+      { t: "Python: try/except", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>

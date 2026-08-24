@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>Test: 06 Anwendungsfälle</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #777;
+    --table-border: #ccc;
+    --hint: #666;
+    --q-correct-bg: #dcffe0;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #ffe0e0;
+    --q-wrong-border: #e53935;
+    --answer-correct: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --table-border: #444;
+    --hint: #999;
+    --q-correct-bg: #1e3a24;
+    --q-correct-border: #4caf50;
+    --q-wrong-bg: #3a1e1e;
+    --q-wrong-border: #e53935;
+    --answer-correct: #7cd685;
+  }
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; max-width: 750px; margin: 2rem auto; padding: 0 1rem; line-height: 1.4; }
+  h1 { font-size: 1.3rem; }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .q { border: 1px solid var(--table-border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .q p.question { font-weight: bold; margin-top: 0; }
+  .hint { font-weight: normal; font-size: 0.85rem; color: var(--hint); }
+  label { display: block; margin: 0.3rem 0; cursor: pointer; }
+  .q.correct { background: var(--q-correct-bg); border-color: var(--q-correct-border); }
+  .q.wrong { background: var(--q-wrong-bg); border-color: var(--q-wrong-border); }
+  .answer-correct { color: var(--answer-correct); font-weight: bold; }
+  #controls { margin: 1.5rem 0; }
+  button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #score { font-weight: bold; margin-left: 1rem; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+<h1>Test: 06 Anwendungsfälle</h1>
+<form id="quiz"></form>
+<div id="controls">
+  <button type="button" onclick="check()">Auswerten</button>
+  <button type="button" onclick="location.reload()">Neu mischen / Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. Was ist ein Use Case im Kern (unabhängig von UML)?",
+    type: "single",
+    options: [
+      { t: "Eine Vereinbarung zwischen den Projektbeteiligten über das Verhalten des Systems als Antwort auf den Auftrag eines Hauptakteurs, der damit ein Ziel verfolgt und erreicht.", correct: true },
+      { t: "Ein rein grafisches UML-Diagrammelement ohne Textbezug.", correct: false },
+      { t: "Eine Liste aller Datenbanktabellen eines Systems.", correct: false },
+      { t: "Ein Synonym für 'Testfall'.", correct: false }
+    ]
+  },
+  {
+    q: "2. Welche Notationsform wird für Use Cases meist empfohlen, und warum?",
+    type: "single",
+    options: [
+      { t: "Ausschließlich formale Petrinetze, da Text zu ungenau ist.", correct: false },
+      { t: "Meist (strukturierter) Text — er ist meist die beste Wahl, obwohl grafische Notationen wie Flussdiagramme prinzipiell auch möglich sind.", correct: true },
+      { t: "Ausschließlich UML-Sequenzdiagramme.", correct: false },
+      { t: "Reiner Programmcode in Pseudocode-Form.", correct: false }
+    ]
+  },
+  {
+    q: "3. Welche Felder gehören zur klassischen Use-Case-Schablone (Cockburn)?",
+    type: "multi",
+    options: [
+      { t: "Hauptakteur", correct: true },
+      { t: "Haupt-Erfolgsszenario", correct: true },
+      { t: "Erweiterungen", correct: true },
+      { t: "Datenbankschema", correct: false }
+    ]
+  },
+  {
+    q: "4. Wie viele Schritte sollte ein Haupt-Erfolgsszenario idealerweise haben?",
+    type: "single",
+    options: [
+      { t: "Genau 1 Schritt.", correct: false },
+      { t: "Idealerweise 3-9 Schritte.", correct: true },
+      { t: "Mindestens 20 Schritte, um vollständig zu sein.", correct: false },
+      { t: "Die Schrittzahl ist in der Schablone irrelevant.", correct: false }
+    ]
+  },
+  {
+    q: "5. Was repräsentiert ein Akteur in einem Use Case bzw. Anwendungsfalldiagramm?",
+    type: "single",
+    options: [
+      { t: "Immer eine konkrete, namentlich bekannte Person.", correct: false },
+      { t: "Eine Rolle bzw. Perspektive, aus der heraus mit dem System interagiert wird (Person oder anderes System) — nicht die konkrete Person selbst.", correct: true },
+      { t: "Eine Datenbanktabelle im Backend.", correct: false },
+      { t: "Ein Synonym für 'Systemgrenze'.", correct: false }
+    ]
+  },
+  {
+    q: "6. Entlang welcher zwei Dimensionen lassen sich Use Cases laut Vorlesung sinnvoll unterscheiden?",
+    type: "single",
+    options: [
+      { t: "Bezug (SuD: Organisation, Softwaresystem oder Komponente) und Abstraktionsgrad (Überblick, Benutzerinteraktion, Details).", correct: true },
+      { t: "Programmiersprache und Teamgröße.", correct: false },
+      { t: "Kosten und Zeitaufwand.", correct: false },
+      { t: "Nur nach der Anzahl der beteiligten Akteure.", correct: false }
+    ]
+  },
+  {
+    q: "7. Wie unterscheidet sich der agile Umgang mit Use Cases vom konventionellen?",
+    type: "single",
+    options: [
+      { t: "Agile Prozesse verzichten meist auf vollständig ausformulierte Use Cases und nutzen stattdessen eher Epics und Story Cards ('Als <Rolle> kann ich <Ziel> von <SuD>, um <Akteursinteresse>'); Details werden iterativ oder im Code nachgebessert.", correct: true },
+      { t: "Agile Prozesse verlangen zwingend noch detailliertere Use Cases als konventionelle.", correct: false },
+      { t: "Es gibt keinerlei Unterschied zwischen agilem und konventionellem Umgang mit Use Cases.", correct: false },
+      { t: "Konventionelle Prozesse verwenden nur Story Cards, agile nur volle Schablonen.", correct: false }
+    ]
+  },
+  {
+    q: "8. Was ist der Unterschied zwischen 'Präzision' und 'Richtigkeit' beim Schreiben von Use Cases?",
+    type: "single",
+    options: [
+      { t: "Beide Begriffe sind Synonyme.", correct: false },
+      { t: "Ein Use Case kann sehr präzise, aber trotzdem falsch sein — oder ungenau, aber völlig richtig. Ziel ist, ausreichend präzise UND richtig zu sein.", correct: true },
+      { t: "Präzision bezieht sich nur auf die Rechtschreibung, Richtigkeit nur auf die Grammatik.", correct: false },
+      { t: "Präzision ist bei Use Cases irrelevant, nur Richtigkeit zählt.", correct: false }
+    ]
+  },
+  {
+    q: "9. Welche Gefahr besteht, wenn man einen Use Case zu früh zu detailliert (zu genau) ausformuliert?",
+    type: "single",
+    options: [
+      { t: "Man übersieht anfangs oft etwas Wichtiges oder sitzt einem Missverständnis auf — die bereits investierte Detailarbeit ist dann verschwendet.", correct: true },
+      { t: "Der Use Case wird dadurch automatisch fehlerfrei.", correct: false },
+      { t: "Es gibt keine Gefahr, mehr Detail ist immer besser.", correct: false },
+      { t: "Das System wird dadurch automatisch schneller implementiert.", correct: false }
+    ]
+  },
+  {
+    q: "10. Was ist der Unterschied zwischen einem Szenario und einem Anwendungsfall (Übung 5-1c)?",
+    type: "single",
+    options: [
+      { t: "Ein Szenario ist eine konkrete(re) Ausprägung eines Use Case — ein linearer Ablauf ohne Varianten (ggf. mit konkreten Datenwerten); ein Use Case ist die abstraktere Beschreibung, die mehrere Szenarien bündelt.", correct: true },
+      { t: "Ein Szenario ist immer abstrakter als ein Use Case.", correct: false },
+      { t: "Beide Begriffe sind vollkommen austauschbar und bezeichnen dasselbe.", correct: false },
+      { t: "Ein Szenario kommt nur in UML-Diagrammen vor, ein Use Case nur im Text.", correct: false }
+    ]
+  },
+  {
+    q: "11. Was ist ATDD (Acceptance-Test-Driven Development) im Zusammenhang mit Use Cases/Szenarien?",
+    type: "single",
+    options: [
+      { t: "Ein Entwicklungsstil, der statt eines Use Case direkt konkrete Szenarien als automatisierte Testfälle nutzt, die vor der Implementierung geschrieben werden und selbst als Spezifikation dienen.", correct: true },
+      { t: "Eine Methode, um Use Cases automatisch aus dem Quellcode zu generieren.", correct: false },
+      { t: "Ein Synonym für die Cockburn-Schablone.", correct: false },
+      { t: "Eine UML-Diagrammart für Anwendungsfälle.", correct: false }
+    ]
+  },
+  {
+    q: "12. Was decken Use Cases laut Vorlesung explizit NICHT ab?",
+    type: "multi",
+    options: [
+      { t: "Domäneneigenschaften/Annahmen", correct: true },
+      { t: "Nichtfunktionale Anforderungen", correct: true },
+      { t: "Geschäftsregeln", correct: true },
+      { t: "Verhaltensanforderungen", correct: false }
+    ]
+  },
+  {
+    q: "13. Was ist ein Vorteil und was ein Nachteil eines UML-Anwendungsfalldiagramms gegenüber dem ausformulierten Use-Case-Text?",
+    type: "single",
+    options: [
+      { t: "Vorteil: schneller visueller Überblick über Akteure und Struktur. Nachteil: enthält keinerlei Verhaltens-/Ablaufdetails und ist kein Ersatz für den Text — es kann leicht mit dem eigentlichen Use Case verwechselt werden.", correct: true },
+      { t: "Vorteil: enthält alle Ablaufdetails; Nachteil: ist schwer zu lesen.", correct: false },
+      { t: "Es gibt keine Nachteile gegenüber dem Text.", correct: false },
+      { t: "Das Diagramm ersetzt vollständig den textuellen Use Case.", correct: false }
+    ]
+  },
+  {
+    q: "14. In welche Richtung zeigt der Pfeil bei einer «include»-Beziehung zwischen zwei Use Cases, und was bedeutet sie?",
+    type: "single",
+    options: [
+      { t: "Vom benutzenden zum benutzten Use Case (A --include--> B): A ist zwingend vom erfolgreichen Ablauf von B abhängig — dient der Redundanzvermeidung.", correct: true },
+      { t: "Vom benutzten zum benutzenden Use Case, identisch zur extend-Richtung.", correct: false },
+      { t: "include hat keine Pfeilrichtung, da es sich um eine symmetrische Beziehung handelt.", correct: false },
+      { t: "Vom allgemeineren zum spezielleren Use Case, wie bei der Generalisierung.", correct: false }
+    ]
+  },
+  {
+    q: "15. Wie unterscheidet sich «extend» von «include» bezüglich Pflicht und Pfeilrichtung?",
+    type: "single",
+    options: [
+      { t: "«extend» ist optional und der Pfeil zeigt vom erweiternden zum Basis-Use-Case (B --extend--> A) — also genau entgegengesetzt zur include-Richtung; «include» ist dagegen zwingend.", correct: true },
+      { t: "«extend» und «include» haben identische Pfeilrichtung und sind beide zwingend.", correct: false },
+      { t: "«extend» ist immer zwingender als «include».", correct: false },
+      { t: "«extend» wird nie mit einer Bedingung verknüpft.", correct: false }
+    ]
+  },
+  {
+    q: "16. Wie funktioniert eine Generalisierungsbeziehung zwischen zwei Use Cases?",
+    type: "single",
+    options: [
+      { t: "Analog zur Klassengeneralisierung: Pfeil mit geschlossener, nicht gefüllter Spitze vom spezielleren zum allgemeineren Use Case; der speziellere übernimmt die Aufgabe des allgemeineren, erledigt Teilaufgaben aber auf spezielle Art — Beziehungen zu Akteuren werden mitvererbt.", correct: true },
+      { t: "Der Pfeil zeigt immer vom allgemeineren zum spezielleren Use Case, wie bei include.", correct: false },
+      { t: "Generalisierung zwischen Use Cases ist in UML nicht vorgesehen.", correct: false },
+      { t: "Der speziellere Use Case vererbt seine Eigenschaften an den allgemeineren.", correct: false }
+    ]
+  }
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const form = document.getElementById("quiz");
+questions.forEach((item, qi) => {
+  const div = document.createElement("div");
+  div.className = "q";
+  div.id = "q" + qi;
+  const p = document.createElement("p");
+  p.className = "question";
+  p.textContent = item.q;
+  if (item.type === "multi") {
+    const hint = document.createElement("span");
+    hint.className = "hint";
+    hint.textContent = " (mehrere Antworten möglich)";
+    p.appendChild(hint);
+  }
+  div.appendChild(p);
+
+  shuffle(item.options).forEach((opt, oi) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = item.type === "multi" ? "checkbox" : "radio";
+    input.name = "q" + qi;
+    input.value = oi;
+    input.dataset.correct = opt.correct;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" " + opt.t));
+    div.appendChild(label);
+  });
+
+  form.appendChild(div);
+});
+
+function check() {
+  let correctCount = 0;
+  questions.forEach((item, qi) => {
+    const div = document.getElementById("q" + qi);
+    div.classList.remove("correct", "wrong");
+    const inputs = [...div.querySelectorAll("input")];
+    const allMatch = inputs.every(input => input.checked === (input.dataset.correct === "true"));
+    div.querySelectorAll("label").forEach(l => {
+      const input = l.querySelector("input");
+      if (input.dataset.correct === "true") l.classList.add("answer-correct");
+    });
+    if (allMatch) {
+      correctCount++;
+      div.classList.add("correct");
+    } else {
+      div.classList.add("wrong");
+    }
+  });
+  document.getElementById("score").textContent = `${correctCount} / ${questions.length} richtig`;
+}
+</script>
+</body>
+</html>
