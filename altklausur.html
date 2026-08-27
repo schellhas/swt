@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SWT Altklausur-Bericht</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --h1-border: #333;
+    --h2: #222;
+    --muted: #777;
+    --def-bg: #f3f3f3;
+    --def-border: #888;
+    --code-bg: #eee;
+    --table-border: #ccc;
+    --todo-bg: #fff3cd;
+    --todo-border: #d4a017;
+    --link: #1a4fa0;
+    --hint: #666;
+    --hot-bg: #ffe0e0;
+    --hot-border: #e53935;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --h1-border: #666;
+    --h2: #ddd;
+    --muted: #9a9a9a;
+    --def-bg: #262626;
+    --def-border: #777;
+    --code-bg: #2e2e2e;
+    --table-border: #444;
+    --todo-bg: #4a3f14;
+    --todo-border: #d4a017;
+    --link: #7aa8ff;
+    --hint: #999;
+    --hot-bg: #3a1e1e;
+    --hot-border: #e53935;
+  }
+  body { background: var(--bg); color: var(--fg); }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid var(--h1-border); padding-bottom: .3rem; }
+  h2 { font-size: 1.15rem; color: var(--h2); margin-top: 1.8rem; }
+  .note {
+    background: var(--todo-bg);
+    border-left: 4px solid var(--todo-border);
+    padding: .6rem .9rem;
+    border-radius: 4px;
+    font-size: .92rem;
+    margin: 1rem 0;
+  }
+  .hot {
+    background: var(--hot-bg);
+    border-left: 4px solid var(--hot-border);
+    padding: .6rem .9rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  ol, ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .5rem 0; }
+  a { color: var(--link); }
+  .why { color: var(--hint); font-size: .88rem; }
+  .pts { color: var(--muted); font-size: .8rem; font-style: italic; }
+  .src { color: var(--muted); font-size: .85rem; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+
+<h1>Altklausur-Erfahrungsbericht</h1>
+<p class="src">Quelle: Audiotranskript eines Kommilitonen direkt nach dem Schreiben der Klausur. &nbsp;<a href="index.html">← zurück zur Übersicht</a> · <a href="prio.html">Prio-Liste</a></p>
+
+<div class="note">
+<strong>Zur Zuverlässigkeit:</strong> Das ist eine mündliche, aus dem Gedächtnis erzählte Zusammenfassung direkt nach der Klausur — Reihenfolge, genaue Formulierungen und Punktzahlen können ungenau sein. Die <em>Themen</em> und die grobe Aufgabenstruktur sind aber ein wertvoller Realitäts-Check gegenüber der reinen Theorie aus uebersicht.txt. Es handelt sich um eine einzelne Klausur (n=1) — kein Ersatz für die breite Vorbereitung, aber ein starkes Signal, was tatsächlich drankommt.
+</div>
+
+<h2>Rekonstruierter Ablauf</h2>
+<ol>
+  <li>
+    <strong>Begriffsfrage zu „Medien“</strong>: verschiedene Arten/Kontexte von „Medien“ benannt, Beispielbegriffe gegeben, 3 Bedeutungen von „Medien“ sollten erklärt werden.
+    <div class="why">Keine eindeutige Zuordnung in unseren Materialien gefunden — am ehesten verwandt mit dem Kommunikationsmedien-Abschnitt in der Projektmanagement-Vorlesung (synchrone/asynchrone Kommunikation: Treffen/Telefon vs. E-Mail/Chat/Dokumente), aber das deckt nicht sauber „3 Bedeutungen von Medien“ ab. Möglich, dass das eine kursübergreifende Einstiegsfrage war, die nicht 1:1 aus dem SWT-Stoff kommt. Falls dazu mehr Kontext auftaucht, hier ergänzen.</div>
+  </li>
+  <li>
+    <strong>Kurzer Anforderungsanalyse-Teil</strong> (als Einstieg, vor der großen Aufgabe).
+    → <a href="summaries/05_Anforderungserhebung.html">Anforderungserhebung</a>
+  </li>
+  <li>
+    <strong>Chatprotokoll mit einem KI-Bot analysieren</strong>: an welcher Stelle hat der Bot etwas falsch verstanden? <span class="pts">(10 Punkte)</span>
+    <div class="why">Praktische Anwendung von Anforderungserhebung/-verständnis — vermutlich geht es darum, Missverständnisse zwischen Anforderung und (KI-generierter) Interpretation zu erkennen, ähnlich wie beim Abgleich Anwendungsdomäne ↔ Spezifikation.</div>
+    → <a href="summaries/05_Anforderungserhebung.html">Anforderungserhebung</a>
+  </li>
+  <li>
+    <strong>Anforderungsanalyse-Aufgabe zu einem Text</strong>: aus einem gegebenen Text Anforderungen ablesen und einen Anwendungsfall (Use Case) aufzeichnen + beschreiben.
+    → <a href="summaries/05_Anforderungserhebung.html">Anforderungserhebung</a> · <a href="summaries/06_Usecases.html">Anwendungsfälle (Use-Case-Template!)</a>
+  </li>
+  <li>
+    <strong>2 zusätzliche Anforderungen</strong> formulieren, die nicht Teil der vorherigen Aufgabe waren.
+    → <a href="summaries/05_Anforderungserhebung.html">Anforderungserhebung</a>
+  </li>
+  <li>
+    <strong>UML-Klassendiagramm</strong> zu einem Szenario mit Journalist:innen (verfassen Beiträge) und Kontrolleur:innen (prüfen Beiträge, dürfen nicht gleichzeitig Verfasser desselben Beitrags sein) — Beiträge sind Teil eines Zeitungsartikels, ein Artikel besteht aus mehreren Teilen. Diagramm sollte selbst modelliert werden.
+    <div class="why">Klassisches Klassendiagramm mit Assoziationen/Rollen, Multiplizitäten und einer Ausschluss-Constraint (Verfasser ≠ Kontrolleur desselben Objekts) — genau die Art Constraint, die typischerweise per OCL zusätzlich abgesichert wird.</div>
+    → <a href="summaries/04_UML.html">UML</a> · <a href="summaries/07_Objektmodellierung.html">Objektmodellierung</a>
+  </li>
+  <li>
+    <strong>OCL-Aufgabe</strong>: 3 OCL-Ausdrücke selbst formulieren, dazu 2 gegebene OCL-Blöcke in eigenen Worten erklären.
+    → <a href="summaries/13_Schnittstellenspezifikation.html">Schnittstellenspezifikation (OCL)</a>
+  </li>
+  <li>
+    <strong>Definitions-/Begriffserklärungsfragen</strong> (allgemein, mehrere Einzelfragen).
+  </li>
+  <li>
+    <strong>3 Fragen zu Extreme Programming</strong> + 2 weitere Fragen.
+    → <a href="summaries/17_Prozessmodelle.html">Prozessmodelle (XP-Abschnitt)</a>
+  </li>
+</ol>
+
+<h2>Einschätzung</h2>
+<div class="hot">
+<strong>Kernaussage des Berichts:</strong> Die mit Abstand größten Aufgabenblöcke (rechnet man Punkte über die Aufgaben 2–6 zusammen, das sind über die Hälfte der beschriebenen Klausur) drehen sich um <strong>Anforderungsanalyse, Anwendungsfälle, UML und OCL</strong> — nicht um Prozessmodelle oder Entwurfsmuster, wie es der reine Umfang in uebersicht.txt nahelegen würde.
+</div>
+<p>
+Das deckt sich <em>nicht</em> 1:1 mit der Gewichtung in <a href="prio.html">prio.html</a> (dort oben: Entwurfsmuster, Taxonomie, QS, Testarten, Prozessmodelle) — dieser Bericht spricht dafür, dass in der <em>praktischen Prüfung</em> die Modellierungs-/Anwendungsaufgaben (Text → Anforderungen → Use Case → UML-Diagramm → OCL-Constraints) den größten Anteil ausmachen, während die reinen Definitions-/Aufzählungsthemen (Prozessmodelle, QS-Arten, Entwurfsmuster) eher in kompakteren Einzelfragen abgefragt werden.
+</p>
+<p>
+Praktische Konsequenz: Neben dem Auswendiglernen der Begriffe unbedingt <strong>selbst üben</strong>, aus einem Fließtext Anforderungen + einen vollständigen Anwendungsfall (Template!) abzuleiten, dazu ein UML-Klassendiagramm mit Rollen/Multiplizitäten/Ausschluss-Constraints zu zeichnen und passende OCL-Ausdrücke zu schreiben — das ist Transferleistung, die sich nicht durch reines Auswendiglernen von uebersicht.txt abdecken lässt.
+</p>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SWT Prio-Liste</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --h1-border: #333;
+    --h2: #222;
+    --muted: #777;
+    --def-bg: #f3f3f3;
+    --def-border: #888;
+    --code-bg: #eee;
+    --table-border: #ccc;
+    --todo-bg: #fff3cd;
+    --todo-border: #d4a017;
+    --link: #1a4fa0;
+    --hint: #666;
+    --tier1-bg: #ffe0e0;
+    --tier1-border: #e53935;
+    --tier2-bg: #fff3cd;
+    --tier2-border: #d4a017;
+    --tier3-bg: #dcffe0;
+    --tier3-border: #4caf50;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --h1-border: #666;
+    --h2: #ddd;
+    --muted: #9a9a9a;
+    --def-bg: #262626;
+    --def-border: #777;
+    --code-bg: #2e2e2e;
+    --table-border: #444;
+    --todo-bg: #4a3f14;
+    --todo-border: #d4a017;
+    --link: #7aa8ff;
+    --hint: #999;
+    --tier1-bg: #3a1e1e;
+    --tier1-border: #e53935;
+    --tier2-bg: #4a3f14;
+    --tier2-border: #d4a017;
+    --tier3-bg: #1e3a24;
+    --tier3-border: #4caf50;
+  }
+  body { background: var(--bg); color: var(--fg); }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid var(--h1-border); padding-bottom: .3rem; }
+  h2 { font-size: 1.15rem; color: var(--h2); margin-top: 2rem; padding: .4rem .7rem; border-radius: 6px; }
+  h2.tier1 { background: var(--tier1-bg); border-left: 4px solid var(--tier1-border); }
+  h2.tier2 { background: var(--tier2-bg); border-left: 4px solid var(--tier2-border); }
+  h2.tier3 { background: var(--tier3-bg); border-left: 4px solid var(--tier3-border); }
+  .tier-desc { color: var(--muted); font-size: .85rem; margin: -.5rem 0 .8rem 0; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .5rem 0; }
+  a { color: var(--link); }
+  .why { color: var(--hint); font-size: .88rem; }
+  .src { color: var(--muted); font-size: .85rem; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+
+<h1>Prio-Liste: Was zuerst lernen?</h1>
+<p class="src">Gewichtung aus uebersicht.txt (Umfang/explizite Hinweise im Original) + Abdeckung in ub/ (mehrfach behandelte Themen = wahrscheinlicher prüfungsrelevant). &nbsp;<a href="index.html">← zurück zur Übersicht</a></p>
+
+<div class="note" style="background: var(--todo-bg); border-left: 4px solid var(--todo-border); padding: .6rem .9rem; border-radius: 4px; font-size: .92rem;">
+<strong>Abgleich mit der Praxis:</strong> Laut <a href="altklausur.html">Altklausur-Erfahrungsbericht</a> eines Kommilitonen lag der größte Punkteanteil in der tatsächlichen Klausur auf Anforderungsanalyse, Anwendungsfällen, UML und OCL (Transferaufgaben) — nicht auf Prozessmodellen/Entwurfsmustern. Diese Liste hier basiert auf dem Umfang in uebersicht.txt; für die konkrete Prüfungsform lohnt sich zusätzlich gezieltes Üben der dort genannten Aufgabentypen.
+</div>
+
+<h2 class="tier1">Tier 1 — zuerst, auswendig sitzen</h2>
+<p class="tier-desc">Größte/am stärksten betonte Blöcke im Original bzw. mehrfach in ub/ aufgegriffen.</p>
+<ul>
+  <li><strong>Entwurfsmuster</strong> (Proxy, Befehlsmuster, Abstrakte Fabrik, Strategie, Beobachter, Adapter, Brücke, Fassade, Composite) — <span class="why">im Original explizit der größte Block auf dem A3-Blatt, in uebersicht.txt aber nur stichpunktartig — genau deswegen Lücke, die durch VL-Folien geschlossen werden muss.</span> → <a href="summaries/11_Entwurfsmuster.html">Summary</a> · <a href="tests/11_Entwurfsmuster.html">Test</a></li>
+  <li><strong>Taxonomie „Die Welt der Softwaretechnik“</strong> (Produkt-/Prozessprobleme, technische/methodische Lösungsansätze) — <span class="why">mit 43 Zeilen der mit Abstand längste zusammenhängende Block in uebersicht.txt, dient als Ordnungsrahmen für fast alle anderen Themen.</span> → <a href="summaries/03_Welt-der-Softwaretechnik.html">Summary</a> · <a href="tests/03_Welt-der-Softwaretechnik.html">Test</a></li>
+  <li><strong>Analytische vs. konstruktive Qualitätssicherung</strong> (dynamisch: Defekt-/Benutzbarkeits-/Last-/Leistungs-/Stress-/Akzeptanztest; statisch: manuell/automatisch; konstruktiv: Test-/Durchsichtmgmt, Prozessmgmt, Risikomgmt) — <span class="why">in uebersicht.txt an zwei Stellen behandelt (Zeile 128 + 296) und deckt gleich zwei ub-Übungen ab (10 + 11) — überdurchschnittliches Gewicht.</span> → <a href="summaries/14_Analytische-QS.html">Summary QS</a> · <a href="tests/14_Analytische-QS.html">Test</a> / <a href="summaries/16_Konstruktive-QS.html">Summary Konstr. QS</a> · <a href="tests/16_Konstruktive-QS.html">Test</a></li>
+  <li><strong>Testarten: Black-Box vs. White-Box</strong> (Äquivalenzklassen, C0/C1/C2-Überdeckung, Zweigüberdeckung) — <span class="why">konkrete Beispiele im Original (Dreieck-Beispiel) deuten auf Rechenaufgaben in der Klausur hin, nicht nur Definitionsfragen.</span> → <a href="summaries/14_Analytische-QS.html">Summary</a> · <a href="tests/14_Analytische-QS.html">Test</a></li>
+  <li><strong>Prozessmodelle</strong>: Wasserfallmodell (8 Phasen + Schwächen), iterative Modelle (Prototyp/Inkrementell/Iterativ inkl. Scrum/XP), Spiralmodell, konventionell vs. agil, strikte vs. agile Modelle im Vergleich — <span class="why">breitester Themenblock am Ende von uebersicht.txt, klassischer Vergleichs-/Einordnungsstoff für Klausurfragen.</span> → <a href="summaries/17_Prozessmodelle.html">Summary</a> · <a href="tests/17_Prozessmodelle.html">Test</a></li>
+</ul>
+
+<h2 class="tier2">Tier 2 — solide Grundlagen, sicher abfragbar</h2>
+<p class="tier-desc">Kernbegriffe, die in jeder Klausur als Definitions- oder Anwendungsfrage auftauchen können.</p>
+<ul>
+  <li>UML-Grundlagen (Sichtbarkeiten, Objektmodellierung) & Anwendungsfall-Template (Hauptakteur, Vorbedingung, Mindestzusicherung, Erweiterungen) → <a href="summaries/04_UML.html">UML</a> · <a href="tests/04_UML.html">Test</a> / <a href="summaries/06_Usecases.html">Usecases</a> · <a href="tests/06_Usecases.html">Test</a></li>
+  <li>OCL (Einstieg + iterate-Konstrukt) & Design by Contract (Vorbedingung/Nachbedingung/Invariante) → <a href="summaries/13_Schnittstellenspezifikation.html">Summary</a> · <a href="tests/13_Schnittstellenspezifikation.html">Test</a></li>
+  <li>Arten von Anforderungen (funktional/nichtfunktional/Sicherheit/Einschränkung) + Validierung vs. Verifizierung → <a href="summaries/05_Anforderungserhebung.html">Summary</a> · <a href="tests/05_Anforderungserhebung.html">Test</a></li>
+  <li>Methoden der Anforderungserhebung (Introspection, Interviews, Group Elicitation, ...) → <a href="summaries/05_Anforderungserhebung.html">Summary</a> · <a href="tests/05_Anforderungserhebung.html">Test</a></li>
+  <li>Architekturstile (Client/Server, Mehrschicht, Ereignisgesteuert, Datenflussnetze, Web) — Originalnotiz „dickes Ding“ → aufwendig, aber jede Ausprägung einzeln merken → <a href="summaries/09_Architektur.html">Summary</a> · <a href="tests/09_Architektur.html">Test</a></li>
+  <li>Modularisierung, Information Hiding, Module beurteilen (Kriterien) → <a href="summaries/09_Architektur.html">Summary</a> · <a href="tests/09_Architektur.html">Test</a></li>
+</ul>
+
+<h2 class="tier3">Tier 3 — ergänzend, wenn Zeit bleibt</h2>
+<p class="tier-desc">Wird meist nur mit Einzelfragen abgeprüft, aber schnell nachzuholen.</p>
+<ul>
+  <li>Projektmanagement: 2 Stile (planend-leitend vs. agil-selbstorganisiert), Aufgabenzerlegung, Risikomanagement-Stile, Netzplan → <a href="summaries/19_Projektmanagement.html">Summary</a> · <a href="tests/19_Projektmanagement.html">Test</a></li>
+  <li>Wiederverwendung: Prinzipien (Universalität, Abwägung), Effekt auf Qualität/Produktivität/Risiko → <a href="summaries/23_Wiederverwendung.html">Summary</a> · <a href="tests/23_Wiederverwendung.html">Test</a></li>
+  <li>Anwendungs- vs. technische Domäne, Anwendungsdomänen-/Lösungsdomänenklasse, Analysten vs. Entwerfer → <a href="summaries/07_Objektmodellierung.html">Summary</a> · <a href="tests/07_Objektmodellierung.html">Test</a></li>
+  <li>Dynamische Modellierung / Aktivitätsdiagramm-Notation (im Original nur [GRAFIK] — Notation separat üben) → <a href="summaries/08_Dynamische-Modellierung.html">Summary</a> · <a href="tests/08_Dynamische-Modellierung.html">Test</a></li>
+</ul>
+
+</body>
+</html>
