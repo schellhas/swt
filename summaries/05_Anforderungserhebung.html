@@ -107,7 +107,7 @@
   <li>"System" kann ein Computersystem (<em>system requirements</em>) oder ein sozio-technisches System (<em>user requirements</em>) meinen.</li>
 </ul>
 
-<h2>Types of Requirements</h2>
+<h2 id="types">Types of Requirements</h2>
 <p class="src">die für Übung 4-2b explizit referenzierte Folie</p>
 <table>
 <tr><th>Typ</th><th>Bedeutung</th></tr>
@@ -117,7 +117,7 @@
 <tr><td><strong>Constraints ("Pseudo-Requirements")</strong></td><td>von Kunde/Umgebung auferlegte Einschränkungen, oft zur zu verwendenden Technologie (Sprache, Betriebssystem, Middleware)</td></tr>
 </table>
 
-<h3>Zweite Sicht: Arten von Requirements nach Wert/Schwierigkeit</h3>
+<h3 id="wert">Zweite Sicht: Arten von Requirements nach Wert/Schwierigkeit</h3>
 <ul>
   <li><strong>Ingenious requirements</strong> — unglaublich wertvoll (z. B. "eine Zelle kann eine Formel enthalten, die auf andere Zellen verweist")</li>
   <li><strong>Fundamental requirements</strong> — klingen einfach, sind es aber nicht (z. B. "der Automat kann jede Ticketart verkaufen")</li>
@@ -152,7 +152,7 @@
 </table>
 <p>Was besser ist, hängt stark vom Kontext ab. In agilen Prozessen: Schritt 1 nutzt v. a. User-Feedback, Schritt 2 bevorzugt mündliche Kommunikation (Schreiben ist aufwendig und wird oft missverstanden), Schritt 3 findet Fehler auch durchs Ausprobieren, Schritt 4 sieht Änderungen als Normalzustand.</p>
 
-<h2>Requirements, Domain Properties und Spezifikation</h2>
+<h2 id="dps">Requirements, Domain Properties und Spezifikation</h2>
 <ul>
   <li><strong>Domain Properties (D):</strong> Eigenschaften im Problemraum, die wahr sind — unabhängig davon, ob das System je gebaut wird.</li>
   <li><strong>Requirements (R):</strong> Eigenschaften im Problemraum, die durch das gelieferte System wahr gemacht werden sollen.</li>
@@ -160,7 +160,7 @@
   <li>Zusammenhang: <strong>S + D ⟹ R</strong> (die Spezifikation erfüllt zusammen mit den Domain Properties die Requirements). Ist das Domänenmodell falsch, kann diese Schlussfolgerung trotz korrekter Spezifikation scheitern — ein·e umsichtige·r Softwareentwickler·in hinterfragt daher alle Domänen-Annahmen.</li>
 </ul>
 
-<h3>Validierung vs. Verifizierung</h3>
+<h3 id="validierung">Validierung vs. Verifizierung</h3>
 <p class="src">deckt sich mit uebersicht.txt Zeilen 25-29</p>
 <div class="def">
 <strong>Verifizierung (Verification):</strong> prüft, ob das <em>Programm</em> auf einem bestimmten <em>Computer</em> die <em>Spezifikation</em> erfüllt (Äquivalenz formaler Repräsentationen).<br>
@@ -183,14 +183,14 @@
   <li><strong>Anwendungsdomäne vs. Technische Domäne</strong> (uebersicht.txt Zeilen 183-189): Anwendungsdomäne = Problembereich, <em>wozu</em> die Software dient (z. B. Finanzwesen, E-Commerce, Bildung — entspricht "What"); Technische Domäne = Lösungsbereich, <em>mit welcher Technik</em> sie realisiert wird (z. B. Java, NoSQL, Angular — entspricht "How"). Feinere Unterscheidung auf Klassenebene (Problembereichs-/Lösungsklassen) siehe <a href="07_Objektmodellierung.html">07 Objektmodellierung</a>.</li>
 </ul>
 
-<h2>Was ist ein System?</h2>
+<h2 id="system">Was ist ein System?</h2>
 <ul>
   <li>Ein Teil der Realität, der beobachtbar mit seiner Umgebung interagiert; durch eine <strong>Boundary</strong> (Grenze) abgetrennt (kann bei "soft systems" schwer zu bestimmen sein), erhält <strong>Inputs</strong>, sendet <strong>Outputs</strong>, hat oft einen Kontrollmechanismus und meist interessante <strong>emergente Eigenschaften</strong>.</li>
   <li>Die zu bauende Software ist im <em>Lösungsraum</em> "das System" — im <em>Problemraum</em> nicht: dort gehören auch die Menschen, ihre Nutzungsweisen und weitere Umweltfaktoren zum größeren, zu verstehenden System → <strong>sozio-technisches System</strong>.</li>
   <li>Faustregel: Sind Menschen irgendwie beteiligt, Software niemals mit "dem System" verwechseln.</li>
 </ul>
 
-<h2>Requirements Elicitation</h2>
+<h2 id="elicitation">Requirements Elicitation</h2>
 <ul>
   <li>Ausgangspunkt: die Vorstellung, dass es ein zu lösendes "Problem" gibt (etwas Negatives, das beseitigt werden soll, oder eine Chance, die genutzt werden soll).</li>
   <li><strong>W6H-Technik</strong> (die Journalisten-Technik) zum Identifizieren von Problem und Chance:</li>

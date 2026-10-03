@@ -118,7 +118,7 @@ Ein <strong>dynamisches Modell</strong> ist eine Sammlung mehrerer Verhaltensdia
   <li><strong>Vorgehen:</strong> von Use Case/Szenario + identifizierten Klassen ausgehen → Interaktion zwischen Objekten modellieren (Sequenzdiagramm) bzw. Verhalten eines einzelnen Objekts modellieren (State-Machine-Diagramm).</li>
 </ul>
 
-<h2>Sequenzdiagramme zur Objektmodellierung nutzen</h2>
+<h2 id="seq">Sequenzdiagramme zur Objektmodellierung nutzen</h2>
 <p class="src">Notation selbst siehe <a href="04_UML.html">04 UML</a>; hier geht es um den Einsatz beim Entdecken von Klassen/Operationen</p>
 <ul>
   <li><strong>Typisches Layout:</strong> 1. Spalte der auslösende Akteur, 2. Spalte ein Boundary-Objekt (im Entwurf, in der Analyse evtl. nicht), 3. Spalte evtl. ein Control-Objekt, das den Use Case steuert, weitere Spalten die übrigen beteiligten Objekte.</li>
@@ -134,7 +134,7 @@ Ein <strong>dynamisches Modell</strong> ist eine Sammlung mehrerer Verhaltensdia
 </table>
 <p>Kein Stil ist grundsätzlich besser — meist ist eine geeignete Mischung sinnvoll (siehe Entwurfsmuster "Mediator", "Fassade").</p>
 
-<h2>Zustandsdiagramme (State Machine Diagrams)</h2>
+<h2 id="zustand">Zustandsdiagramme (State Machine Diagrams)</h2>
 <div class="def">
 Ein Zustandsautomat beschreibt den <strong>Lebenszyklus eines Objekts</strong>: ein Graph, dessen Knoten Zustände und dessen gerichtete Kanten (Transitions) mit Ereignisnamen beschriftete Übergänge sind. Ein Zustandsdiagramm bezieht sich immer auf <strong>eine</strong> Klasse (ein Objektmodell mit mehreren Klassen kann entsprechend mehrere Zustandsdiagramme haben).
 </div>
@@ -198,7 +198,7 @@ Ein Zustandsautomat beschreibt den <strong>Lebenszyklus eines Objekts</strong>: 
 <h3>Dynamische Modellierung von Benutzeroberflächen</h3>
 <p>Zustandsdiagramme eignen sich auch, um Navigationspfade/Page-Flows einer UI darzustellen (gut z. B. für web-basiertes UI-Design): Zustände = Bildschirmnamen, Aktivitäten/Aktionen = Aufzählungspunkte unter dem Bildschirmnamen (oft nur die Exit-Aktion gezeigt), Zustandsübergänge = Ergebnis der Exit-Aktion (Klick, Menüauswahl, Cursorbewegung).</p>
 
-<h2>Aktivitätsdiagramme (Übung 6-2)</h2>
+<h2 id="aktivitaet">Aktivitätsdiagramme (Übung 6-2)</h2>
 <p class="src">Quelle: other/statecharts_activitydiagrams.pdf</p>
 <ul>
   <li>Zerlegen eine <strong>Aktivität</strong> in kleinere Einheiten (Teil-Aktivitäten); jede Teil-Aktivität kann wiederum in einem eigenen Aktivitätsdiagramm weiter zerlegt werden.</li>
@@ -253,7 +253,7 @@ Ein Modell heißt <strong>dominant</strong>, wenn es einen viel größeren Antei
   </li>
   <li>Glossary</li>
 </ol>
-<h3>Kategorien nichtfunktionaler Anforderungen (3.3, mit Leitfragen)</h3>
+<h3 id="nfa">Kategorien nichtfunktionaler Anforderungen (3.3, mit Leitfragen)</h3>
 <p>User Interface &amp; Human Factors, Documentation, Hardware Considerations, Performance Characteristics, Error Handling &amp; Extreme Conditions, System Interfacing, Quality Issues, System Modifications, Physical Environment, Security Issues, Resources &amp; Management Issues (Betrieb wird in diesem Kurs weitgehend ausgeklammert).</p>
 <h3>Priorisierung von Requirements</h3>
 <table>

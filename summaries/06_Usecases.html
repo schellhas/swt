@@ -110,7 +110,7 @@
 <h3>a) Was ist ein Anwendungsfall und wozu dient er? (Übung 5-1a)</h3>
 <p>Siehe Definition oben. Zweck: er dient als <strong>Vereinbarung</strong> zwischen allen Projektbeteiligten (Kunden, Nutzer·innen, Entwickler·innen) darüber, was das System in einer bestimmten Interaktion leisten soll — unabhängig von der konkreten Implementierung. Er macht funktionale Anforderungen konkret nachvollziehbar und dient zugleich als Werkzeug der Anforderungserhebung (leicht zu schreiben, leicht mit Beteiligten abzugleichen).</p>
 
-<h2>Use-Case-Schablone</h2>
+<h2 id="schablone">Use-Case-Schablone</h2>
 <p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
 <table>
 <tr><th>Feld</th><th>Bedeutung</th></tr>
@@ -173,7 +173,7 @@
   <li>Klare Akteursbenennung deckt oft Probleme auf (z. B. wenn "Arzt" eigentlich eine Organisation statt einer Person ist).</li>
 </ul>
 
-<h2>Szenario vs. Anwendungsfall (Übung 5-1c)</h2>
+<h2 id="szenario">Szenario vs. Anwendungsfall (Übung 5-1c)</h2>
 <div class="def">
 Ein <strong>Szenario</strong> ist eine konkrete(re) Ausprägung eines Use Case: es gibt keine Varianten, sondern nur einen linearen Ablauf, ggf. mit ganz konkreten Datenwerten.<br>
 Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, die mehrere Szenarien (Haupt-Erfolgsszenario + Erweiterungen/Varianten) bündelt.
@@ -201,7 +201,7 @@ Use Cases decken <strong>nur Verhaltensanforderungen</strong> ab. Sie beschreibe
 </div>
 <p>Aus Entwicklersicht fehlt zudem: welche <strong>Funktionen</strong> die SW braucht, welche <strong>Daten</strong> im System vorhanden sind, wie sich die Entwicklung auf Personen verteilen lässt — dafür ist als nächster Schritt <strong>Anforderungsanalyse</strong> nötig.</p>
 
-<h2>UML-Anwendungsfalldiagramme (Übung 5-2)</h2>
+<h2 id="ucd">UML-Anwendungsfalldiagramme (Übung 5-2)</h2>
 <div class="qa"><span class="q">a) Anwendungsfalldiagramm vs. Anwendungsfall, Vor-/Nachteile</span><br>
 Ein Anwendungsfalldiagramm ist eine grafische <em>Übersicht</em> über Akteure und die wenigen Beziehungen zwischen Use Cases (Systemgrenze, include/extend/Generalisierung) — es enthält bewusst wenig Information und ersetzt nicht den ausformulierten (meist textuellen) Use Case selbst.<br>
 <strong>Vorteile:</strong> schneller visueller Überblick über Akteure und Struktur eines Systems; gut zur Kommunikation der Systemgrenze und Zusammenhänge zwischen Use Cases.<br>
@@ -226,7 +226,7 @@ Repräsentiert eine <strong>Rolle</strong>, die von außerhalb des Systems mit i
 </table>
 Beide dienen dazu, Use Cases übersichtlich zu halten, indem Teilabläufe ausgelagert werden — «include» ist dabei verpflichtend, «extends»/Generalisierung optional bzw. alternativ.</div>
 
-<h3>Präzisierung: include, extend, Generalisierung</h3>
+<h3 id="incl">Präzisierung: include, extend, Generalisierung</h3>
 <p class="src">ergänzt aus other/04_anwendungsfaelle.pdf (Lehrbuchkapitel "Anwendungsfalldiagramm", Beispiel "Bestellwesen") — deckt sich mit VL06, ist aber präziser in Pfeilrichtung und Semantik</p>
 <ul>
   <li><strong>include:</strong> Basisanwendungsfall <em>A</em> nutzt Anwendungsfall <em>B</em> (»<code>A includes B</code>«) — <em>A</em> ist vom erfolgreichen Ablauf von <em>B</em> abhängig. Der Pfeil zeigt <strong>vom benutzenden zum benutzten</strong> Use Case (<code>A --«include»--&gt; B</code>), da <em>A</em> "Kenntnis" von <em>B</em> hat. Zweck: Redundanzvermeidung — dieselbe Teilfunktionalität wird nur einmal beschrieben. Die include-Beziehung sagt nichts über den <em>Zeitpunkt</em> aus, zu dem <em>B</em> im Ablauf von <em>A</em> passiert (Anfang, Ende, mittendrin) — sie wird immer erreicht.</li>

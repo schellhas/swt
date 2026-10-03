@@ -98,7 +98,7 @@
 <h1>07 Objektmodellierung (Analysis Model: Objects)</h1>
 <p class="src">Quelle: vl/07_Objektmodellierung.pdf — relevant für ub/06_ub_statische-dynamische-analyse.pdf (Aufgabe 6-1)</p>
 
-<h2>Application Domain vs. Solution Domain (Übung 6-1a)</h2>
+<h2 id="domaene">Application Domain vs. Solution Domain (Übung 6-1a)</h2>
 <table>
 <tr><th></th><th>Application Domain (Problembereich)</th><th>Solution Domain (Lösungsbereich)</th></tr>
 <tr><td>Was ist das?</td><td>die "Heimat"-Domäne des zu lösenden Problems</td><td>technische Domänen, die beim Bau der Software helfen</td></tr>
@@ -109,7 +109,7 @@
 </table>
 <p><strong>Wichtig:</strong> Das Analysemodell (Objektmodellierung dieser Vorlesung) beschreibt <em>ausschließlich</em> Problembereichsklassen — es ist explizit <strong>kein</strong> Lösungsentwurf ("It is not meant to be a solution design!").</p>
 
-<h2>Object vs. Class</h2>
+<h2 id="objekt">Object vs. Class</h2>
 <div class="def">
 <strong>Object</strong> (Exemplar/Instance): genau ein konkretes Ding.<br>
 <strong>Class</strong>: beschreibt abstrakt eine Kategorie von Objekten mit ähnlichen Eigenschaften.
@@ -128,7 +128,7 @@
 </table>
 <p>Diese Dreiteilung macht Modelle änderungsresistenter. Oft "Model, View, Controller" (MVC) genannt — dieser Begriff passt aber eigentlich nur <em>innerhalb</em> von GUIs (also für Lösungsklassen). In UML als Stereotyp notierbar (<code>«Entity»</code>, <code>«Control»</code>, <code>«Boundary»</code>) oder per Namenskonvention (Suffix <code>_Control</code>, <code>_Boundary</code>).</p>
 
-<h2>Wie findet man Klassen? Abbotts Textanalyse</h2>
+<h2 id="abbott">Wie findet man Klassen? Abbotts Textanalyse</h2>
 <p>Methoden (mehrere kombinieren): Kunden beobachten/befragen, Weltwissen &amp; Intuition nutzen, syntaktische Analyse von Anforderungstexten/Szenarien (Abbott 1983, "noun-verb analysis").</p>
 <table>
 <tr><th>Beispiel</th><th>Grammatikalische Konstruktion</th><th>mögliche UML-Komponente</th></tr>
@@ -151,7 +151,7 @@
 </ol>
 <p>Reihenfolge ist nur eine Heuristik, flexibel; Iteration hilft. Werden falsche Abstraktionen gefunden, müssen Inkonsistenzen erkannt und das Modell korrigiert werden.</p>
 
-<h2>Checklisten</h2>
+<h2 id="checklisten">Checklisten</h2>
 <ul>
   <li><strong>Klassen:</strong> Kategorie identifizieren (Personen/Rollen, Orte, Ereignisse, Verträge, Handlungsinformationen, Container, konkrete Dinge); passenden Namen finden (Nutzerbegriff, Singular-Nomen); Abstraktionsniveau prüfen; wirklich eine Problembereichsklasse (nicht versehentlich eine Lösungsklasse, z. B. ein technischer Container)?</li>
   <li><strong>Assoziationen:</strong> erst einfache Linie; Art prüfen (physischer/logischer Teil von, Beschreibung von, nutzt, besitzt, andere); Restriktionen (<code>{ordered}</code>, <code>{xor}</code>, <code>{subset}</code>); Rollen benennen; reflexive Assoziationen immer benennen; 1:1-Assoziationen hinterfragen (sollten die Klassen vereint werden?); mehrere Assoziationen zwischen denselben Klassen wirklich unterschiedlich?</li>
