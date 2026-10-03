@@ -97,7 +97,7 @@
 <h1>06 Anwendungsfälle (Use Cases)</h1>
 <p class="src">Quelle: vl/06_Usecases.pdf — relevant für ub/05_ub_use-cases.pdf und uebersicht.txt (Zeilen 98-115, "Anwendungsfall")</p>
 
-<h2>Was ist ein Use Case?</h2>
+<h2 id="was">Was ist ein Use Case?</h2>
 <div class="def">
 <strong>Rolle:</strong> Vereinbarung zwischen den Beteiligten eines Projekts über das Verhalten des Systems.<br>
 <strong>Ansatz:</strong> Beschreibung des Verhaltens des Systems als Antwort auf einen Auftrag eines Hauptakteurs, der mit seinem Auftrag ein Ziel verfolgt und erreicht.
@@ -127,7 +127,7 @@
 </table>
 <p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
 
-<h3>Akteure und Rollen</h3>
+<h3 id="akteure">Akteure und Rollen</h3>
 <ul>
   <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
   <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
@@ -152,13 +152,13 @@
 <h3>Konventionell vs. Agil</h3>
 <p>Konventionell: Überblicks-, normale und (selten) Whitebox-/Detail-Use-Cases werden meist ausformuliert. Agil: eher <strong>Epics</strong> und <strong>Story Cards</strong> ("Als &lt;Rolle&gt; kann ich &lt;Ziel&gt; von &lt;SuD&gt;, um &lt;Akteursinteresse&gt;") statt vollständiger Use Cases; Details werden eher im Code oder iterativ nachgebessert.</p>
 
-<h2>Präzision beim Schreiben von Use Cases</h2>
+<h2 id="praez">Präzision beim Schreiben von Use Cases</h2>
 <ul>
   <li><strong>Präzision</strong> (precision) ≠ <strong>Richtigkeit</strong> (accuracy) — ein Use Case kann sehr präzise, aber falsch sein, oder ungenau, aber völlig richtig. Ziel: ausreichend präzise <em>und</em> richtig.</li>
   <li><strong>Gefahr 1 (zu früh zu genau):</strong> man übersieht anfangs oft etwas Wichtiges oder sitzt einem Missverständnis auf — schon investierte Detailarbeit ist dann verschwendet.</li>
   <li><strong>Gefahr 2:</strong> wird das Dokument zu umfangreich, liest es niemand mehr. Also: <strong>weniger ist oft mehr</strong>, Use Cases sollten immer nur gerade genau genug sein.</li>
 </ul>
-<h3>Empfehlung: schrittweise präziser machen</h3>
+<h3 id="schrittweise">Empfehlung: schrittweise präziser machen</h3>
 <ol>
   <li>Hauptakteur und Ziel ("Story Card") — klärt schon wichtige Anforderungen/Beteiligte, erst mal prüfen ob alles stimmt</li>
   <li>Haupt-Erfolgsszenario — reicht in manchen Fällen schon aus</li>
@@ -166,7 +166,7 @@
   <li>Erweiterungsschritte (wie werden sie behandelt? — kann oft weggelassen und informell geklärt werden)</li>
 </ol>
 
-<h3>Wichtigkeit von Zielen</h3>
+<h3 id="ziele">Wichtigkeit von Zielen</h3>
 <ul>
   <li>Ein Ziel beantwortet zu den Schritten die Frage "Warum?"; der Name eines Use Case sollte immer ein Ziel bezeichnen.</li>
   <li>In einem umfassenderen Use Case tritt ein untergeordnetes Ziel als einzelner Schritt auf → es entsteht eine <strong>Zielhierarchie</strong> (hierarchische Zerlegung), die einzelne Use Cases übersichtlich hält.</li>
@@ -180,7 +180,7 @@ Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, di
 </div>
 <p>Szenarien werden ergänzend genutzt, wenn das Schreiben eines Use Case schwerfällt oder er für manche Beteiligte zu abstrakt ist (meistens kommt man aber ohne aus). Der Entwicklungsstil <strong>ATDD</strong> (Acceptance-Test-Driven Development) nutzt statt eines Use Case direkt N konkrete Szenarien als automatisierte Testfälle, die vor der Implementierung geschrieben werden und selbst als Spezifikation dienen.</p>
 
-<h2>Checkliste für Use-Case-Bestandteile</h2>
+<h2 id="checkliste">Checkliste für Use-Case-Bestandteile</h2>
 <p>Bei einem guten Use Case sollte jede dieser Fragen mit "ja" beantwortet werden können:</p>
 <ul>
   <li><strong>Titel:</strong> aktive Verbalphrase, die das Ziel des Hauptakteurs nennt? Ist das SuD für die Zielerreichung zuständig?</li>
@@ -195,7 +195,7 @@ Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, di
   <li>Insgesamt: "Ist dies, was Du möchtest?" (ggü. Beteiligten) und "Kannst Du das bauen?" (ggü. Entwickler·innen)</li>
 </ul>
 
-<h2>Grenzen von Use Cases</h2>
+<h2 id="grenzen">Grenzen von Use Cases</h2>
 <div class="def">
 Use Cases decken <strong>nur Verhaltensanforderungen</strong> ab. Sie beschreiben <em>nicht</em>: Domäneneigenschaften/Annahmen, Geschäftsregeln, nichtfunktionale Anforderungen, ggf. vorgegebenes Datenmodell/technische Schnittstellen, sonstige Randbedingungen. Das Anforderungsdokument muss daher mehr als nur Use Cases enthalten — Use Cases bilden aber einen guten Rahmen für den Rest.
 </div>
