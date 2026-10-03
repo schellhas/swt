@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SWT Todo</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --h1-border: #333;
+    --h2: #222;
+    --muted: #777;
+    --def-bg: #f3f3f3;
+    --def-border: #888;
+    --code-bg: #eee;
+    --table-border: #ccc;
+    --todo-bg: #fff3cd;
+    --todo-border: #d4a017;
+    --link: #1a4fa0;
+    --hint: #666;
+    --tier1-bg: #ffe0e0;
+    --tier1-border: #e53935;
+    --tier2-bg: #fff3cd;
+    --tier2-border: #d4a017;
+    --tier3-bg: #dcffe0;
+    --tier3-border: #4caf50;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --h1-border: #666;
+    --h2: #ddd;
+    --muted: #9a9a9a;
+    --def-bg: #262626;
+    --def-border: #777;
+    --code-bg: #2e2e2e;
+    --table-border: #444;
+    --todo-bg: #4a3f14;
+    --todo-border: #d4a017;
+    --link: #7aa8ff;
+    --hint: #999;
+    --tier1-bg: #3a1e1e;
+    --tier1-border: #e53935;
+    --tier2-bg: #4a3f14;
+    --tier2-border: #d4a017;
+    --tier3-bg: #1e3a24;
+    --tier3-border: #4caf50;
+  }
+  body { background: var(--bg); color: var(--fg); }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid var(--h1-border); padding-bottom: .3rem; }
+  h2 { font-size: 1.15rem; color: var(--h2); margin-top: 2rem; padding: .4rem .7rem; border-radius: 6px; }
+  h2.tier1 { background: var(--tier1-bg); border-left: 4px solid var(--tier1-border); }
+  h2.tier2 { background: var(--tier2-bg); border-left: 4px solid var(--tier2-border); }
+  h2.tier3 { background: var(--tier3-bg); border-left: 4px solid var(--tier3-border); }
+  .tier-desc { color: var(--muted); font-size: .85rem; margin: -.5rem 0 .8rem 0; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .5rem 0; }
+  a { color: var(--link); }
+  .why { color: var(--hint); font-size: .88rem; }
+  .src { color: var(--muted); font-size: .85rem; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+  .cat { background: var(--def-bg); border-left: 4px solid var(--def-border); }
+  ul.todo { list-style: none; margin-left: 0; padding-left: .5rem; }
+  ul.todo li { margin: .35rem 0; }
+  ul.todo label { cursor: pointer; }
+  ul.todo input:checked + span { text-decoration: line-through; color: var(--muted); }
+  .tbd { color: var(--muted); font-style: italic; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+
+<h1>Todo: Klausur-Schwerpunkte</h1>
+<p class="src">Laut <a href="altklausur.html">Altklausur-Erfahrungsbericht</a> der Punkteschwerpunkt (Transferaufgaben). Haken werden im Browser gespeichert. &nbsp;<a href="index.html">← zurück zur Übersicht</a></p>
+
+<h2 class="cat">Anforderungsanalyse</h2>
+<p class="tbd">Unterkategorien folgen (gemeinsam erarbeiten).</p>
+
+<h2 class="cat">Anwendungsfälle</h2>
+<p class="tbd">Unterkategorien folgen (gemeinsam erarbeiten).</p>
+
+<h2 class="cat">UML</h2>
+<ul class="todo">
+  <li><label><input type="checkbox" data-id="UML-0"> <span>Klassendiagramm (Assoziation, Multiplizitäten, Rollen, Vererbung, Aggregation/Komposition, Sichtbarkeit) — am wichtigsten</span></label></li>
+  <li><label><input type="checkbox" data-id="UML-1"> <span>Use-Case-Diagramm (Akteure, include/extend)</span></label></li>
+  <li><label><input type="checkbox" data-id="UML-2"> <span>Aktivitätsdiagramm (Start/Ende, Verzweigung, Fork/Join, Swimlanes)</span></label></li>
+  <li><label><input type="checkbox" data-id="UML-3"> <span>Sequenzdiagramm</span></label></li>
+  <li><label><input type="checkbox" data-id="UML-4"> <span>Zustandsdiagramm</span></label></li>
+  <li><label><input type="checkbox" data-id="UML-5"> <span>Objektdiagramm</span></label></li>
+  <li><label><input type="checkbox" data-id="UML-6"> <span>Komponenten-/Verteilungsdiagramm (nur falls in ub/ vorgekommen)</span></label></li>
+</ul>
+
+<h2 class="cat">OCL</h2>
+<p class="tbd">Unterkategorien folgen (gemeinsam erarbeiten).</p>
+
+<script>
+document.querySelectorAll('ul.todo input').forEach(function(c){
+  try{c.checked=localStorage.getItem('swt-todo-'+c.dataset.id)==='1';}catch(e){}
+  c.onchange=function(){try{localStorage.setItem('swt-todo-'+c.dataset.id,c.checked?'1':'0');}catch(e){}};
+});
+</script>
+</body>
+</html>
