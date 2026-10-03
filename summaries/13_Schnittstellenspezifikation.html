@@ -101,15 +101,15 @@
   <li><strong>Verträge (Contracts) ergänzen</strong> — dafür dient OCL</li>
 </ol>
 
-<h2>Contracts: Vor-/Nachbedingung, Invariante (Übung 9-1c/d)</h2>
+<h2 id="contracts">Contracts: Vor-/Nachbedingung, Invariante (Übung 9-1c/d)</h2>
 <p class="src">Ausführliche Definition der drei Vertragsteile siehe <a href="09_Architektur.html">09 Architektur</a> (Design by Contract)</p>
 <p><strong>Zusammenhang der Begriffe (Übung 9-1d):</strong> <strong>Design by Contract</strong> ist das Prinzip, für jede Klasse/Operation einen Vertrag festzulegen. Ein Vertrag besteht aus <strong>Constraints</strong> (booleschen Ausdrücken über Modellelemente): <strong>Preconditions</strong> (was der Aufrufer garantieren muss), <strong>Postconditions</strong> (was die Operation garantiert) und <strong>Invarianten</strong> (was für jedes Objekt der Klasse zu jedem Zeitpunkt gilt, <em>außer</em> während der Ausführung einer Operation — die Invariante ist implizit Teil jeder öffentlichen Postcondition). <strong>OCL</strong> (Object Constraint Language) ist die Sprache, in der diese Constraints formal aufgeschrieben werden — Teil der UML-Welt, aber syntaktisch von UML selbst getrennt und <strong>deklarativ</strong> (kein Kontrollfluss ausdrückbar).</p>
 
-<h2>OCL-Grundsyntax (Übung 9-2, 9-3)</h2>
-<h3>Invarianten (Klassen-Constraints)</h3>
+<h2 id="syntax">OCL-Grundsyntax (Übung 9-2, 9-3)</h2>
+<h3 id="inv">Invarianten (Klassen-Constraints)</h3>
 <pre>context &lt;Klasse&gt; inv: &lt;Bedingung&gt;</pre>
 <p>Gilt für alle Membervariablen/Exemplare der Klasse zu jeder Zeit (außer während einer Methodenausführung). <code>self</code> bezeichnet das jeweilige Exemplar; bei eindeutigem Kontext kann <code>self</code> weggelassen werden.</p>
-<h3>Vor-/Nachbedingungen (Operations-Constraints)</h3>
+<h3 id="prepost">Vor-/Nachbedingungen (Operations-Constraints)</h3>
 <pre>context &lt;Klasse&gt;::&lt;Operation&gt;(&lt;Parameter&gt;: &lt;Typ&gt;): &lt;ReturnTyp&gt;
   pre: &lt;Bedingung 1&gt;
   pre: &lt;Bedingung 2&gt;
@@ -117,13 +117,13 @@
 <p><code>@pre</code> greift innerhalb einer <code>post</code>-Bedingung auf den Wert eines Ausdrucks <em>vor</em> dem Aufruf zu, z. B. <code>getNumPlayers() = getNumPlayers@pre() + 1</code>. <strong>Achtung:</strong> OCL-Verträge machen implizit die Annahme "alles andere bleibt gleich" — das muss man ggf. explizit mit angeben, sonst ist der Vertrag unvollständig (z. B. <code>zugelassen = zugelassen@pre</code>).</p>
 <p><strong>result</strong>-Schlüsselwort: in der Postcondition einer Operation mit Rückgabewert bezeichnet <code>result</code> den zurückgegebenen Wert, z. B. <code>context Klausur::punkteanzahl() post: result = aufgaben.punktzahl->sum()</code>.</p>
 
-<h2>Logische und relationale Operatoren</h2>
+<h2 id="ops">Logische und relationale Operatoren</h2>
 <ul>
   <li><strong>Logisch:</strong> <code>and</code>, <code>or</code>, <code>xor</code>, <code>implies</code>, <code>not</code>. <code>implies</code>: gilt die Bedingung davor, muss auch die danach gelten (sonst ist der Ausdruck automatisch wahr).</li>
   <li><strong>Relational:</strong> <code>=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>&lt;&gt;</code>; Standard-Rechenoperatoren <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>.</li>
 </ul>
 
-<h2>Navigation durch das Klassendiagramm</h2>
+<h2 id="navi">Navigation durch das Klassendiagramm</h2>
 <p>Jeder OCL-Ausdruck lässt sich aus drei Navigationsarten zusammensetzen:</p>
 <table>
 <tr><th>Art</th><th>Beispiel</th></tr>
@@ -133,7 +133,7 @@
 </table>
 <p><strong>Objekt- vs. Collection-Navigation:</strong> Zugriff auf ein einzelnes Objekt mit <code>.</code> (Punkt), Zugriff auf Operationen einer <strong>Collection</strong> (wenn über eine "viele"-Assoziation navigiert wird) mit <code>-&gt;</code> (Pfeil). Bei Assoziationsenden mit Maximum 1 liefert die Navigation immer ein einzelnes Objekt (oder <code>null</code>); trotzdem sind Collection-Operationen wie <code>-&gt;notEmpty()</code> darauf anwendbar, weil implizit ein leeres bzw. einelementiges Set erzeugt wird.</p>
 
-<h2>Collections</h2>
+<h2 id="coll">Collections</h2>
 <p>Die meisten Assoziationen führen zu Collections (0..*-Multiplizität). OCL kennt vier Collection-Arten:</p>
 <table>
 <tr><th>Art</th><th>Eigenschaft</th><th>Beispiel</th></tr>
@@ -143,7 +143,7 @@
 <tr><td><strong>Sequence</strong></td><td>Duplikate erlaubt, sortiert</td><td><code>Sequence{1,2,3,3,45}</code></td></tr>
 </table>
 <p>Welche Art konkret entsteht, hängt von den UML-Eigenschaften des Assoziationsendes ab (<code>{unique}</code>, <code>{ordered}</code>, …).</p>
-<h3>Wichtige Collection-Operationen</h3>
+<h3 id="collops">Wichtige Collection-Operationen</h3>
 <ul>
   <li><code>size()</code> — Anzahl Elemente</li>
   <li><code>includes(x)</code> — enthält x?</li>
@@ -153,7 +153,7 @@
   <li><code>iterate(v, acc = init | expr)</code> — allgemeinste Iteration mit Akkumulator (z. B. für Vereinigungen über mehrere Objekte)</li>
 </ul>
 
-<h2>Quantoren</h2>
+<h2 id="quant">Quantoren</h2>
 <ul>
   <li><strong><code>forAll(v | expr)</code></strong>: wahr, wenn <code>expr</code> für <em>alle</em> Elemente der Collection gilt.</li>
   <li><strong><code>exists(v | expr)</code></strong>: wahr, wenn <code>expr</code> für <em>mindestens ein</em> Element gilt.</li>
@@ -167,7 +167,7 @@
   Student.allInstances()->forAll(s | s <> self implies s.matrikel <> self.matrikel)</pre>
 <p><strong>Nicht unnötig verwenden:</strong> Bedingungen, die nur <code>self</code> selbst betreffen (z. B. "Matrikelnummer ist mindestens 6-stellig": <code>context Student inv: matrikelnummer >= 100000</code>), brauchen <em>kein</em> <code>allInstances()</code> — das wäre unnötig aufwendig und verschleiert die eigentliche Aussage.</p>
 
-<h2>OCL in der Praxis</h2>
+<h2 id="praxis">OCL in der Praxis</h2>
 <ul>
   <li><strong>Faustregel:</strong> Preconditions und Invarianten lassen sich meist leicht ausdrücken; Postconditions sind oft schwierig — eine unvollständige Postcondition (mit erklärendem Kommentar für den Rest) ist meist besser als keine.</li>
   <li>Zur Vereinfachung lohnt es sich, <strong>Prädikat-Methoden</strong> in der Klasse einzuführen (z. B. <code>isPlayerAccepted(p)</code> statt den Ausdruck jedes Mal auszuschreiben).</li>
