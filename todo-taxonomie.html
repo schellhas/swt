@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SWT Todo</title>
+<title>SWT Todo (Taxonomie)</title>
 <style>
   :root {
     --bg: #ffffff;
@@ -96,6 +96,18 @@
   .sec ul { list-style: disc; margin: .3rem 0 .8rem 1.2rem; padding-left: 0; }
   .sec li { margin: .2rem 0; }
   .tbd { color: var(--muted); font-style: italic; }
+  details.top, details.sub { margin: .5rem 0 .5rem 0; padding-left: .8rem; border-left: 3px solid var(--def-border); }
+  details.top { border-left-width: 5px; }
+  details.top > summary { font-size: 1.15rem; font-weight: 700; }
+  details.sub > summary { font-weight: 600; }
+  details.grp { margin: .6rem 0 .6rem .2rem; }
+  details.grp > summary { font-weight: 600; color: var(--h2); }
+  details.top > summary, details.sub > summary, details.grp > summary { cursor: pointer; padding: .2rem 0; }
+  .gloss { color: var(--muted); font-weight: 400; font-size: .85rem; }
+  .cnt { font-size: .78rem; font-weight: 400; color: var(--muted); background: var(--def-bg); border-radius: 8px; padding: 0 .45rem; }
+  .cnt:empty { display: none; }
+  ul.plain { margin: .3rem 0 .6rem 1.2rem; padding: 0; }
+  ul.plain li { margin: .25rem 0; }
 </style>
 </head>
 <body>
@@ -109,10 +121,37 @@
 </div>
 <script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
 
-<h1>Todo: Klausur-Schwerpunkte</h1>
-<p class="src">Laut <a href="altklausur.html">Altklausur-Erfahrungsbericht</a> der Punkteschwerpunkt (Transferaufgaben). Haken werden im Browser gespeichert. &nbsp;<a href="todo-taxonomie.html">🌳 gleiche Punkte nach Taxonomie sortiert</a> · <a href="index.html">← zurück zur Übersicht</a></p>
+<h1>Todo — nach Taxonomie sortiert</h1>
+<p class="src">Dieselben Punkte wie in der <a href="todo.html">normalen Todo-Liste</a> (Haken werden geteilt), eingeordnet in den Baum „Die Welt der Softwaretechnik“ (VL03, <a href="summaries/03_Welt-der-Softwaretechnik.html">Summary</a>). Zuordnung der Kapitel zu den Ästen nach Thema (aus den Dateinamen abgeleitet, nicht aus den Folien belegt). &nbsp;<a href="index.html">← zurück zur Übersicht</a></p>
 
-<h2 class="cat">Anforderungsanalyse</h2>
+<details class="top" open><summary>Welt der Problemstellungen <span class="gloss">— woran SWT scheitert</span> <span class="cnt"></span></summary>
+<details class="sub" open><summary>Produktprobleme (Komplexitätsprobleme) <span class="gloss">— viele Teile + emergente Eigenschaften</span> <span class="cnt"></span></summary>
+<ul class="plain">
+<li><strong>Anforderungsprobleme → Problemraum</strong> <span class="gloss">— herausfinden, <em>was</em> gebaut werden soll</span></li>
+<li><strong>Entwurfsprobleme → Lösungsraum</strong> <span class="gloss">— herausfinden, <em>wie</em> die SW strukturiert werden soll</span></li>
+</ul>
+</details><details class="sub" open><summary>Prozessprobleme (psycho-sozial) <span class="gloss">— Menschen haben Schwächen und müssen zusammenarbeiten</span> <span class="cnt"></span></summary>
+<ul class="plain">
+<li><strong>Kognitive Beschränkungen</strong> <span class="gloss">— Arbeitsgedächtnis ca. 7±2 Chunks</span></li>
+<li><strong>Mängel der Urteilskraft</strong> <span class="gloss">— v. a. bei radikalem Vorgehen</span></li>
+<li><strong>Kommunikation, Koordination</strong> <span class="gloss">— Information kommt nicht korrekt/rechtzeitig an</span></li>
+<li><strong>Gruppendynamik</strong> <span class="gloss">— z. B. Groupthink</span></li>
+<li><strong>Verborgene Ziele</strong> <span class="gloss">— persönliche Ziele neben den Projektzielen</span></li>
+<li><strong>Fehler</strong> <span class="gloss">— man will X tun, tut aber unbemerkt Y</span></li>
+</ul>
+</details>
+</details>
+
+<details class="top" open><summary>Welt der Lösungsansätze <span class="gloss">— was dagegen hilft</span> <span class="cnt"></span></summary>
+<details class="sub" open><summary>Technische Ansätze („hart“) <span class="gloss">— konkret, allgemein einsetzbar</span> <span class="cnt"></span></summary>
+<ul class="plain">
+<li><strong>Abstraktion</strong> <span class="gloss">— Konzentration auf Wesentliches, Details weglassen</span></li>
+<li><strong>Wiederverwendung</strong> <span class="gloss">— Spezialfall von Abstraktion; Hauptquelle für Produktivität (VL 23/24: <a href="summaries/23_Wiederverwendung.html">Summary 23</a>)</span></li>
+<li><strong>Automatisierung</strong> <span class="gloss">— wiederholte Tätigkeit dem Computer übertragen</span></li>
+</ul>
+</details><details class="sub" open><summary>Methodische Ansätze („weich“) <span class="gloss">— vage, brauchen Urteilskraft</span> <span class="cnt"></span></summary>
+<details class="sub" open><summary>Anforderungsermittlung <span class="gloss">— Problemraum: <em>was</em>?</span> <span class="cnt"></span></summary>
+<details class="grp" open><summary>Anforderungen (VL 05) <span class="cnt"></span></summary><p class="src"><a href="summaries/05_Anforderungserhebung.html">Summary 05</a></p>
 <ul class="todo">
   <li><label><input type="checkbox" data-id="Anf-3"> <span>Anforderungsarten sicher unterscheiden und zuordnen (funktional / nichtfunktional / Safety-Security / Constraint) <span class="src">· Basis für die Punkte oben, ub/04 Aufgabe 4-2b</span></span></label><br><span class="src">Lernen: <a href="summaries/05_Anforderungserhebung.html#types">05 Types of Requirements</a> · <a href="summaries/05_Anforderungserhebung.html#wert">05 Arten nach Wert</a></span>
 <details class="sec"><summary><input type="checkbox" data-id="Anf-3-s0" onclick="event.stopPropagation()"> <span>05 Types of Requirements</span></summary>
@@ -294,42 +333,8 @@
   <li>Techniken für Requirements-Validierung: formale/informelle Reviews (Meetings, Requirements Review); für Implementierungen: Abnahmetest, System Use.</li>
 </ul>
 </details></li>
-  <li><label><input type="checkbox" data-id="Anf-4"> <span>Übergang zum Anwendungsfall: aus den Anforderungen einen Use Case ableiten → siehe Kategorie „Anwendungsfälle“ <span class="src">· Klausur ✔</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Use-Case-Schablone</a> · <a href="summaries/06_Usecases.html#szenario">06 Szenario vs. Anwendungsfall</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-4-s0" onclick="event.stopPropagation()"> <span>06 Use-Case-Schablone</span></summary>
-<h2>Use-Case-Schablone</h2>
-<p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
-<table>
-<tr><th>Feld</th><th>Bedeutung</th></tr>
-<tr><td>Hauptakteur</td><td>primär handelnde Rolle (Person oder System)</td></tr>
-<tr><td>Anwendungsbereich (Bezug, "system under discussion", SuD)</td><td>Kontext und Grenzen — wovon reden wir hier eigentlich?</td></tr>
-<tr><td>Niveau</td><td>Detaillierungs-/Abstraktionsgrad</td></tr>
-<tr><td>Beteiligte und Interessen</td><td>alle Stakeholder und was ihnen an diesem Use Case wichtig ist</td></tr>
-<tr><td>Voraussetzung</td><td>muss vor Ausführung bereits gelten</td></tr>
-<tr><td>Mindestzusicherung</td><td>Grundgarantie auch im Fehlerfall (z. B. Protokollierung)</td></tr>
-<tr><td>Zusicherung im Erfolgsfall</td><td>gewünschtes Ergebnis</td></tr>
-<tr><td>Auslöser</td><td>Ereignis, das den Use Case startet</td></tr>
-<tr><td>Haupt-Erfolgsszenario</td><td>nummerierte Schritt-für-Schritt-Beschreibung zum Ziel (idealerweise 3-9 Schritte)</td></tr>
-<tr><td>Erweiterungen</td><td>alternative Wege und Fehlerfälle, referenziert per Schrittnummer + Buchstabe (z. B. "3a", "4b")</td></tr>
-</table>
-<p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
-
-<h3>Akteure und Rollen</h3>
-<ul>
-  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
-  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
 </ul>
-</details>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-4-s1" onclick="event.stopPropagation()"> <span>06 Szenario vs. Anwendungsfall</span></summary>
-<h2>Szenario vs. Anwendungsfall (Übung 5-1c)</h2>
-<div class="def">
-Ein <strong>Szenario</strong> ist eine konkrete(re) Ausprägung eines Use Case: es gibt keine Varianten, sondern nur einen linearen Ablauf, ggf. mit ganz konkreten Datenwerten.<br>
-Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, die mehrere Szenarien (Haupt-Erfolgsszenario + Erweiterungen/Varianten) bündelt.
-</div>
-<p>Szenarien werden ergänzend genutzt, wenn das Schreiben eines Use Case schwerfällt oder er für manche Beteiligte zu abstrakt ist (meistens kommt man aber ohne aus). Der Entwicklungsstil <strong>ATDD</strong> (Acceptance-Test-Driven Development) nutzt statt eines Use Case direkt N konkrete Szenarien als automatisierte Testfälle, die vor der Implementierung geschrieben werden und selbst als Spezifikation dienen.</p>
-</details></li>
-</ul>
-
-<h2 class="cat">Anwendungsfälle</h2>
+</details><details class="grp" open><summary>Anwendungsfälle (VL 06) <span class="cnt"></span></summary><p class="src"><a href="summaries/06_Usecases.html">Summary 06</a></p>
 <ul class="todo">
   <li><label><input type="checkbox" data-id="Anw-0"> <span>Definition und Zweck eines Use Case; Szenario vs. Use Case <span class="src">· ub/05 Aufgabe 5-1</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#was">06 Was ist ein Use Case?</a> · <a href="summaries/06_Usecases.html#szenario">06 Szenario vs. Anwendungsfall</a></span>
 <details class="sec"><summary><input type="checkbox" data-id="Anw-0-s0" onclick="event.stopPropagation()"> <span>06 Was ist ein Use Case?</span></summary>
@@ -534,20 +539,62 @@ Use Cases decken <strong>nur Verhaltensanforderungen</strong> ab. Sie beschreibe
 <p>Aus Entwicklersicht fehlt zudem: welche <strong>Funktionen</strong> die SW braucht, welche <strong>Daten</strong> im System vorhanden sind, wie sich die Entwicklung auf Personen verteilen lässt — dafür ist als nächster Schritt <strong>Anforderungsanalyse</strong> nötig.</p>
 </details></li>
   <li><label><input type="checkbox" data-id="Anw-7"> <span>Use-Case-Diagramm dazu zeichnen → siehe Kategorie „UML“</span></label></li>
-</ul>
-
-<h2 class="cat">UML</h2>
-<ul class="todo">
   <li><label><input type="checkbox" data-id="UML-1"> <span>Use-Case-Diagramm (Akteure, include/extend)</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#ucd">06 Anwendungsfalldiagramme</a> · <a href="summaries/06_Usecases.html#incl">include/extend</a></span></li>
+</ul>
+</details><details class="grp" open><summary>Objektmodellierung — Klassen- und Objektdiagramm (VL 07) <span class="cnt"></span></summary><p class="src"><a href="summaries/07_Objektmodellierung.html">Summary 07</a> · <a href="summaries/04_UML.html">Summary 04 UML</a></p>
+<ul class="todo">
   <li><label><input type="checkbox" data-id="UML-0"> <span>Klassendiagramm (Assoziation, Multiplizitäten, Rollen, Vererbung, Aggregation/Komposition, Sichtbarkeit) — am wichtigsten</span></label><br><span class="src">Lernen: <a href="summaries/04_UML.html#elemente">04 UML-Elemente</a> · <a href="summaries/04_UML.html#assoz">Assoziationen</a> · <a href="summaries/04_UML.html#sicht">Sichtbarkeit</a> · <a href="summaries/04_UML.html#gen">Generalisierung</a> · <a href="summaries/04_UML.html#komp">Komposition/Aggregation</a> · <a href="summaries/07_Objektmodellierung.html#checklisten">07 Checklisten</a></span></li>
   <li><label><input type="checkbox" data-id="UML-5"> <span>Objektdiagramm</span></label><br><span class="src">Lernen: <a href="summaries/07_Objektmodellierung.html#objekt">07 Object vs. Class (Objektdiagramm)</a> · <a href="summaries/04_UML.html#arten">04 Diagrammarten</a></span></li>
+</ul>
+</details><details class="grp" open><summary>Dynamische Modellierung — Sequenz-, Zustands-, Aktivitätsdiagramm (VL 08) <span class="cnt"></span></summary><p class="src"><a href="summaries/08_Dynamische-Modellierung.html">Summary 08</a></p>
+<ul class="todo">
   <li><label><input type="checkbox" data-id="UML-3"> <span>Sequenzdiagramm</span></label><br><span class="src">Lernen: <a href="summaries/04_UML.html#seq">04 Sequenzdiagramme</a> · <a href="summaries/08_Dynamische-Modellierung.html#seq">08 Sequenzdiagramme zur Objektmodellierung</a></span></li>
   <li><label><input type="checkbox" data-id="UML-4"> <span>Zustandsdiagramm</span></label><br><span class="src">Lernen: <a href="summaries/08_Dynamische-Modellierung.html#zustand">08 Zustandsdiagramme</a></span></li>
   <li><label><input type="checkbox" data-id="UML-2"> <span>Aktivitätsdiagramm (Start/Ende, Verzweigung, Fork/Join, Swimlanes)</span></label><br><span class="src">Lernen: <a href="summaries/08_Dynamische-Modellierung.html#aktivitaet">08 Aktivitätsdiagramme</a></span></li>
+</ul>
+</details><details class="grp" open><summary>Übergang Anforderung → Anwendungsfall <span class="cnt"></span></summary>
+<ul class="todo">
+  <li><label><input type="checkbox" data-id="Anf-4"> <span>Übergang zum Anwendungsfall: aus den Anforderungen einen Use Case ableiten → siehe Kategorie „Anwendungsfälle“ <span class="src">· Klausur ✔</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Use-Case-Schablone</a> · <a href="summaries/06_Usecases.html#szenario">06 Szenario vs. Anwendungsfall</a></span>
+<details class="sec"><summary><input type="checkbox" data-id="Anf-4-s0" onclick="event.stopPropagation()"> <span>06 Use-Case-Schablone</span></summary>
+<h2>Use-Case-Schablone</h2>
+<p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
+<table>
+<tr><th>Feld</th><th>Bedeutung</th></tr>
+<tr><td>Hauptakteur</td><td>primär handelnde Rolle (Person oder System)</td></tr>
+<tr><td>Anwendungsbereich (Bezug, "system under discussion", SuD)</td><td>Kontext und Grenzen — wovon reden wir hier eigentlich?</td></tr>
+<tr><td>Niveau</td><td>Detaillierungs-/Abstraktionsgrad</td></tr>
+<tr><td>Beteiligte und Interessen</td><td>alle Stakeholder und was ihnen an diesem Use Case wichtig ist</td></tr>
+<tr><td>Voraussetzung</td><td>muss vor Ausführung bereits gelten</td></tr>
+<tr><td>Mindestzusicherung</td><td>Grundgarantie auch im Fehlerfall (z. B. Protokollierung)</td></tr>
+<tr><td>Zusicherung im Erfolgsfall</td><td>gewünschtes Ergebnis</td></tr>
+<tr><td>Auslöser</td><td>Ereignis, das den Use Case startet</td></tr>
+<tr><td>Haupt-Erfolgsszenario</td><td>nummerierte Schritt-für-Schritt-Beschreibung zum Ziel (idealerweise 3-9 Schritte)</td></tr>
+<tr><td>Erweiterungen</td><td>alternative Wege und Fehlerfälle, referenziert per Schrittnummer + Buchstabe (z. B. "3a", "4b")</td></tr>
+</table>
+<p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
+
+<h3>Akteure und Rollen</h3>
+<ul>
+  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
+  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
+</ul>
+</details>
+<details class="sec"><summary><input type="checkbox" data-id="Anf-4-s1" onclick="event.stopPropagation()"> <span>06 Szenario vs. Anwendungsfall</span></summary>
+<h2>Szenario vs. Anwendungsfall (Übung 5-1c)</h2>
+<div class="def">
+Ein <strong>Szenario</strong> ist eine konkrete(re) Ausprägung eines Use Case: es gibt keine Varianten, sondern nur einen linearen Ablauf, ggf. mit ganz konkreten Datenwerten.<br>
+Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, die mehrere Szenarien (Haupt-Erfolgsszenario + Erweiterungen/Varianten) bündelt.
+</div>
+<p>Szenarien werden ergänzend genutzt, wenn das Schreiben eines Use Case schwerfällt oder er für manche Beteiligte zu abstrakt ist (meistens kommt man aber ohne aus). Der Entwicklungsstil <strong>ATDD</strong> (Acceptance-Test-Driven Development) nutzt statt eines Use Case direkt N konkrete Szenarien als automatisierte Testfälle, die vor der Implementierung geschrieben werden und selbst als Spezifikation dienen.</p>
+</details></li>
+</ul>
+</details>
+</details><details class="sub" open><summary>Entwurf <span class="gloss">— Lösungsraum: <em>wie</em>?</span> <span class="cnt"></span></summary>
+<details class="grp" open><summary>Architektur — Komponenten-/Verteilungsdiagramm (VL 09) <span class="cnt"></span></summary><p class="src"><a href="summaries/09_Architektur.html">Summary 09</a></p>
+<ul class="todo">
   <li><label><input type="checkbox" data-id="UML-6"> <span>Komponenten-/Verteilungsdiagramm (nur falls in ub/ vorgekommen)</span></label><br><span class="src">Lernen: <a href="summaries/04_UML.html#arten">04 Diagrammarten (dort nur „am Rande“ erwähnt, keine Notation)</a> · <a href="summaries/09_Architektur.html#sichten">09 Physical View</a></span></li>
 </ul>
-
-<h2 class="cat">OCL</h2>
+</details><details class="grp" open><summary>Schnittstellenspezifikation — OCL (VL 13) <span class="cnt"></span></summary><p class="src"><a href="summaries/13_Schnittstellenspezifikation.html">Summary 13</a></p>
 <ul class="todo">
   <li><label><input type="checkbox" data-id="OCL-0"> <span>Begriffe: Design by Contract, Constraint, Invariante, Precondition, Postcondition, OCL — wie hängen sie zusammen? <span class="src">· ub/09 Aufgabe 9-1d</span></span></label><br><span class="src">Lernen: <a href="summaries/13_Schnittstellenspezifikation.html#contracts">13 Contracts</a> · <a href="summaries/09_Architektur.html">09 Design by Contract</a></span></li>
   <li><label><input type="checkbox" data-id="OCL-1"> <span>Grundsyntax: <code>context</code>, <code>inv</code>, <code>self</code>, Operatoren, <code>implies</code></span></label><br><span class="src">Lernen: <a href="summaries/13_Schnittstellenspezifikation.html#syntax">13 OCL-Grundsyntax</a> · <a href="summaries/13_Schnittstellenspezifikation.html#inv">Invarianten</a> · <a href="summaries/13_Schnittstellenspezifikation.html#ops">Operatoren</a></span></li>
@@ -559,12 +606,31 @@ Use Cases decken <strong>nur Verhaltensanforderungen</strong> ab. Sie beschreibe
   <li><label><input type="checkbox" data-id="OCL-7"> <span>Eigene OCL zu einem Klassendiagramm schreiben — genaue Namen aus dem Diagramm verwenden <span class="src">· Klausur ✔ (3 Stück) · ub/09 Aufgabe 9-2b (nicht in der Summary durchgerechnet)</span></span></label><br><span class="src">Lernen: <a href="summaries/13_Schnittstellenspezifikation.html#syntax">13 Grundsyntax</a> · <a href="summaries/13_Schnittstellenspezifikation.html#navi">Navigation</a> · <a href="summaries/13_Schnittstellenspezifikation.html#quant">Quantoren</a> · <a href="summaries/13_Schnittstellenspezifikation.html#praxis">13 OCL in der Praxis</a></span></li>
   <li><label><input type="checkbox" data-id="OCL-8"> <span>Pre/Post: <code>@pre</code>, <code>result</code>, „alles andere bleibt gleich“ explizit machen <span class="src">· ub/09 Aufgabe 9-3 (nicht in der Summary durchgerechnet)</span></span></label><br><span class="src">Lernen: <a href="summaries/13_Schnittstellenspezifikation.html#prepost">13 Vor-/Nachbedingungen</a></span></li>
 </ul>
+</details>
+</details><details class="sub"><summary>Qualitätssicherung <span class="gloss">— kein Todo-Punkt in der Liste</span> <span class="cnt"></span></summary>
+<p class="src"><a href="summaries/14_Analytische-QS.html">Summary 14 Analytische QS</a> · <a href="summaries/16_Konstruktive-QS.html">Summary 16 Konstruktive QS</a></p>
+</details><details class="sub"><summary>Projektmanagement <span class="gloss">— kein Todo-Punkt in der Liste</span> <span class="cnt"></span></summary>
+<p class="src"><a href="summaries/17_Prozessmodelle.html">Summary 17 Prozessmodelle</a> · <a href="summaries/19_Projektmanagement.html">Summary 19 Projektmanagement</a></p>
+</details>
+</details>
+</details>
 
 <script>
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 document.querySelectorAll('ul.todo input').forEach(function(c){
-  try{c.checked=localStorage.getItem('swt-todo-'+c.dataset.id)==='1';}catch(e){}
-  c.onchange=function(){try{localStorage.setItem('swt-todo-'+c.dataset.id,c.checked?'1':'0');}catch(e){}};
+  c.checked=lsGet('swt-todo-'+c.dataset.id)==='1';
+  c.addEventListener('change',function(){try{localStorage.setItem('swt-todo-'+c.dataset.id,c.checked?'1':'0');}catch(e){}count();});
 });
+function count(){
+  document.querySelectorAll('details.top, details.sub, details.grp').forEach(function(n){
+    var all=n.querySelectorAll('ul.todo > li > label > input');
+    var s=n.querySelector(':scope > summary .cnt');
+    if(!s)return;
+    var done=0;all.forEach(function(c){if(c.checked)done++;});
+    s.textContent=all.length?done+'/'+all.length:'';
+  });
+}
+count();
 </script>
 </body>
 </html>
