@@ -83,7 +83,8 @@
   ul.todo li { margin: .35rem 0; }
   ul.todo label { cursor: pointer; }
   ul.todo input:checked + span { text-decoration: line-through; color: var(--muted); }
-  details.sec { margin: .4rem 0 .4rem 1.4rem; border: 1px solid var(--table-border); border-radius: 4px; padding: .1rem .6rem; }
+  details.sec { margin: .4rem 0 .4rem 1rem; border-left: 3px solid var(--table-border); padding: .1rem 0 .1rem .8rem; }
+  details.sec[open] { border-left-color: var(--link); }
   details.sec > summary { cursor: pointer; font-size: .88rem; padding: .25rem 0; color: var(--link); }
   details.sec[open] > summary { font-weight: 600; margin-bottom: .3rem; }
   .sec h2 { font-size: 1.05rem; margin-top: .6rem; }
@@ -100,7 +101,8 @@
   details.top { border-left-width: 5px; }
   details.top > summary { font-size: 1.15rem; font-weight: 700; }
   details.sub > summary { font-weight: 600; }
-  details.grp { margin: .6rem 0 .6rem .2rem; }
+  details.grp { margin: .6rem 0 .6rem .2rem; padding-left: .8rem; border-left: 3px solid var(--table-border); }
+  details.grp[open] { border-left-color: var(--h1-border); }
   details.grp > summary { font-weight: 600; color: var(--h2); }
   details.top > summary, details.sub > summary, details.grp > summary { cursor: pointer; padding: .2rem 0; }
   .gloss { color: var(--muted); font-weight: 400; font-size: .85rem; }
