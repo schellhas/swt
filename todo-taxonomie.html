@@ -84,6 +84,7 @@
   ul.todo label { cursor: pointer; }
   ul.todo input:checked + span { text-decoration: line-through; color: var(--muted); }
   details.sec { margin: .4rem 0 .4rem 1rem; border-left: 3px solid var(--table-border); padding: .1rem 0 .1rem .8rem; }
+  .sec .ref { color: var(--muted); font-size: .88rem; margin: .4rem 0; }
   details.sec[open] { border-left-color: var(--link); }
   details.sec > summary { cursor: pointer; font-size: .88rem; padding: .25rem 0; color: var(--link); }
   details.sec[open] > summary { font-weight: 600; margin-bottom: .3rem; }
@@ -124,7 +125,7 @@
 <script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
 
 <h1>Todo — nach Taxonomie sortiert</h1>
-<p class="src">Dieselben Punkte wie in der <a href="todo.html">normalen Todo-Liste</a> (Haken werden geteilt), eingeordnet in den Baum „Die Welt der Softwaretechnik“ (VL03, <a href="summaries/03_Welt-der-Softwaretechnik.html">Summary</a>). Zuordnung der Kapitel zu den Ästen nach Thema (aus den Dateinamen abgeleitet, nicht aus den Folien belegt). &nbsp;<a href="index.html">← zurück zur Übersicht</a></p>
+<p class="src">Dieselben Punkte wie in der <a href="todo.html">normalen Todo-Liste</a> (Haken werden geteilt), eingeordnet in den Baum „Die Welt der Softwaretechnik“ (VL03, <a href="summaries/03_Welt-der-Softwaretechnik.html">Summary</a>). Zuordnung gegen die Folien geprüft: Anforderungsermittlung ↔ VL05–08 (VL08: Analysemodell mit Szenarien, Use-Case-, Objekt- und dynamischem Modell steht im Anforderungsdokument), Entwurf ↔ VL09/VL13 (VL13: „Object design is a detail-level subtask of modularization“). Die Kapitel von QS, Projektmanagement und Wiederverwendung sind nur nach Thema zugeordnet. &nbsp;<a href="index.html">← zurück zur Übersicht</a></p>
 
 <details class="top" open><summary>Welt der Problemstellungen <span class="gloss">— woran SWT scheitert</span> <span class="cnt"></span></summary>
 <details class="sub" open><summary>Produktprobleme (Komplexitätsprobleme) <span class="gloss">— viele Teile + emergente Eigenschaften</span> <span class="cnt"></span></summary>
@@ -156,7 +157,7 @@
 <details class="grp" open><summary>Anforderungen (VL 05) <span class="cnt"></span></summary><p class="src"><a href="summaries/05_Anforderungserhebung.html">Summary 05</a></p>
 <ul class="todo">
   <li><label><input type="checkbox" data-id="Anf-3"> <span>Anforderungsarten sicher unterscheiden und zuordnen (funktional / nichtfunktional / Safety-Security / Constraint) <span class="src">· Basis für die Punkte oben, ub/04 Aufgabe 4-2b</span></span></label><br><span class="src">Lernen: <a href="summaries/05_Anforderungserhebung.html#types">05 Types of Requirements</a> · <a href="summaries/05_Anforderungserhebung.html#wert">05 Arten nach Wert</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-3-s0" onclick="event.stopPropagation()"> <span>05 Types of Requirements</span></summary>
+<details class="sec" id="sec-1"><summary><input type="checkbox" data-id="Anf-3-s0" onclick="event.stopPropagation()"> <span>05 Types of Requirements</span></summary>
 <h2>Types of Requirements</h2>
 <p class="src">die für Übung 4-2b explizit referenzierte Folie</p>
 <table>
@@ -177,7 +178,7 @@
   <li><strong>Usability detail requirements</strong> — können viel ausmachen (z. B. "nach Absenden wird der Submit-Button deaktiviert")</li>
 </ul>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-3-s1" onclick="event.stopPropagation()"> <span>05 Arten nach Wert</span></summary>
+<details class="sec" id="sec-2"><summary><input type="checkbox" data-id="Anf-3-s1" onclick="event.stopPropagation()"> <span>05 Arten nach Wert</span></summary>
 <h3>Zweite Sicht: Arten von Requirements nach Wert/Schwierigkeit</h3>
 <ul>
   <li><strong>Ingenious requirements</strong> — unglaublich wertvoll (z. B. "eine Zelle kann eine Formel enthalten, die auf andere Zellen verweist")</li>
@@ -189,7 +190,7 @@
 </ul>
 </details></li>
   <li><label><input type="checkbox" data-id="Anf-0"> <span>Aus einem Text Anforderungen ablesen — erst die Domäne verstehen (Problemwelt, nicht Lösungswelt), dann Anforderungen herausziehen <span class="src">· Klausur ✔ · Training: ub/04 Aufgabe 4-3 (Goethe-Bibliothek)</span></span></label><br><span class="src">Lernen (Übung 4-3 selbst ist in keiner Summary durchgerechnet — nur die Werkzeuge dafür): <a href="summaries/05_Anforderungserhebung.html#elicitation">05 W6H-Technik</a> · <a href="summaries/05_Anforderungserhebung.html#system">05 Was ist ein System?</a> · <a href="summaries/07_Objektmodellierung.html#domaene">07 Anwendungs- vs. Lösungsdomäne</a> · <a href="summaries/07_Objektmodellierung.html#abbott">07 Abbott-Textanalyse</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-0-s0" onclick="event.stopPropagation()"> <span>05 W6H-Technik</span></summary>
+<details class="sec" id="sec-3"><summary><input type="checkbox" data-id="Anf-0-s0" onclick="event.stopPropagation()"> <span>05 W6H-Technik</span></summary>
 <h2>Requirements Elicitation</h2>
 <ul>
   <li>Ausgangspunkt: die Vorstellung, dass es ein zu lösendes "Problem" gibt (etwas Negatives, das beseitigt werden soll, oder eine Chance, die genutzt werden soll).</li>
@@ -217,7 +218,7 @@
   <li>Persönliche/zwischenmenschliche Faktoren.</li>
 </ul>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-0-s1" onclick="event.stopPropagation()"> <span>05 Was ist ein System?</span></summary>
+<details class="sec" id="sec-4"><summary><input type="checkbox" data-id="Anf-0-s1" onclick="event.stopPropagation()"> <span>05 Was ist ein System?</span></summary>
 <h2>Was ist ein System?</h2>
 <ul>
   <li>Ein Teil der Realität, der beobachtbar mit seiner Umgebung interagiert; durch eine <strong>Boundary</strong> (Grenze) abgetrennt (kann bei "soft systems" schwer zu bestimmen sein), erhält <strong>Inputs</strong>, sendet <strong>Outputs</strong>, hat oft einen Kontrollmechanismus und meist interessante <strong>emergente Eigenschaften</strong>.</li>
@@ -225,7 +226,7 @@
   <li>Faustregel: Sind Menschen irgendwie beteiligt, Software niemals mit "dem System" verwechseln.</li>
 </ul>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-0-s2" onclick="event.stopPropagation()"> <span>07 Anwendungs- vs. Lösungsdomäne</span></summary>
+<details class="sec" id="sec-5"><summary><input type="checkbox" data-id="Anf-0-s2" onclick="event.stopPropagation()"> <span>07 Anwendungs- vs. Lösungsdomäne</span></summary>
 <h2>Application Domain vs. Solution Domain (Übung 6-1a)</h2>
 <table>
 <tr><th></th><th>Application Domain (Problembereich)</th><th>Solution Domain (Lösungsbereich)</th></tr>
@@ -237,7 +238,7 @@
 </table>
 <p><strong>Wichtig:</strong> Das Analysemodell (Objektmodellierung dieser Vorlesung) beschreibt <em>ausschließlich</em> Problembereichsklassen — es ist explizit <strong>kein</strong> Lösungsentwurf ("It is not meant to be a solution design!").</p>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-0-s3" onclick="event.stopPropagation()"> <span>07 Abbott-Textanalyse</span></summary>
+<details class="sec" id="sec-6"><summary><input type="checkbox" data-id="Anf-0-s3" onclick="event.stopPropagation()"> <span>07 Abbott-Textanalyse</span></summary>
 <h2>Wie findet man Klassen? Abbotts Textanalyse</h2>
 <p>Methoden (mehrere kombinieren): Kunden beobachten/befragen, Weltwissen &amp; Intuition nutzen, syntaktische Analyse von Anforderungstexten/Szenarien (Abbott 1983, "noun-verb analysis").</p>
 <table>
@@ -262,33 +263,15 @@
 <p>Reihenfolge ist nur eine Heuristik, flexibel; Iteration hilft. Werden falsche Abstraktionen gefunden, müssen Inkonsistenzen erkannt und das Modell korrigiert werden.</p>
 </details></li>
   <li><label><input type="checkbox" data-id="Anf-2"> <span>2 zusätzliche Anforderungen formulieren, die im Text noch nicht vorkamen — Ideenquelle: Anforderungsarten (nichtfunktional, Safety/Security, Constraints) durchgehen <span class="src">· Klausur ✔</span></span></label><br><span class="src">Lernen: <a href="summaries/05_Anforderungserhebung.html#types">05 Types of Requirements</a> · <a href="summaries/08_Dynamische-Modellierung.html#nfa">08 NFA-Kategorien mit Leitfragen</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-2-s0" onclick="event.stopPropagation()"> <span>05 Types of Requirements</span></summary>
-<h2>Types of Requirements</h2>
-<p class="src">die für Übung 4-2b explizit referenzierte Folie</p>
-<table>
-<tr><th>Typ</th><th>Bedeutung</th></tr>
-<tr><td><strong>Funktional</strong></td><td>was das System tut: die Interaktion zwischen System und Umgebung, unabhängig von der Implementierung</td></tr>
-<tr><td><strong>Nichtfunktional</strong></td><td>beobachtbare Aspekte des Systems, die nicht direkt mit funktionalem Verhalten zu tun haben (z. B. Performance, Zuverlässigkeit)</td></tr>
-<tr><td><strong>Safety/Security</strong></td><td>eine Art nichtfunktionaler Anforderung — Verhalten, das das System <em>niemals</em> zeigen darf ("shall not"-Eigenschaften), z. B. "must be impossible to apply reverse thrust in mid-flight"</td></tr>
-<tr><td><strong>Constraints ("Pseudo-Requirements")</strong></td><td>von Kunde/Umgebung auferlegte Einschränkungen, oft zur zu verwendenden Technologie (Sprache, Betriebssystem, Middleware)</td></tr>
-</table>
-
-<h3>Zweite Sicht: Arten von Requirements nach Wert/Schwierigkeit</h3>
-<ul>
-  <li><strong>Ingenious requirements</strong> — unglaublich wertvoll (z. B. "eine Zelle kann eine Formel enthalten, die auf andere Zellen verweist")</li>
-  <li><strong>Fundamental requirements</strong> — klingen einfach, sind es aber nicht (z. B. "der Automat kann jede Ticketart verkaufen")</li>
-  <li><strong>Normal requirements</strong> — können nützlich sein oder auch weniger</li>
-  <li><strong>Usability requirements</strong> — schwer konkret zu fassen (z. B. "85% der Passagiere müssen ihren ersten Kauf innerhalb von 50s abschließen")</li>
-  <li><strong>Detail requirements</strong> — für manche Software-Arten extrem wichtig (z. B. gesetzliche Detailvorgaben)</li>
-  <li><strong>Usability detail requirements</strong> — können viel ausmachen (z. B. "nach Absenden wird der Submit-Button deaktiviert")</li>
-</ul>
+<details class="sec"><summary><input type="checkbox" data-id="Anf-2-s0" onclick="event.stopPropagation()"> <span>[DUPLICATE] 05 Types of Requirements</span></summary>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Anforderungsarten sicher unterscheiden und zuordnen“ → <a class="goto" href="#sec-1">05 Types of Requirements</a></p>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-2-s1" onclick="event.stopPropagation()"> <span>08 NFA-Kategorien mit Leitfragen</span></summary>
+<details class="sec" id="sec-7"><summary><input type="checkbox" data-id="Anf-2-s1" onclick="event.stopPropagation()"> <span>08 NFA-Kategorien mit Leitfragen</span></summary>
 <h3>Kategorien nichtfunktionaler Anforderungen (3.3, mit Leitfragen)</h3>
 <p>User Interface &amp; Human Factors, Documentation, Hardware Considerations, Performance Characteristics, Error Handling &amp; Extreme Conditions, System Interfacing, Quality Issues, System Modifications, Physical Environment, Security Issues, Resources &amp; Management Issues (Betrieb wird in diesem Kurs weitgehend ausgeklammert).</p>
 </details></li>
   <li><label><input type="checkbox" data-id="Anf-1"> <span>Falschverständnis erkennen (Chatprotokoll mit KI-Bot, 10 Punkte): an welcher Stelle wurde was falsch verstanden? → Validierungskriterien (Correctness, Completeness, Consistency, Ambiguity, Feasibility, Traceability) + Domain Properties / S + D ⟹ R <span class="src">· Klausur ✔</span></span></label><br><span class="src">Lernen: <a href="summaries/05_Anforderungserhebung.html#dps">05 D/R/S, S+D⟹R</a> · <a href="summaries/05_Anforderungserhebung.html#validierung">05 Validierungskriterien</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-1-s0" onclick="event.stopPropagation()"> <span>05 D/R/S, S+D⟹R</span></summary>
+<details class="sec" id="sec-8"><summary><input type="checkbox" data-id="Anf-1-s0" onclick="event.stopPropagation()"> <span>05 D/R/S, S+D⟹R</span></summary>
 <h2>Requirements, Domain Properties und Spezifikation</h2>
 <ul>
   <li><strong>Domain Properties (D):</strong> Eigenschaften im Problemraum, die wahr sind — unabhängig davon, ob das System je gebaut wird.</li>
@@ -320,7 +303,7 @@
   <li><strong>Anwendungsdomäne vs. Technische Domäne</strong> (uebersicht.txt Zeilen 183-189): Anwendungsdomäne = Problembereich, <em>wozu</em> die Software dient (z. B. Finanzwesen, E-Commerce, Bildung — entspricht "What"); Technische Domäne = Lösungsbereich, <em>mit welcher Technik</em> sie realisiert wird (z. B. Java, NoSQL, Angular — entspricht "How"). Feinere Unterscheidung auf Klassenebene (Problembereichs-/Lösungsklassen) siehe <a href="summaries/07_Objektmodellierung.html">07 Objektmodellierung</a>.</li>
 </ul>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-1-s1" onclick="event.stopPropagation()"> <span>05 Validierungskriterien</span></summary>
+<details class="sec" id="sec-9"><summary><input type="checkbox" data-id="Anf-1-s1" onclick="event.stopPropagation()"> <span>05 Validierungskriterien</span></summary>
 <h3>Validierung vs. Verifizierung</h3>
 <p class="src">deckt sich mit uebersicht.txt Zeilen 25-29</p>
 <div class="def">
@@ -339,7 +322,7 @@
 </details><details class="grp" open><summary>Anwendungsfälle (VL 06) <span class="cnt"></span></summary><p class="src"><a href="summaries/06_Usecases.html">Summary 06</a></p>
 <ul class="todo">
   <li><label><input type="checkbox" data-id="Anw-0"> <span>Definition und Zweck eines Use Case; Szenario vs. Use Case <span class="src">· ub/05 Aufgabe 5-1</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#was">06 Was ist ein Use Case?</a> · <a href="summaries/06_Usecases.html#szenario">06 Szenario vs. Anwendungsfall</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-0-s0" onclick="event.stopPropagation()"> <span>06 Was ist ein Use Case?</span></summary>
+<details class="sec" id="sec-10"><summary><input type="checkbox" data-id="Anw-0-s0" onclick="event.stopPropagation()"> <span>06 Was ist ein Use Case?</span></summary>
 <h2>Was ist ein Use Case?</h2>
 <div class="def">
 <strong>Rolle:</strong> Vereinbarung zwischen den Beteiligten eines Projekts über das Verhalten des Systems.<br>
@@ -353,7 +336,7 @@
 <h3>a) Was ist ein Anwendungsfall und wozu dient er? (Übung 5-1a)</h3>
 <p>Siehe Definition oben. Zweck: er dient als <strong>Vereinbarung</strong> zwischen allen Projektbeteiligten (Kunden, Nutzer·innen, Entwickler·innen) darüber, was das System in einer bestimmten Interaktion leisten soll — unabhängig von der konkreten Implementierung. Er macht funktionale Anforderungen konkret nachvollziehbar und dient zugleich als Werkzeug der Anforderungserhebung (leicht zu schreiben, leicht mit Beteiligten abzugleichen).</p>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-0-s1" onclick="event.stopPropagation()"> <span>06 Szenario vs. Anwendungsfall</span></summary>
+<details class="sec" id="sec-11"><summary><input type="checkbox" data-id="Anw-0-s1" onclick="event.stopPropagation()"> <span>06 Szenario vs. Anwendungsfall</span></summary>
 <h2>Szenario vs. Anwendungsfall (Übung 5-1c)</h2>
 <div class="def">
 Ein <strong>Szenario</strong> ist eine konkrete(re) Ausprägung eines Use Case: es gibt keine Varianten, sondern nur einen linearen Ablauf, ggf. mit ganz konkreten Datenwerten.<br>
@@ -362,7 +345,7 @@ Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, di
 <p>Szenarien werden ergänzend genutzt, wenn das Schreiben eines Use Case schwerfällt oder er für manche Beteiligte zu abstrakt ist (meistens kommt man aber ohne aus). Der Entwicklungsstil <strong>ATDD</strong> (Acceptance-Test-Driven Development) nutzt statt eines Use Case direkt N konkrete Szenarien als automatisierte Testfälle, die vor der Implementierung geschrieben werden und selbst als Spezifikation dienen.</p>
 </details></li>
   <li><label><input type="checkbox" data-id="Anw-1"> <span>Akteure und Rollen: Akteur = Rolle, keine konkrete Person; Hauptakteur bestimmen <span class="src">· ub/05 Aufgabe 5-2b</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#akteure">06 Akteure und Rollen</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-1-s0" onclick="event.stopPropagation()"> <span>06 Akteure und Rollen</span></summary>
+<details class="sec" id="sec-12"><summary><input type="checkbox" data-id="Anw-1-s0" onclick="event.stopPropagation()"> <span>06 Akteure und Rollen</span></summary>
 <h3>Akteure und Rollen</h3>
 <ul>
   <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
@@ -370,7 +353,7 @@ Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, di
 </ul>
 </details></li>
   <li><label><input type="checkbox" data-id="Anw-2"> <span>Schablone: alle Felder kennen und auseinanderhalten (Voraussetzung ≠ Mindestzusicherung ≠ Zusicherung im Erfolgsfall ≠ Auslöser; Anwendungsbereich, Niveau, Beteiligte) <span class="src">· uebersicht.txt Template</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Use-Case-Schablone</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-2-s0" onclick="event.stopPropagation()"> <span>06 Use-Case-Schablone</span></summary>
+<details class="sec" id="sec-13"><summary><input type="checkbox" data-id="Anw-2-s0" onclick="event.stopPropagation()"> <span>06 Use-Case-Schablone</span></summary>
 <h2>Use-Case-Schablone</h2>
 <p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
 <table>
@@ -388,14 +371,10 @@ Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, di
 </table>
 <p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
 
-<h3>Akteure und Rollen</h3>
-<ul>
-  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
-  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
-</ul>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Akteure und Rollen“ → <a class="goto" href="#sec-12">06 Akteure und Rollen</a></p>
 </details></li>
   <li><label><input type="checkbox" data-id="Anw-3"> <span>Haupt-Erfolgsszenario gut schreiben: 3–9 Schritte, jeder Schritt ein erreichtes Ziel, nichts zur Bedienoberfläche; Titel = Ziel als aktive Verbalphrase</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#checkliste">06 Checkliste (Titel, Einzelschritt)</a> · <a href="summaries/06_Usecases.html#ziele">06 Wichtigkeit von Zielen</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-3-s0" onclick="event.stopPropagation()"> <span>06 Checkliste (Titel, Einzelschritt)</span></summary>
+<details class="sec" id="sec-14"><summary><input type="checkbox" data-id="Anw-3-s0" onclick="event.stopPropagation()"> <span>06 Checkliste (Titel, Einzelschritt)</span></summary>
 <h2>Checkliste für Use-Case-Bestandteile</h2>
 <p>Bei einem guten Use Case sollte jede dieser Fragen mit "ja" beantwortet werden können:</p>
 <ul>
@@ -411,7 +390,7 @@ Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, di
   <li>Insgesamt: "Ist dies, was Du möchtest?" (ggü. Beteiligten) und "Kannst Du das bauen?" (ggü. Entwickler·innen)</li>
 </ul>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-3-s1" onclick="event.stopPropagation()"> <span>06 Wichtigkeit von Zielen</span></summary>
+<details class="sec" id="sec-15"><summary><input type="checkbox" data-id="Anw-3-s1" onclick="event.stopPropagation()"> <span>06 Wichtigkeit von Zielen</span></summary>
 <h3>Wichtigkeit von Zielen</h3>
 <ul>
   <li>Ein Ziel beantwortet zu den Schritten die Frage "Warum?"; der Name eines Use Case sollte immer ein Ziel bezeichnen.</li>
@@ -420,31 +399,10 @@ Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, di
 </ul>
 </details></li>
   <li><label><input type="checkbox" data-id="Anw-4"> <span>Erweiterungen und Fehlerfälle: Bedingung + Behandlung, nummeriert (3a, 4b); kann das System den Fall erkennen?</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Schablone (Erweiterungen)</a> · <a href="summaries/06_Usecases.html#schrittweise">06 schrittweise präziser</a> · <a href="summaries/06_Usecases.html#checkliste">06 Checkliste (Erweiterungsbedingungen)</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-4-s0" onclick="event.stopPropagation()"> <span>06 Schablone (Erweiterungen)</span></summary>
-<h2>Use-Case-Schablone</h2>
-<p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
-<table>
-<tr><th>Feld</th><th>Bedeutung</th></tr>
-<tr><td>Hauptakteur</td><td>primär handelnde Rolle (Person oder System)</td></tr>
-<tr><td>Anwendungsbereich (Bezug, "system under discussion", SuD)</td><td>Kontext und Grenzen — wovon reden wir hier eigentlich?</td></tr>
-<tr><td>Niveau</td><td>Detaillierungs-/Abstraktionsgrad</td></tr>
-<tr><td>Beteiligte und Interessen</td><td>alle Stakeholder und was ihnen an diesem Use Case wichtig ist</td></tr>
-<tr><td>Voraussetzung</td><td>muss vor Ausführung bereits gelten</td></tr>
-<tr><td>Mindestzusicherung</td><td>Grundgarantie auch im Fehlerfall (z. B. Protokollierung)</td></tr>
-<tr><td>Zusicherung im Erfolgsfall</td><td>gewünschtes Ergebnis</td></tr>
-<tr><td>Auslöser</td><td>Ereignis, das den Use Case startet</td></tr>
-<tr><td>Haupt-Erfolgsszenario</td><td>nummerierte Schritt-für-Schritt-Beschreibung zum Ziel (idealerweise 3-9 Schritte)</td></tr>
-<tr><td>Erweiterungen</td><td>alternative Wege und Fehlerfälle, referenziert per Schrittnummer + Buchstabe (z. B. "3a", "4b")</td></tr>
-</table>
-<p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
-
-<h3>Akteure und Rollen</h3>
-<ul>
-  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
-  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
-</ul>
+<details class="sec"><summary><input type="checkbox" data-id="Anw-4-s0" onclick="event.stopPropagation()"> <span>[DUPLICATE] 06 Schablone (Erweiterungen)</span></summary>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Schablone“ → <a class="goto" href="#sec-13">06 Use-Case-Schablone</a></p>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-4-s1" onclick="event.stopPropagation()"> <span>06 schrittweise präziser</span></summary>
+<details class="sec" id="sec-16"><summary><input type="checkbox" data-id="Anw-4-s1" onclick="event.stopPropagation()"> <span>06 schrittweise präziser</span></summary>
 <h3>Empfehlung: schrittweise präziser machen</h3>
 <ol>
   <li>Hauptakteur und Ziel ("Story Card") — klärt schon wichtige Anforderungen/Beteiligte, erst mal prüfen ob alles stimmt</li>
@@ -453,87 +411,29 @@ Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, di
   <li>Erweiterungsschritte (wie werden sie behandelt? — kann oft weggelassen und informell geklärt werden)</li>
 </ol>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-4-s2" onclick="event.stopPropagation()"> <span>06 Checkliste (Erweiterungsbedingungen)</span></summary>
-<h2>Checkliste für Use-Case-Bestandteile</h2>
-<p>Bei einem guten Use Case sollte jede dieser Fragen mit "ja" beantwortet werden können:</p>
-<ul>
-  <li><strong>Titel:</strong> aktive Verbalphrase, die das Ziel des Hauptakteurs nennt? Ist das SuD für die Zielerreichung zuständig?</li>
-  <li><strong>Bereich (SuD):</strong> angegeben? bei Systementwurf: alle Teile entworfen, nichts außerhalb der Systemgrenze?</li>
-  <li><strong>Detailgrad/Zielniveau:</strong> liegt das Ziel wirklich auf diesem Niveau? passt der Inhalt zum geplanten Detailgrad?</li>
-  <li><strong>Hauptakteur:</strong> hat er/sie/es Verhalten und ein zu einer Dienstzusicherung des SuD passendes Ziel?</li>
-  <li><strong>Voraussetzungen:</strong> verbindlich und herstellbar? werden im Use Case selbst nicht mehr überprüft?</li>
-  <li><strong>Beteiligte/Interessen, Mindestzusicherung, Zusicherung im Erfolgsfall:</strong> jeweils angemessen berücksichtigt/geschützt/befriedigt?</li>
-  <li><strong>Haupt-Erfolgsszenario:</strong> 3-9 Schritte? beschreibt es den Ablauf vom Auslöser bis zur Erfolgsgarantie?</li>
-  <li><strong>Jeder Einzelschritt:</strong> als erreichtes Ziel formuliert (z. B. "validieren" statt "prüfen")? treibt er den Prozess sichtbar voran? ist Akteur und Absicht klar? abstrahiert er von der Bedienoberfläche?</li>
-  <li><strong>Erweiterungsbedingungen:</strong> kann/muss das SuD den Fall erkennen bzw. behandeln?</li>
-  <li>Insgesamt: "Ist dies, was Du möchtest?" (ggü. Beteiligten) und "Kannst Du das bauen?" (ggü. Entwickler·innen)</li>
-</ul>
+<details class="sec"><summary><input type="checkbox" data-id="Anw-4-s2" onclick="event.stopPropagation()"> <span>[DUPLICATE] 06 Checkliste (Erweiterungsbedingungen)</span></summary>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Haupt-Erfolgsszenario gut schreiben“ → <a class="goto" href="#sec-14">06 Checkliste (Titel, Einzelschritt)</a></p>
 </details></li>
   <li><label><input type="checkbox" data-id="Anw-5"> <span>Vollständigen Use Case aus einem Text ableiten und aufschreiben — die Klausuraufgabe; selbst üben: mehr als 3 Schritte, mind. 1 Erweiterung <span class="src">· Klausur ✔ · ub/05 Aufgabe 5-3 (nicht in der Summary durchgerechnet)</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Schablone</a> · <a href="summaries/06_Usecases.html#praez">06 Präzision / Reihenfolge</a> · <a href="summaries/06_Usecases.html#checkliste">06 Checkliste</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-5-s0" onclick="event.stopPropagation()"> <span>06 Schablone</span></summary>
-<h2>Use-Case-Schablone</h2>
-<p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
-<table>
-<tr><th>Feld</th><th>Bedeutung</th></tr>
-<tr><td>Hauptakteur</td><td>primär handelnde Rolle (Person oder System)</td></tr>
-<tr><td>Anwendungsbereich (Bezug, "system under discussion", SuD)</td><td>Kontext und Grenzen — wovon reden wir hier eigentlich?</td></tr>
-<tr><td>Niveau</td><td>Detaillierungs-/Abstraktionsgrad</td></tr>
-<tr><td>Beteiligte und Interessen</td><td>alle Stakeholder und was ihnen an diesem Use Case wichtig ist</td></tr>
-<tr><td>Voraussetzung</td><td>muss vor Ausführung bereits gelten</td></tr>
-<tr><td>Mindestzusicherung</td><td>Grundgarantie auch im Fehlerfall (z. B. Protokollierung)</td></tr>
-<tr><td>Zusicherung im Erfolgsfall</td><td>gewünschtes Ergebnis</td></tr>
-<tr><td>Auslöser</td><td>Ereignis, das den Use Case startet</td></tr>
-<tr><td>Haupt-Erfolgsszenario</td><td>nummerierte Schritt-für-Schritt-Beschreibung zum Ziel (idealerweise 3-9 Schritte)</td></tr>
-<tr><td>Erweiterungen</td><td>alternative Wege und Fehlerfälle, referenziert per Schrittnummer + Buchstabe (z. B. "3a", "4b")</td></tr>
-</table>
-<p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
-
-<h3>Akteure und Rollen</h3>
-<ul>
-  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
-  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
-</ul>
+<details class="sec"><summary><input type="checkbox" data-id="Anw-5-s0" onclick="event.stopPropagation()"> <span>[DUPLICATE] 06 Schablone</span></summary>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Schablone“ → <a class="goto" href="#sec-13">06 Use-Case-Schablone</a></p>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-5-s1" onclick="event.stopPropagation()"> <span>06 Präzision / Reihenfolge</span></summary>
+<details class="sec" id="sec-17"><summary><input type="checkbox" data-id="Anw-5-s1" onclick="event.stopPropagation()"> <span>06 Präzision / Reihenfolge</span></summary>
 <h2>Präzision beim Schreiben von Use Cases</h2>
 <ul>
   <li><strong>Präzision</strong> (precision) ≠ <strong>Richtigkeit</strong> (accuracy) — ein Use Case kann sehr präzise, aber falsch sein, oder ungenau, aber völlig richtig. Ziel: ausreichend präzise <em>und</em> richtig.</li>
   <li><strong>Gefahr 1 (zu früh zu genau):</strong> man übersieht anfangs oft etwas Wichtiges oder sitzt einem Missverständnis auf — schon investierte Detailarbeit ist dann verschwendet.</li>
   <li><strong>Gefahr 2:</strong> wird das Dokument zu umfangreich, liest es niemand mehr. Also: <strong>weniger ist oft mehr</strong>, Use Cases sollten immer nur gerade genau genug sein.</li>
 </ul>
-<h3>Empfehlung: schrittweise präziser machen</h3>
-<ol>
-  <li>Hauptakteur und Ziel ("Story Card") — klärt schon wichtige Anforderungen/Beteiligte, erst mal prüfen ob alles stimmt</li>
-  <li>Haupt-Erfolgsszenario — reicht in manchen Fällen schon aus</li>
-  <li>Erweiterungsbedingungen (welche Varianten/Fehler müssen behandelt werden?)</li>
-  <li>Erweiterungsschritte (wie werden sie behandelt? — kann oft weggelassen und informell geklärt werden)</li>
-</ol>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Erweiterungen und Fehlerfälle“ → <a class="goto" href="#sec-16">06 schrittweise präziser</a></p>
 
-<h3>Wichtigkeit von Zielen</h3>
-<ul>
-  <li>Ein Ziel beantwortet zu den Schritten die Frage "Warum?"; der Name eines Use Case sollte immer ein Ziel bezeichnen.</li>
-  <li>In einem umfassenderen Use Case tritt ein untergeordnetes Ziel als einzelner Schritt auf → es entsteht eine <strong>Zielhierarchie</strong> (hierarchische Zerlegung), die einzelne Use Cases übersichtlich hält.</li>
-  <li>Klare Akteursbenennung deckt oft Probleme auf (z. B. wenn "Arzt" eigentlich eine Organisation statt einer Person ist).</li>
-</ul>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Haupt-Erfolgsszenario gut schreiben“ → <a class="goto" href="#sec-15">06 Wichtigkeit von Zielen</a></p>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-5-s2" onclick="event.stopPropagation()"> <span>06 Checkliste</span></summary>
-<h2>Checkliste für Use-Case-Bestandteile</h2>
-<p>Bei einem guten Use Case sollte jede dieser Fragen mit "ja" beantwortet werden können:</p>
-<ul>
-  <li><strong>Titel:</strong> aktive Verbalphrase, die das Ziel des Hauptakteurs nennt? Ist das SuD für die Zielerreichung zuständig?</li>
-  <li><strong>Bereich (SuD):</strong> angegeben? bei Systementwurf: alle Teile entworfen, nichts außerhalb der Systemgrenze?</li>
-  <li><strong>Detailgrad/Zielniveau:</strong> liegt das Ziel wirklich auf diesem Niveau? passt der Inhalt zum geplanten Detailgrad?</li>
-  <li><strong>Hauptakteur:</strong> hat er/sie/es Verhalten und ein zu einer Dienstzusicherung des SuD passendes Ziel?</li>
-  <li><strong>Voraussetzungen:</strong> verbindlich und herstellbar? werden im Use Case selbst nicht mehr überprüft?</li>
-  <li><strong>Beteiligte/Interessen, Mindestzusicherung, Zusicherung im Erfolgsfall:</strong> jeweils angemessen berücksichtigt/geschützt/befriedigt?</li>
-  <li><strong>Haupt-Erfolgsszenario:</strong> 3-9 Schritte? beschreibt es den Ablauf vom Auslöser bis zur Erfolgsgarantie?</li>
-  <li><strong>Jeder Einzelschritt:</strong> als erreichtes Ziel formuliert (z. B. "validieren" statt "prüfen")? treibt er den Prozess sichtbar voran? ist Akteur und Absicht klar? abstrahiert er von der Bedienoberfläche?</li>
-  <li><strong>Erweiterungsbedingungen:</strong> kann/muss das SuD den Fall erkennen bzw. behandeln?</li>
-  <li>Insgesamt: "Ist dies, was Du möchtest?" (ggü. Beteiligten) und "Kannst Du das bauen?" (ggü. Entwickler·innen)</li>
-</ul>
+<details class="sec"><summary><input type="checkbox" data-id="Anw-5-s2" onclick="event.stopPropagation()"> <span>[DUPLICATE] 06 Checkliste</span></summary>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Haupt-Erfolgsszenario gut schreiben“ → <a class="goto" href="#sec-14">06 Checkliste (Titel, Einzelschritt)</a></p>
 </details></li>
   <li><label><input type="checkbox" data-id="Anw-6"> <span>Grenzen von Use Cases: nur Verhaltensanforderungen, keine NFA/Domäneneigenschaften/Geschäftsregeln</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#grenzen">06 Grenzen von Use Cases</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anw-6-s0" onclick="event.stopPropagation()"> <span>06 Grenzen von Use Cases</span></summary>
+<details class="sec" id="sec-18"><summary><input type="checkbox" data-id="Anw-6-s0" onclick="event.stopPropagation()"> <span>06 Grenzen von Use Cases</span></summary>
 <h2>Grenzen von Use Cases</h2>
 <div class="def">
 Use Cases decken <strong>nur Verhaltensanforderungen</strong> ab. Sie beschreiben <em>nicht</em>: Domäneneigenschaften/Annahmen, Geschäftsregeln, nichtfunktionale Anforderungen, ggf. vorgegebenes Datenmodell/technische Schnittstellen, sonstige Randbedingungen. Das Anforderungsdokument muss daher mehr als nur Use Cases enthalten — Use Cases bilden aber einen guten Rahmen für den Rest.
@@ -557,37 +457,11 @@ Use Cases decken <strong>nur Verhaltensanforderungen</strong> ab. Sie beschreibe
 </details><details class="grp" open><summary>Übergang Anforderung → Anwendungsfall <span class="cnt"></span></summary>
 <ul class="todo">
   <li><label><input type="checkbox" data-id="Anf-4"> <span>Übergang zum Anwendungsfall: aus den Anforderungen einen Use Case ableiten → siehe Kategorie „Anwendungsfälle“ <span class="src">· Klausur ✔</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Use-Case-Schablone</a> · <a href="summaries/06_Usecases.html#szenario">06 Szenario vs. Anwendungsfall</a></span>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-4-s0" onclick="event.stopPropagation()"> <span>06 Use-Case-Schablone</span></summary>
-<h2>Use-Case-Schablone</h2>
-<p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
-<table>
-<tr><th>Feld</th><th>Bedeutung</th></tr>
-<tr><td>Hauptakteur</td><td>primär handelnde Rolle (Person oder System)</td></tr>
-<tr><td>Anwendungsbereich (Bezug, "system under discussion", SuD)</td><td>Kontext und Grenzen — wovon reden wir hier eigentlich?</td></tr>
-<tr><td>Niveau</td><td>Detaillierungs-/Abstraktionsgrad</td></tr>
-<tr><td>Beteiligte und Interessen</td><td>alle Stakeholder und was ihnen an diesem Use Case wichtig ist</td></tr>
-<tr><td>Voraussetzung</td><td>muss vor Ausführung bereits gelten</td></tr>
-<tr><td>Mindestzusicherung</td><td>Grundgarantie auch im Fehlerfall (z. B. Protokollierung)</td></tr>
-<tr><td>Zusicherung im Erfolgsfall</td><td>gewünschtes Ergebnis</td></tr>
-<tr><td>Auslöser</td><td>Ereignis, das den Use Case startet</td></tr>
-<tr><td>Haupt-Erfolgsszenario</td><td>nummerierte Schritt-für-Schritt-Beschreibung zum Ziel (idealerweise 3-9 Schritte)</td></tr>
-<tr><td>Erweiterungen</td><td>alternative Wege und Fehlerfälle, referenziert per Schrittnummer + Buchstabe (z. B. "3a", "4b")</td></tr>
-</table>
-<p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
-
-<h3>Akteure und Rollen</h3>
-<ul>
-  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
-  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
-</ul>
+<details class="sec"><summary><input type="checkbox" data-id="Anf-4-s0" onclick="event.stopPropagation()"> <span>[DUPLICATE] 06 Use-Case-Schablone</span></summary>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Schablone“ → <a class="goto" href="#sec-13">06 Use-Case-Schablone</a></p>
 </details>
-<details class="sec"><summary><input type="checkbox" data-id="Anf-4-s1" onclick="event.stopPropagation()"> <span>06 Szenario vs. Anwendungsfall</span></summary>
-<h2>Szenario vs. Anwendungsfall (Übung 5-1c)</h2>
-<div class="def">
-Ein <strong>Szenario</strong> ist eine konkrete(re) Ausprägung eines Use Case: es gibt keine Varianten, sondern nur einen linearen Ablauf, ggf. mit ganz konkreten Datenwerten.<br>
-Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, die mehrere Szenarien (Haupt-Erfolgsszenario + Erweiterungen/Varianten) bündelt.
-</div>
-<p>Szenarien werden ergänzend genutzt, wenn das Schreiben eines Use Case schwerfällt oder er für manche Beteiligte zu abstrakt ist (meistens kommt man aber ohne aus). Der Entwicklungsstil <strong>ATDD</strong> (Acceptance-Test-Driven Development) nutzt statt eines Use Case direkt N konkrete Szenarien als automatisierte Testfälle, die vor der Implementierung geschrieben werden und selbst als Spezifikation dienen.</p>
+<details class="sec"><summary><input type="checkbox" data-id="Anf-4-s1" onclick="event.stopPropagation()"> <span>[DUPLICATE] 06 Szenario vs. Anwendungsfall</span></summary>
+<p class="ref">↪ [DUPLICATE] steht schon bei „Definition und Zweck eines Use Case; Szenario vs. Use Case“ → <a class="goto" href="#sec-11">06 Szenario vs. Anwendungsfall</a></p>
 </details></li>
 </ul>
 </details>
@@ -633,6 +507,13 @@ function count(){
   });
 }
 count();
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a.goto'); if(!a)return;
+  var t=document.getElementById(a.getAttribute('href').slice(1)); if(!t)return;
+  e.preventDefault();
+  for(var n=t;n;n=n.parentElement){if(n.tagName==='DETAILS')n.open=true;}
+  t.scrollIntoView({block:'start'});
+});
 </script>
 </body>
 </html>
