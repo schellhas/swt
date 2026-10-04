@@ -331,13 +331,208 @@ Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, di
 
 <h2 class="cat">Anwendungsfälle</h2>
 <ul class="todo">
-  <li><label><input type="checkbox" data-id="Anw-0"> <span>Definition und Zweck eines Use Case; Szenario vs. Use Case <span class="src">· ub/05 Aufgabe 5-1</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#was">06 Was ist ein Use Case?</a> · <a href="summaries/06_Usecases.html#szenario">06 Szenario vs. Anwendungsfall</a></span></li>
-  <li><label><input type="checkbox" data-id="Anw-1"> <span>Akteure und Rollen: Akteur = Rolle, keine konkrete Person; Hauptakteur bestimmen <span class="src">· ub/05 Aufgabe 5-2b</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#akteure">06 Akteure und Rollen</a></span></li>
-  <li><label><input type="checkbox" data-id="Anw-2"> <span>Schablone: alle Felder kennen und auseinanderhalten (Voraussetzung ≠ Mindestzusicherung ≠ Zusicherung im Erfolgsfall ≠ Auslöser; Anwendungsbereich, Niveau, Beteiligte) <span class="src">· uebersicht.txt Template</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Use-Case-Schablone</a></span></li>
-  <li><label><input type="checkbox" data-id="Anw-3"> <span>Haupt-Erfolgsszenario gut schreiben: 3–9 Schritte, jeder Schritt ein erreichtes Ziel, nichts zur Bedienoberfläche; Titel = Ziel als aktive Verbalphrase</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#checkliste">06 Checkliste (Titel, Einzelschritt)</a> · <a href="summaries/06_Usecases.html#ziele">06 Wichtigkeit von Zielen</a></span></li>
-  <li><label><input type="checkbox" data-id="Anw-4"> <span>Erweiterungen und Fehlerfälle: Bedingung + Behandlung, nummeriert (3a, 4b); kann das System den Fall erkennen?</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Schablone (Erweiterungen)</a> · <a href="summaries/06_Usecases.html#schrittweise">06 schrittweise präziser</a> · <a href="summaries/06_Usecases.html#checkliste">06 Checkliste (Erweiterungsbedingungen)</a></span></li>
-  <li><label><input type="checkbox" data-id="Anw-5"> <span>Vollständigen Use Case aus einem Text ableiten und aufschreiben — die Klausuraufgabe; selbst üben: mehr als 3 Schritte, mind. 1 Erweiterung <span class="src">· Klausur ✔ · ub/05 Aufgabe 5-3 (nicht in der Summary durchgerechnet)</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Schablone</a> · <a href="summaries/06_Usecases.html#praez">06 Präzision / Reihenfolge</a> · <a href="summaries/06_Usecases.html#checkliste">06 Checkliste</a></span></li>
-  <li><label><input type="checkbox" data-id="Anw-6"> <span>Grenzen von Use Cases: nur Verhaltensanforderungen, keine NFA/Domäneneigenschaften/Geschäftsregeln</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#grenzen">06 Grenzen von Use Cases</a></span></li>
+  <li><label><input type="checkbox" data-id="Anw-0"> <span>Definition und Zweck eines Use Case; Szenario vs. Use Case <span class="src">· ub/05 Aufgabe 5-1</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#was">06 Was ist ein Use Case?</a> · <a href="summaries/06_Usecases.html#szenario">06 Szenario vs. Anwendungsfall</a></span>
+<details class="sec"><summary>06 Was ist ein Use Case?</summary>
+<h2>Was ist ein Use Case?</h2>
+<div class="def">
+<strong>Rolle:</strong> Vereinbarung zwischen den Beteiligten eines Projekts über das Verhalten des Systems.<br>
+<strong>Ansatz:</strong> Beschreibung des Verhaltens des Systems als Antwort auf einen Auftrag eines Hauptakteurs, der mit seinem Auftrag ein Ziel verfolgt und erreicht.
+</div>
+<ul>
+  <li>Ein Use Case bündelt die Beschreibungen für viele einzelne Fälle (<strong>Szenarios</strong>), die den Zielen nach eng zusammengehören — er ist also abstrakt, aber nicht sehr.</li>
+  <li>Form: normalerweise (meist strukturierter) <strong>Text</strong>; formale/grafische Notationen (Flussdiagramme, Zustandsdiagramme, Sequenzdiagramme, Petrinetze) sind zwar prinzipiell möglich, Text ist aber meist die beste Wahl. "Wer nicht gut Text schreiben kann, kann auch nicht gut Use Cases schreiben."</li>
+</ul>
+
+<h3>a) Was ist ein Anwendungsfall und wozu dient er? (Übung 5-1a)</h3>
+<p>Siehe Definition oben. Zweck: er dient als <strong>Vereinbarung</strong> zwischen allen Projektbeteiligten (Kunden, Nutzer·innen, Entwickler·innen) darüber, was das System in einer bestimmten Interaktion leisten soll — unabhängig von der konkreten Implementierung. Er macht funktionale Anforderungen konkret nachvollziehbar und dient zugleich als Werkzeug der Anforderungserhebung (leicht zu schreiben, leicht mit Beteiligten abzugleichen).</p>
+</details>
+<details class="sec"><summary>06 Szenario vs. Anwendungsfall</summary>
+<h2>Szenario vs. Anwendungsfall (Übung 5-1c)</h2>
+<div class="def">
+Ein <strong>Szenario</strong> ist eine konkrete(re) Ausprägung eines Use Case: es gibt keine Varianten, sondern nur einen linearen Ablauf, ggf. mit ganz konkreten Datenwerten.<br>
+Ein <strong>Use Case</strong> ist die abstraktere, allgemeinere Beschreibung, die mehrere Szenarien (Haupt-Erfolgsszenario + Erweiterungen/Varianten) bündelt.
+</div>
+<p>Szenarien werden ergänzend genutzt, wenn das Schreiben eines Use Case schwerfällt oder er für manche Beteiligte zu abstrakt ist (meistens kommt man aber ohne aus). Der Entwicklungsstil <strong>ATDD</strong> (Acceptance-Test-Driven Development) nutzt statt eines Use Case direkt N konkrete Szenarien als automatisierte Testfälle, die vor der Implementierung geschrieben werden und selbst als Spezifikation dienen.</p>
+</details></li>
+  <li><label><input type="checkbox" data-id="Anw-1"> <span>Akteure und Rollen: Akteur = Rolle, keine konkrete Person; Hauptakteur bestimmen <span class="src">· ub/05 Aufgabe 5-2b</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#akteure">06 Akteure und Rollen</a></span>
+<details class="sec"><summary>06 Akteure und Rollen</summary>
+<h3>Akteure und Rollen</h3>
+<ul>
+  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
+  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
+</ul>
+</details></li>
+  <li><label><input type="checkbox" data-id="Anw-2"> <span>Schablone: alle Felder kennen und auseinanderhalten (Voraussetzung ≠ Mindestzusicherung ≠ Zusicherung im Erfolgsfall ≠ Auslöser; Anwendungsbereich, Niveau, Beteiligte) <span class="src">· uebersicht.txt Template</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Use-Case-Schablone</a></span>
+<details class="sec"><summary>06 Use-Case-Schablone</summary>
+<h2>Use-Case-Schablone</h2>
+<p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
+<table>
+<tr><th>Feld</th><th>Bedeutung</th></tr>
+<tr><td>Hauptakteur</td><td>primär handelnde Rolle (Person oder System)</td></tr>
+<tr><td>Anwendungsbereich (Bezug, "system under discussion", SuD)</td><td>Kontext und Grenzen — wovon reden wir hier eigentlich?</td></tr>
+<tr><td>Niveau</td><td>Detaillierungs-/Abstraktionsgrad</td></tr>
+<tr><td>Beteiligte und Interessen</td><td>alle Stakeholder und was ihnen an diesem Use Case wichtig ist</td></tr>
+<tr><td>Voraussetzung</td><td>muss vor Ausführung bereits gelten</td></tr>
+<tr><td>Mindestzusicherung</td><td>Grundgarantie auch im Fehlerfall (z. B. Protokollierung)</td></tr>
+<tr><td>Zusicherung im Erfolgsfall</td><td>gewünschtes Ergebnis</td></tr>
+<tr><td>Auslöser</td><td>Ereignis, das den Use Case startet</td></tr>
+<tr><td>Haupt-Erfolgsszenario</td><td>nummerierte Schritt-für-Schritt-Beschreibung zum Ziel (idealerweise 3-9 Schritte)</td></tr>
+<tr><td>Erweiterungen</td><td>alternative Wege und Fehlerfälle, referenziert per Schrittnummer + Buchstabe (z. B. "3a", "4b")</td></tr>
+</table>
+<p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
+
+<h3>Akteure und Rollen</h3>
+<ul>
+  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
+  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
+</ul>
+</details></li>
+  <li><label><input type="checkbox" data-id="Anw-3"> <span>Haupt-Erfolgsszenario gut schreiben: 3–9 Schritte, jeder Schritt ein erreichtes Ziel, nichts zur Bedienoberfläche; Titel = Ziel als aktive Verbalphrase</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#checkliste">06 Checkliste (Titel, Einzelschritt)</a> · <a href="summaries/06_Usecases.html#ziele">06 Wichtigkeit von Zielen</a></span>
+<details class="sec"><summary>06 Checkliste (Titel, Einzelschritt)</summary>
+<h2>Checkliste für Use-Case-Bestandteile</h2>
+<p>Bei einem guten Use Case sollte jede dieser Fragen mit "ja" beantwortet werden können:</p>
+<ul>
+  <li><strong>Titel:</strong> aktive Verbalphrase, die das Ziel des Hauptakteurs nennt? Ist das SuD für die Zielerreichung zuständig?</li>
+  <li><strong>Bereich (SuD):</strong> angegeben? bei Systementwurf: alle Teile entworfen, nichts außerhalb der Systemgrenze?</li>
+  <li><strong>Detailgrad/Zielniveau:</strong> liegt das Ziel wirklich auf diesem Niveau? passt der Inhalt zum geplanten Detailgrad?</li>
+  <li><strong>Hauptakteur:</strong> hat er/sie/es Verhalten und ein zu einer Dienstzusicherung des SuD passendes Ziel?</li>
+  <li><strong>Voraussetzungen:</strong> verbindlich und herstellbar? werden im Use Case selbst nicht mehr überprüft?</li>
+  <li><strong>Beteiligte/Interessen, Mindestzusicherung, Zusicherung im Erfolgsfall:</strong> jeweils angemessen berücksichtigt/geschützt/befriedigt?</li>
+  <li><strong>Haupt-Erfolgsszenario:</strong> 3-9 Schritte? beschreibt es den Ablauf vom Auslöser bis zur Erfolgsgarantie?</li>
+  <li><strong>Jeder Einzelschritt:</strong> als erreichtes Ziel formuliert (z. B. "validieren" statt "prüfen")? treibt er den Prozess sichtbar voran? ist Akteur und Absicht klar? abstrahiert er von der Bedienoberfläche?</li>
+  <li><strong>Erweiterungsbedingungen:</strong> kann/muss das SuD den Fall erkennen bzw. behandeln?</li>
+  <li>Insgesamt: "Ist dies, was Du möchtest?" (ggü. Beteiligten) und "Kannst Du das bauen?" (ggü. Entwickler·innen)</li>
+</ul>
+</details>
+<details class="sec"><summary>06 Wichtigkeit von Zielen</summary>
+<h3>Wichtigkeit von Zielen</h3>
+<ul>
+  <li>Ein Ziel beantwortet zu den Schritten die Frage "Warum?"; der Name eines Use Case sollte immer ein Ziel bezeichnen.</li>
+  <li>In einem umfassenderen Use Case tritt ein untergeordnetes Ziel als einzelner Schritt auf → es entsteht eine <strong>Zielhierarchie</strong> (hierarchische Zerlegung), die einzelne Use Cases übersichtlich hält.</li>
+  <li>Klare Akteursbenennung deckt oft Probleme auf (z. B. wenn "Arzt" eigentlich eine Organisation statt einer Person ist).</li>
+</ul>
+</details></li>
+  <li><label><input type="checkbox" data-id="Anw-4"> <span>Erweiterungen und Fehlerfälle: Bedingung + Behandlung, nummeriert (3a, 4b); kann das System den Fall erkennen?</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Schablone (Erweiterungen)</a> · <a href="summaries/06_Usecases.html#schrittweise">06 schrittweise präziser</a> · <a href="summaries/06_Usecases.html#checkliste">06 Checkliste (Erweiterungsbedingungen)</a></span>
+<details class="sec"><summary>06 Schablone (Erweiterungen)</summary>
+<h2>Use-Case-Schablone</h2>
+<p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
+<table>
+<tr><th>Feld</th><th>Bedeutung</th></tr>
+<tr><td>Hauptakteur</td><td>primär handelnde Rolle (Person oder System)</td></tr>
+<tr><td>Anwendungsbereich (Bezug, "system under discussion", SuD)</td><td>Kontext und Grenzen — wovon reden wir hier eigentlich?</td></tr>
+<tr><td>Niveau</td><td>Detaillierungs-/Abstraktionsgrad</td></tr>
+<tr><td>Beteiligte und Interessen</td><td>alle Stakeholder und was ihnen an diesem Use Case wichtig ist</td></tr>
+<tr><td>Voraussetzung</td><td>muss vor Ausführung bereits gelten</td></tr>
+<tr><td>Mindestzusicherung</td><td>Grundgarantie auch im Fehlerfall (z. B. Protokollierung)</td></tr>
+<tr><td>Zusicherung im Erfolgsfall</td><td>gewünschtes Ergebnis</td></tr>
+<tr><td>Auslöser</td><td>Ereignis, das den Use Case startet</td></tr>
+<tr><td>Haupt-Erfolgsszenario</td><td>nummerierte Schritt-für-Schritt-Beschreibung zum Ziel (idealerweise 3-9 Schritte)</td></tr>
+<tr><td>Erweiterungen</td><td>alternative Wege und Fehlerfälle, referenziert per Schrittnummer + Buchstabe (z. B. "3a", "4b")</td></tr>
+</table>
+<p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
+
+<h3>Akteure und Rollen</h3>
+<ul>
+  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
+  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
+</ul>
+</details>
+<details class="sec"><summary>06 schrittweise präziser</summary>
+<h3>Empfehlung: schrittweise präziser machen</h3>
+<ol>
+  <li>Hauptakteur und Ziel ("Story Card") — klärt schon wichtige Anforderungen/Beteiligte, erst mal prüfen ob alles stimmt</li>
+  <li>Haupt-Erfolgsszenario — reicht in manchen Fällen schon aus</li>
+  <li>Erweiterungsbedingungen (welche Varianten/Fehler müssen behandelt werden?)</li>
+  <li>Erweiterungsschritte (wie werden sie behandelt? — kann oft weggelassen und informell geklärt werden)</li>
+</ol>
+</details>
+<details class="sec"><summary>06 Checkliste (Erweiterungsbedingungen)</summary>
+<h2>Checkliste für Use-Case-Bestandteile</h2>
+<p>Bei einem guten Use Case sollte jede dieser Fragen mit "ja" beantwortet werden können:</p>
+<ul>
+  <li><strong>Titel:</strong> aktive Verbalphrase, die das Ziel des Hauptakteurs nennt? Ist das SuD für die Zielerreichung zuständig?</li>
+  <li><strong>Bereich (SuD):</strong> angegeben? bei Systementwurf: alle Teile entworfen, nichts außerhalb der Systemgrenze?</li>
+  <li><strong>Detailgrad/Zielniveau:</strong> liegt das Ziel wirklich auf diesem Niveau? passt der Inhalt zum geplanten Detailgrad?</li>
+  <li><strong>Hauptakteur:</strong> hat er/sie/es Verhalten und ein zu einer Dienstzusicherung des SuD passendes Ziel?</li>
+  <li><strong>Voraussetzungen:</strong> verbindlich und herstellbar? werden im Use Case selbst nicht mehr überprüft?</li>
+  <li><strong>Beteiligte/Interessen, Mindestzusicherung, Zusicherung im Erfolgsfall:</strong> jeweils angemessen berücksichtigt/geschützt/befriedigt?</li>
+  <li><strong>Haupt-Erfolgsszenario:</strong> 3-9 Schritte? beschreibt es den Ablauf vom Auslöser bis zur Erfolgsgarantie?</li>
+  <li><strong>Jeder Einzelschritt:</strong> als erreichtes Ziel formuliert (z. B. "validieren" statt "prüfen")? treibt er den Prozess sichtbar voran? ist Akteur und Absicht klar? abstrahiert er von der Bedienoberfläche?</li>
+  <li><strong>Erweiterungsbedingungen:</strong> kann/muss das SuD den Fall erkennen bzw. behandeln?</li>
+  <li>Insgesamt: "Ist dies, was Du möchtest?" (ggü. Beteiligten) und "Kannst Du das bauen?" (ggü. Entwickler·innen)</li>
+</ul>
+</details></li>
+  <li><label><input type="checkbox" data-id="Anw-5"> <span>Vollständigen Use Case aus einem Text ableiten und aufschreiben — die Klausuraufgabe; selbst üben: mehr als 3 Schritte, mind. 1 Erweiterung <span class="src">· Klausur ✔ · ub/05 Aufgabe 5-3 (nicht in der Summary durchgerechnet)</span></span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#schablone">06 Schablone</a> · <a href="summaries/06_Usecases.html#praez">06 Präzision / Reihenfolge</a> · <a href="summaries/06_Usecases.html#checkliste">06 Checkliste</a></span>
+<details class="sec"><summary>06 Schablone</summary>
+<h2>Use-Case-Schablone</h2>
+<p class="src">deckt sich mit dem Anwendungsfall-Template in uebersicht.txt Zeilen 104-114</p>
+<table>
+<tr><th>Feld</th><th>Bedeutung</th></tr>
+<tr><td>Hauptakteur</td><td>primär handelnde Rolle (Person oder System)</td></tr>
+<tr><td>Anwendungsbereich (Bezug, "system under discussion", SuD)</td><td>Kontext und Grenzen — wovon reden wir hier eigentlich?</td></tr>
+<tr><td>Niveau</td><td>Detaillierungs-/Abstraktionsgrad</td></tr>
+<tr><td>Beteiligte und Interessen</td><td>alle Stakeholder und was ihnen an diesem Use Case wichtig ist</td></tr>
+<tr><td>Voraussetzung</td><td>muss vor Ausführung bereits gelten</td></tr>
+<tr><td>Mindestzusicherung</td><td>Grundgarantie auch im Fehlerfall (z. B. Protokollierung)</td></tr>
+<tr><td>Zusicherung im Erfolgsfall</td><td>gewünschtes Ergebnis</td></tr>
+<tr><td>Auslöser</td><td>Ereignis, das den Use Case startet</td></tr>
+<tr><td>Haupt-Erfolgsszenario</td><td>nummerierte Schritt-für-Schritt-Beschreibung zum Ziel (idealerweise 3-9 Schritte)</td></tr>
+<tr><td>Erweiterungen</td><td>alternative Wege und Fehlerfälle, referenziert per Schrittnummer + Buchstabe (z. B. "3a", "4b")</td></tr>
+</table>
+<p><strong>Zusätzliche, optionale Felder</strong> je nach Projekt: Lieferant der Anforderungen (für Rückfragen), Trennung von Erweiterungen (delegiert per "extends"-Beziehung) und Alternativen/Fehlerfällen (delegiert per "generalizes"-Beziehung), Besondere Anforderungen (sparsam einsetzen!), Offene Fragen, Annahmen.</p>
+
+<h3>Akteure und Rollen</h3>
+<ul>
+  <li>Akteure werden immer aus einer zum Use Case gehörenden <strong>Perspektive</strong> bezeichnet (z. B. "Käufer", "Geschädigter") — jede Bezeichnung führt also eine <strong>Rolle</strong> ein.</li>
+  <li>Im Anforderungsdokument muss zusätzlich festgelegt werden, welche Beteiligten welche Rollen unter welchen Umständen einnehmen können — das definiert Rechte, Benutzergruppen, GUI-Funktionsbündelung.</li>
+</ul>
+</details>
+<details class="sec"><summary>06 Präzision / Reihenfolge</summary>
+<h2>Präzision beim Schreiben von Use Cases</h2>
+<ul>
+  <li><strong>Präzision</strong> (precision) ≠ <strong>Richtigkeit</strong> (accuracy) — ein Use Case kann sehr präzise, aber falsch sein, oder ungenau, aber völlig richtig. Ziel: ausreichend präzise <em>und</em> richtig.</li>
+  <li><strong>Gefahr 1 (zu früh zu genau):</strong> man übersieht anfangs oft etwas Wichtiges oder sitzt einem Missverständnis auf — schon investierte Detailarbeit ist dann verschwendet.</li>
+  <li><strong>Gefahr 2:</strong> wird das Dokument zu umfangreich, liest es niemand mehr. Also: <strong>weniger ist oft mehr</strong>, Use Cases sollten immer nur gerade genau genug sein.</li>
+</ul>
+<h3>Empfehlung: schrittweise präziser machen</h3>
+<ol>
+  <li>Hauptakteur und Ziel ("Story Card") — klärt schon wichtige Anforderungen/Beteiligte, erst mal prüfen ob alles stimmt</li>
+  <li>Haupt-Erfolgsszenario — reicht in manchen Fällen schon aus</li>
+  <li>Erweiterungsbedingungen (welche Varianten/Fehler müssen behandelt werden?)</li>
+  <li>Erweiterungsschritte (wie werden sie behandelt? — kann oft weggelassen und informell geklärt werden)</li>
+</ol>
+
+<h3>Wichtigkeit von Zielen</h3>
+<ul>
+  <li>Ein Ziel beantwortet zu den Schritten die Frage "Warum?"; der Name eines Use Case sollte immer ein Ziel bezeichnen.</li>
+  <li>In einem umfassenderen Use Case tritt ein untergeordnetes Ziel als einzelner Schritt auf → es entsteht eine <strong>Zielhierarchie</strong> (hierarchische Zerlegung), die einzelne Use Cases übersichtlich hält.</li>
+  <li>Klare Akteursbenennung deckt oft Probleme auf (z. B. wenn "Arzt" eigentlich eine Organisation statt einer Person ist).</li>
+</ul>
+</details>
+<details class="sec"><summary>06 Checkliste</summary>
+<h2>Checkliste für Use-Case-Bestandteile</h2>
+<p>Bei einem guten Use Case sollte jede dieser Fragen mit "ja" beantwortet werden können:</p>
+<ul>
+  <li><strong>Titel:</strong> aktive Verbalphrase, die das Ziel des Hauptakteurs nennt? Ist das SuD für die Zielerreichung zuständig?</li>
+  <li><strong>Bereich (SuD):</strong> angegeben? bei Systementwurf: alle Teile entworfen, nichts außerhalb der Systemgrenze?</li>
+  <li><strong>Detailgrad/Zielniveau:</strong> liegt das Ziel wirklich auf diesem Niveau? passt der Inhalt zum geplanten Detailgrad?</li>
+  <li><strong>Hauptakteur:</strong> hat er/sie/es Verhalten und ein zu einer Dienstzusicherung des SuD passendes Ziel?</li>
+  <li><strong>Voraussetzungen:</strong> verbindlich und herstellbar? werden im Use Case selbst nicht mehr überprüft?</li>
+  <li><strong>Beteiligte/Interessen, Mindestzusicherung, Zusicherung im Erfolgsfall:</strong> jeweils angemessen berücksichtigt/geschützt/befriedigt?</li>
+  <li><strong>Haupt-Erfolgsszenario:</strong> 3-9 Schritte? beschreibt es den Ablauf vom Auslöser bis zur Erfolgsgarantie?</li>
+  <li><strong>Jeder Einzelschritt:</strong> als erreichtes Ziel formuliert (z. B. "validieren" statt "prüfen")? treibt er den Prozess sichtbar voran? ist Akteur und Absicht klar? abstrahiert er von der Bedienoberfläche?</li>
+  <li><strong>Erweiterungsbedingungen:</strong> kann/muss das SuD den Fall erkennen bzw. behandeln?</li>
+  <li>Insgesamt: "Ist dies, was Du möchtest?" (ggü. Beteiligten) und "Kannst Du das bauen?" (ggü. Entwickler·innen)</li>
+</ul>
+</details></li>
+  <li><label><input type="checkbox" data-id="Anw-6"> <span>Grenzen von Use Cases: nur Verhaltensanforderungen, keine NFA/Domäneneigenschaften/Geschäftsregeln</span></label><br><span class="src">Lernen: <a href="summaries/06_Usecases.html#grenzen">06 Grenzen von Use Cases</a></span>
+<details class="sec"><summary>06 Grenzen von Use Cases</summary>
+<h2>Grenzen von Use Cases</h2>
+<div class="def">
+Use Cases decken <strong>nur Verhaltensanforderungen</strong> ab. Sie beschreiben <em>nicht</em>: Domäneneigenschaften/Annahmen, Geschäftsregeln, nichtfunktionale Anforderungen, ggf. vorgegebenes Datenmodell/technische Schnittstellen, sonstige Randbedingungen. Das Anforderungsdokument muss daher mehr als nur Use Cases enthalten — Use Cases bilden aber einen guten Rahmen für den Rest.
+</div>
+<p>Aus Entwicklersicht fehlt zudem: welche <strong>Funktionen</strong> die SW braucht, welche <strong>Daten</strong> im System vorhanden sind, wie sich die Entwicklung auf Personen verteilen lässt — dafür ist als nächster Schritt <strong>Anforderungsanalyse</strong> nötig.</p>
+</details></li>
   <li><label><input type="checkbox" data-id="Anw-7"> <span>Use-Case-Diagramm dazu zeichnen → siehe Kategorie „UML“</span></label></li>
 </ul>
 
