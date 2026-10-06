@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('swt-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SWT Taxonomie</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --h1-border: #333;
+    --h2: #222;
+    --muted: #777;
+    --def-bg: #f3f3f3;
+    --def-border: #888;
+    --code-bg: #eee;
+    --table-border: #ccc;
+    --todo-bg: #fff3cd;
+    --todo-border: #d4a017;
+    --link: #1a4fa0;
+    --hint: #666;
+    --tier1-bg: #ffe0e0;
+    --tier1-border: #e53935;
+    --tier2-bg: #fff3cd;
+    --tier2-border: #d4a017;
+    --tier3-bg: #dcffe0;
+    --tier3-border: #4caf50;
+  }
+  [data-theme="dark"] {
+    --bg: #181818;
+    --fg: #e8e8e8;
+    --h1-border: #666;
+    --h2: #ddd;
+    --muted: #9a9a9a;
+    --def-bg: #262626;
+    --def-border: #777;
+    --code-bg: #2e2e2e;
+    --table-border: #444;
+    --todo-bg: #4a3f14;
+    --todo-border: #d4a017;
+    --link: #7aa8ff;
+    --hint: #999;
+    --tier1-bg: #3a1e1e;
+    --tier1-border: #e53935;
+    --tier2-bg: #4a3f14;
+    --tier2-border: #d4a017;
+    --tier3-bg: #1e3a24;
+    --tier3-border: #4caf50;
+  }
+  body { background: var(--bg); color: var(--fg); }
+  #theme-toggle { display: flex; justify-content: flex-end; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #bbb; border-radius: 20px; cursor: pointer; transition: background .2s; }
+  .switch .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+  .switch input:checked + .slider { background: #555; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  body {
+    font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+  h1 { font-size: 1.6rem; border-bottom: 2px solid var(--h1-border); padding-bottom: .3rem; }
+  h2 { font-size: 1.15rem; color: var(--h2); margin-top: 2rem; padding: .4rem .7rem; border-radius: 6px; }
+  h2.tier1 { background: var(--tier1-bg); border-left: 4px solid var(--tier1-border); }
+  h2.tier2 { background: var(--tier2-bg); border-left: 4px solid var(--tier2-border); }
+  h2.tier3 { background: var(--tier3-bg); border-left: 4px solid var(--tier3-border); }
+  .tier-desc { color: var(--muted); font-size: .85rem; margin: -.5rem 0 .8rem 0; }
+  ul { margin: .3rem 0 .8rem 1.2rem; }
+  li { margin: .5rem 0; }
+  a { color: var(--link); }
+  .why { color: var(--hint); font-size: .88rem; }
+  .src { color: var(--muted); font-size: .85rem; }
+  @media (max-width: 600px) {
+    html { font-size: 130%; }
+  }
+  .cat { background: var(--def-bg); border-left: 4px solid var(--def-border); }
+  ul.todo { list-style: none; margin-left: 0; padding-left: .5rem; }
+  ul.todo li { margin: .35rem 0; }
+  ul.todo label { cursor: pointer; }
+  ul.todo input:checked + span { text-decoration: line-through; color: var(--muted); }
+  details.sec { margin: .4rem 0 .4rem 1rem; border-left: 3px solid var(--table-border); padding: .1rem 0 .1rem .8rem; }
+  .sec .ref { color: var(--muted); font-size: .88rem; margin: .4rem 0; }
+  details.sec[open] { border-left-color: var(--link); }
+  details.sec > summary { cursor: pointer; font-size: .88rem; padding: .25rem 0; color: var(--link); }
+  details.sec[open] > summary { font-weight: 600; margin-bottom: .3rem; }
+  .sec h2 { font-size: 1.05rem; margin-top: .6rem; }
+  .sec h3 { font-size: .98rem; margin-top: 1rem; }
+  .sec h4 { font-size: .92rem; margin-top: .8rem; }
+  .sec .def { background: var(--def-bg); border-left: 3px solid var(--def-border); padding: .5rem .8rem; margin: .5rem 0; }
+  .sec div.todo { background: var(--todo-bg); border-left: 3px solid var(--todo-border); padding: .5rem .8rem; margin: .8rem 0; }
+  .sec table { border-collapse: collapse; margin: .5rem 0; }
+  .sec td, .sec th { border: 1px solid var(--table-border); padding: .3rem .6rem; text-align: left; vertical-align: top; }
+  .sec ul { list-style: disc; margin: .3rem 0 .8rem 1.2rem; padding-left: 0; }
+  .sec li { margin: .2rem 0; }
+  .tbd { color: var(--muted); font-style: italic; }
+  details.top, details.sub { margin: .5rem 0 .5rem 0; padding-left: .8rem; border-left: 3px solid var(--def-border); }
+  details.top { border-left-width: 5px; }
+  details.top > summary { font-size: 1.15rem; font-weight: 700; }
+  details.sub > summary { font-weight: 600; }
+  details.grp { margin: .6rem 0 .6rem .2rem; padding-left: .8rem; border-left: 3px solid var(--table-border); }
+  details.grp[open] { border-left-color: var(--h1-border); }
+  details.grp > summary { font-weight: 600; color: var(--h2); }
+  details.top > summary, details.sub > summary, details.grp > summary { cursor: pointer; padding: .2rem 0; }
+  .gloss { color: var(--muted); font-weight: 400; font-size: .85rem; }
+  .cnt { font-size: .78rem; font-weight: 400; color: var(--muted); background: var(--def-bg); border-radius: 8px; padding: 0 .45rem; }
+  .cnt:empty { display: none; }
+  ul.plain { margin: .3rem 0 .6rem 1.2rem; padding: 0; }
+  ul.plain li { margin: .25rem 0; }
+  .toolbar { position: sticky; top: 0; background: var(--bg); padding: .5rem 0; border-bottom: 1px solid var(--table-border); margin-bottom: .8rem; z-index: 5; }
+  .toolbar button { font: inherit; font-size: .85rem; padding: .3rem .8rem; margin-right: .5rem; cursor: pointer; border: 1px solid var(--def-border); border-radius: 4px; background: var(--def-bg); color: var(--fg); }
+  .vlh { margin: .8rem 0 .2rem 0; font-weight: 600; font-size: .92rem; }
+  details.sub > p, details.top > p { margin: .4rem 0; }
+  details ol { margin: .3rem 0 .8rem 1.4rem; padding: 0; }
+  details ol li { margin: .25rem 0; }
+</style>
+</head>
+<body>
+<div id="theme-toggle">
+  <span>☀️</span>
+  <label class="switch">
+    <input type="checkbox" id="theme-checkbox" onchange="document.documentElement.setAttribute('data-theme', this.checked ? 'dark' : 'light'); localStorage.setItem('swt-theme', this.checked ? 'dark' : 'light');">
+    <span class="slider"></span>
+  </label>
+  <span>🌙</span>
+</div>
+<script>document.getElementById('theme-checkbox').checked = document.documentElement.getAttribute('data-theme') === 'dark';</script>
+
+<h1>Taxonomie: Die Welt der Softwaretechnik</h1>
+<p class="src">Orientierungsrahmen aus VL03 (<a href="summaries/03_Welt-der-Softwaretechnik.html">Summary 03</a>), ergänzt um die „Wo sind wir?“-Folien und Agenden der übrigen Vorlesungen sowie <code>uebersicht.txt</code> (Z. 212–254). Alles stammt aus den Materialien im Repo, nichts aus Vorwissen. Quellenangaben in eckigen Klammern: <code>[VL03]</code> = Vorlesungsfolien, <code>[Üb Z.n]</code> = Zeile in uebersicht.txt. &nbsp;<a href="index.html">← zurück zur Übersicht</a></p>
+<div class="note" style="background: var(--todo-bg); border-left: 4px solid var(--todo-border); padding: .6rem .9rem; border-radius: 4px; font-size: .92rem;">
+<strong>Wie die Vorlesung selbst die Taxonomie einordnet (VL03, vorletzte Folien):</strong> Sie sei „alles andere als kanonisch“, man könne über vieles darin trefflich streiten, aber sie liefere einen nützlichen Orientierungsrahmen. Am Ende der Vorlesung soll man sein Wissen anhand der Taxonomie prüfen: zu jedem Eintrag sollte einem einiges aus der Vorlesung einfallen, man soll jeden Teil der Vorlesung prompt einordnen können und Einordnung und Wichtigkeit jedes Eintrags charakterisieren können. Dafür gibt es laut Folie ein Mini-Skript, das in den Materialien hier nicht enthalten ist.
+</div>
+<div class="toolbar"><button type="button" id="expand-all">Alles aufklappen</button><button type="button" id="collapse-all">Alles zuklappen</button></div>
+
+<details class="top" open><summary>Welt der Problemstellungen</summary>
+<ul class="plain">
+  <li>Leitfrage: <em>„Mit welchen Phänomenen muss die SWT fertig werden?“</em></li>
+  <li>Enthält alles, was Programmieren-im-Großen vom Programmieren-im-Kleinen unterscheidet.</li>
+  <li>Alle diese Probleme sind <strong>essenziell</strong>: sie lassen sich nicht beseitigen, nur abmildern. Dazu Brooks, „No Silver Bullet: Essence and Accidents of Software Engineering“ (IEEE Computer 20(4), April 1987; Datei: <code>other/Brooks_No Silver Bullet.pdf</code>). Seine Vorschläge: Kaufen statt bauen; Prototyping; inkrementelle Entwicklung; herausragende Entwerfer/innen.</li>
+</ul> <span class="src">[VL03; Üb Z.213]</span><details class="sub"><summary>Produktprobleme (Komplexitätsprobleme) <span class="gloss">— viele Teile + emergente Eigenschaften</span></summary>
+<ul class="plain">
+  <li><strong>Komplexität</strong> („Verflochtenheit“): ein System besteht aus vielen Einzelteilen <em>und</em> hat emergente Eigenschaften.</li>
+  <li><strong>Emergente Eigenschaften:</strong> Phänomene, die man nicht versteht, indem man die Einzelteile betrachtet, sondern die erst aus deren Zusammenwirken entstehen. Beispiel in VL03: Tacoma Narrows Bridge (1940) — jedes Einzelteil korrekt dimensioniert, das Zusammenwirken erzeugte unerwartete Schwingungen.</li>
+  <li>„Komplex“ heißt praktisch: schwierig aufgrund vielfältiger Zusammenhänge.</li>
+  <li>Komplexitätsprobleme stammen meist aus der Komplexität des Produkts und liegen im <strong>Problemraum</strong> (Anforderungen), im <strong>Lösungsraum</strong> (Entwurf) — meistens in beiden.</li>
+  <li><strong>Prozesskomplexität</strong> ist vor allem eine Folge der Produktkomplexität.</li>
+</ul> <span class="src">[VL03; Üb Z.214–218]</span><details class="sub"><summary>Anforderungsprobleme (Problemraum) <span class="gloss">— Was wollen wir bauen?</span></summary>
+<p><strong>Problem:</strong> herausfinden, was genau gebaut werden soll. <span class="src">[VL03; Üb Z.219–220]</span></p><p><strong>Teilprobleme:</strong></p><ol><li>Problemdomänen sind komplex.</li><li>Fachexperten können den Bedarf nicht gut genug ausdrücken (bei sehr innovativen Anwendungen gibt es gar keine Fachexperten).</li><li>Fachexperten haben zu wenig Fantasie, sich SW-Möglichkeiten auszumalen.</li><li>Verschiedene Gruppen von Fachexperten sind nötig und bringen widersprüchliche Anforderungen ein, z. B. wegen Interessenkonflikten.</li><li>Fachexperten und Technikexperten benutzen verschiedene, manchmal inkompatible Terminologie und sehr verschiedene Darstellungsformen — sie verstehen einander nur sehr schwer.</li><li>Anforderungen ändern sich im Laufe der Zeit, oft schon lange vor Abschluss des Entwicklungsprojekts.</li></ol>
+</details><details class="sub"><summary>Entwurfsprobleme (Lösungsraum) <span class="gloss">— Wie sollen wir es strukturieren?</span></summary>
+<p><strong>Problem:</strong> herausfinden, wie die SW strukturiert werden sollte, um die Anforderungen gut zu erfüllen. Es gibt viele Möglichkeiten mit verschiedenen Stärken und Schwächen; man muss darunter die günstigen entdecken und erkennen. <span class="src">[VL03; Üb Z.221–222]</span></p><p><strong>Teilprobleme:</strong></p><ol><li>Lösungsmöglichkeiten (er)kennen.</li><li>Inakzeptable herausfiltern.</li><li>Wirkung der Möglichkeiten auf die Qualitätseigenschaften verstehen.</li><li>Prioritäten der Qualitätseigenschaften verstehen.</li><li>Prioritäten gegeneinander abwägen („Äpfel und Birnen“) — meist nur per Umrechnung in Kosten, die aber sehr oft dubios und sehr künstlich ist.</li></ol>
+</details>
+</details><details class="sub"><summary>Prozessprobleme (psycho-soziale Probleme) <span class="gloss">— Menschen sind schwach und müssen zusammenarbeiten</span></summary>
+<ul class="plain">
+  <li>Entstehen aus zwei Quellen: Menschen haben Schwächen und verhalten sich „merkwürdig“, <em>und</em> zur SW-Konstruktion müssen Menschen zusammenarbeiten.</li>
+  <li>Die Probleme entstehen aus dem Prozess heraus und hängen nur wenig direkt vom Produkt ab.</li>
+</ul> <span class="src">[VL03; Üb Z.223–224]</span><details class="sub"><summary>Kognitive Beschränkungen</summary>
+<ul class="plain">
+  <li>Die Denkfähigkeiten eines Menschen sind begrenzt.</li>
+  <li>Wichtigste Einschränkung: <strong>limitiertes Arbeitsgedächtnis</strong> (Kurzzeitgedächtnis plus Aufmerksamkeitslenkung): es kann nur ca. 7±2 Elemente (<em>chunks</em>, Bündel) aufnehmen. <span class="src">(Die Textextraktion der Folie zeigt „72“, gemeint ist wohl 7±2 hochgestellt — so steht es auch in Summary 03.)</span></li>
+</ul> <span class="src">[VL03; Üb Z.225–226]</span>
+</details><details class="sub"><summary>Mängel der Urteilskraft</summary>
+<ul class="plain">
+  <li><strong>Problem:</strong> oft kann keiner der Beteiligten eine Situation gut genug beurteilen, um eine fällige Entscheidung richtig zu treffen.</li>
+  <li>Tritt vor allem in zwei Situationen auf:</li>
+  <li>&nbsp;&nbsp;(1) <strong>Radikales Vorgehen</strong> (technischer Bereich oder Prozess): emergente Eigenschaften lassen sich schwer abschätzen.</li>
+  <li>&nbsp;&nbsp;(2) <strong>Rückgängigmachen falscher Entscheidungen</strong> (Prozessbereich): psychologische Hürden, Verzerrungen der Wahrnehmung.</li>
+</ul> <span class="src">[VL03; Üb Z.227–228]</span>
+</details><details class="sub"><summary>Kommunikation, Koordination</summary>
+<ul class="plain">
+  <li><strong>Problem:</strong> schwierig, vorhandene Information stets korrekt und rechtzeitig an die Person weiterzugeben, die sie braucht.</li>
+  <li>Betrifft <em>inhaltliche</em> Information (Anforderungen, Entwurfsentscheidungen etc.) und <em>organisatorische</em> Information (Abstimmung, Koordination).</li>
+  <li>Hauptquellen: kognitive Beschränkungen oder Mängel der Urteilskraft; soziale Phänomene wie individuelle Abneigungen — gegen Kommunikation allgemein (Introversion), gegen bestimmte Personen (Aversion), gegen die Kommunikation bestimmter Informationen (Überbringen schlechter Nachrichten).</li>
+</ul> <span class="src">[VL03; Üb Z.229–230]</span>
+</details><details class="sub"><summary>Gruppendynamik</summary>
+<ul class="plain">
+  <li><strong>Problem:</strong> Arbeiten in einer Gruppe beeinflusst Haltungen und Entscheidungen oft in unvernünftiger Art und Weise.</li>
+  <li><strong>Groupthink:</strong> gewisse (notwendige) kritische Fragen werden nicht mehr gestellt, z. B. bei der Ansicht „Die automatisierten Tests müssen 100 % des Codes abdecken“.</li>
+  <li><strong>Selbsterfüllende Prophezeiungen</strong> sind in Gruppen besonders wirksam, z. B. „Wir überziehen unseren Liefertermin immer.“</li>
+</ul> <span class="src">[VL03; Üb Z.231–232]</span>
+</details><details class="sub"><summary>Verborgene Ziele (hidden agendas)</summary>
+<ul class="plain">
+  <li><strong>Problem:</strong> Menschen handeln nicht immer nur im Interesse des Projekts, sondern haben auch persönliche (meist unausgesprochene) Ziele, die zum Teil den Projektinteressen zuwiderlaufen.</li>
+  <li>Beispiele: selbst viel lernen · Spaß bei der Arbeit haben · möglichst elegante Lösungen finden, auf die man stolz ist · Achtung bei Kollegen / Vorgesetzten finden · Gehaltserhöhung bekommen · früh nach Hause gehen / faul sein · spät nach Hause gehen / Privatleben verdrängen · bestimmte Kollegen schlecht aussehen lassen · bestimmten Kollegen aus dem Weg gehen · u. a. m.</li>
+</ul> <span class="src">[VL03; Üb Z.233–234]</span>
+</details><details class="sub"><summary>Fehler</summary>
+<ul class="plain">
+  <li><strong>Problem:</strong> Will ein Mensch X tun, so tut er oft Y — ohne es zu wollen oder zu merken und ohne dass Y ein brauchbarer Ersatz für X wäre. Die Wahl von Y nennt man dann einen Fehler.</li>
+  <li>Kette: <strong>Fehler → Defekte in Artefakten → Versagen der SW.</strong></li>
+  <li>Fehler sind nur Erscheinungsformen der oben genannten Probleme, aber häufig und wichtig genug für eine eigene Erwähnung.</li>
+</ul> <span class="src">[VL03; Üb Z.235–236]</span>
+</details>
+</details>
+</details>
+
+<details class="top" open><summary>Welt der Lösungsansätze</summary>
+<ul class="plain">
+  <li>Leitfrage: Was haben SW-Ingenieure und Softwaretechnik-Forscher an Ideen entwickelt, um den Problemen zu begegnen? Hier nur grundlegende Ideen; die Detaillierung ist Gegenstand des restlichen Semesters.</li>
+  <li>Alle Lösungsansätze sind wesentlich genauer ausgearbeitet, als in der Vorlesung besprochen werden kann; es gibt viel mehr wiederverwendbares Wissen (Muster, Vorgehensbeschreibungen, Checklisten, Werkzeuge u. a.) — und fast alle Ansätze müssen je nach Entwicklungssituation unterschiedlich angewendet werden.</li>
+</ul> <span class="src">[VL03; Üb Z.237]</span><details class="sub"><summary>Technische Ansätze („hart“) <span class="gloss">— konkret, in Werkzeuge überführbar</span></summary>
+<ul class="plain">
+  <li>Ansätze, die sich weit genug konkretisieren lassen, um in Notationen oder Werkzeuge überführt zu werden.</li>
+  <li>Durch diese Konkretheit („hartes“ Wissen) einfacher zu verstehen und anzuwenden als methodische Ansätze; Methoden bieten aber ggf. mehr Anleitung für ihre Anwendung.</li>
+  <li>Die Folien benennen nur <em>Kategorien</em> von Ansätzen (die Kategorien sind nicht sehr konkret, die einzelnen Ansätze darin schon): eigentlich „Abstraktionen, Wiederverwendungen, Automatisierungen“. Folienvermerk: „wir wissen genau, was wir damit meinen (leider nur sehr allgemein)“.</li>
+</ul> <span class="src">[VL03; Üb Z.238–239]</span><details class="sub"><summary>Abstraktion</summary>
+<ul class="plain">
+  <li><strong>Konzentration auf wesentliche Eigenschaften durch Weglassen von Details.</strong> Andere Sicht: Gruppierung gleichartiger Dinge gemäß einer Gemeinsamkeit und Ignorieren der sonstigen Unterschiede.</li>
+  <li>Vorgehen: ein Konzept (Begriff) bilden und es durch eine Bezeichnung benennen.</li>
+  <li>Kernprinzip der gesamten Informatik, verwendbar für Produkte/Produktteile, Vorgehensweisen, konkrete Vorgänge etc.</li>
+  <li>Arten von Begriffen: <em>allgemeine</em> Begriffe (z. B. Konstrukte einer Programmiersprache) und <em>vorhabensspezifische</em> Begriffe (z. B. einzelne Module eines Systems) — der Baustein wird auf seine Schnittstelle reduziert, der Modulname ist die Bezeichnung der Abstraktion.</li>
+</ul> <span class="src">[VL03; Üb Z.240–241]</span>
+</details><details class="sub"><summary>Wiederverwendung</summary>
+<ul class="plain">
+  <li><strong>Spezialfall von Abstraktion:</strong> nicht nur den Begriff mehrfach benutzen, sondern auch die damit verbundenen Details.</li>
+  <li>Gegenstände: Arbeitsprodukte (Anforderungen, Anforderungsmuster, Architekturen, Teilentwürfe/Entwurfsmuster, Testfälle) und Prozesshilfsmittel (Dokumentschablonen, Vorgehensbeschreibungen, Checklisten, Prozessmuster, Softwarewerkzeuge) — nicht nur Programmcode.</li>
+  <li><strong>Hauptquelle von Produktivitätsverbesserungen in der Softwaretechnik.</strong></li>
+</ul> <span class="src">[VL03; Üb Z.242]</span><details class="sub"><summary>Die Vorlesung „Wiederverwendung“ (VL23/VL24)</summary>
+<ul class="plain">
+  <li><strong>Einsicht:</strong> Etwas Bekanntes wiederzuverwenden kann Qualität und Produktivität stark erhöhen und Risiko senken.</li>
+  <li><strong>Prinzipien:</strong> <em>Normales Vorgehen</em> (radikales Vorgehen vermeiden) · <em>Universalität</em> (fast alles lässt sich im Prinzip wiederverwenden: Anforderungen, Anforderungsmuster, Architekturen, Teilentwürfe, Entwurfsmuster, Testfälle, Dokumentschablonen, Vorgehensbeschreibungen, Checklisten, Prozessmuster) · <em>Abwägung</em> (Gewinn an Produktivität und Qualität gegen Verlust an Flexibilität und Kontrolle).</li>
+  <li><strong>Arten (VL23):</strong> Fokus — produktorientiert (Anforderungen, Architekturen, Teilentwürfe, konkrete Komponenten, Testfälle) gegen prozessorientiert (Beschreibungen von Aktivitäten und Rollen, Methoden, Werkzeuge/Automatisierung, sonstige Infrastruktur wie Dokumentvorlagen, Maße, Erfahrungen). Gegenstand — Problem (funktionale und nichtfunktionale Anforderungen, Analysemuster, Dokumentschablone) gegen Lösung (Dienst, Binärcode, Quellcode, Rahmenwerk, Entwurfs-/Benutzbarkeits-/Prozessmuster). Ziel — Aufwandsverminderung jetzt (nicht neu erfinden müssen) und später (nur 0 oder 1 Lösung statt N pflegen).</li>
+  <li>Agenda VL23: Arten der Wiederverwendung (Fokus, Ziel/Vorteil), Gegenstände (Anforderungen/Muster, Schablonen, Checklisten, Entwurfsideen/Muster, Komponenten), Risiken und Hindernisse, Beispiele für Muster (Prinzipien, Analysemuster).</li>
+  <li>Agenda VL24 (Teil 2): Beispiele für Muster — Benutzbarkeitsmuster, Prozessmuster, Anti-Muster — und Mustersprachen.</li>
+</ul> <span class="src">[VL23, VL24]</span>
+</details>
+</details><details class="sub"><summary>Automatisierung</summary>
+<ul class="plain">
+  <li>Eine wiederholt zu erledigende Tätigkeit dem Computer übertragen: spart Zeit (und damit Kosten) und vermeidet triviale Durchführungsfehler.</li>
+  <li>Kann als Spezialfall von Wiederverwendung betrachtet werden.</li>
+  <li>Ein flexibel für viele Situationen einsetzbares Automatisierungsprogramm heißt <strong>Softwarewerkzeug</strong>; spezialisierte, weniger flexible heißen meist <strong>Skript</strong>.</li>
+</ul> <span class="src">[VL03; Üb Z.243–244]</span>
+</details>
+</details><details class="sub"><summary>Methodische Ansätze („weich“) <span class="gloss">— vage, brauchen Urteilskraft</span></summary>
+<ul class="plain">
+  <li>Nur schwach vorstrukturiert, deshalb als „weich“ empfunden (kein „hartes“ Wissen); benötigen menschliche Intelligenz zur Durchführung.</li>
+  <li>Verfahren im Sinne von Kochrezepten sind in der Softwaretechnik illusorisch — Methoden sind fast immer vage. Hilfreiche Methodenelemente oder Praktiken gibt es aber sehr wohl.</li>
+  <li>Abgrenzung zu technischen Ansätzen: Kein Teil des Problems lässt sich abspalten und universell lösen (was sich doch abspalten und universell lösen lässt, zählt man nicht mehr zu den methodischen Problemen). Die Übergänge sind fließend.</li>
+  <li>Folienvermerk: „wir wissen oft nur vage, was wir damit meinen“. Die vier Kategorien werden im restlichen Semester vertieft.</li>
+</ul> <span class="src">[VL03; Üb Z.245–246]</span><details class="sub"><summary>Anforderungsermittlung <span class="gloss">— Was bauen?</span></summary>
+<ul class="plain">
+  <li><strong>Einsicht:</strong> Man darf sich nicht auf den intuitiven Eindruck verlassen, was gebaut werden sollte, sondern muss die Anforderungen systematisch ermitteln.</li>
+</ul><p class="vlh">Prinzipien:</p><ul class="plain"><li><strong>Erhebung</strong> der Anforderungen bei allen Gruppen von Beteiligten</li><li><strong>Beschreibung</strong> in einer Form, die die Beteiligten verstehen</li><li><strong>Validierung</strong> anhand der verschriftlichten Form</li><li><strong>Spezifikation:</strong> Übertragung in eine zur Weiterverarbeitung günstige Form (VL07: Analysemodell)</li><li><strong>Trennung von Belangen:</strong> Anforderungen kopplungsarm ausdrücken</li><li><strong>Analyse auf Vollständigkeit:</strong> Lücken aufdecken und schließen</li><li><strong>Analyse auf Konsistenz:</strong> Widersprüche aufdecken und lösen</li><li><strong>Mediation:</strong> Widersprüche aus Interessengegensätzen einer Lösung zuführen (Kompromiss oder Win-Win)</li><li><strong>Verwaltung:</strong> übermäßige Anforderungsänderungen eindämmen, Anforderungsdokument aktuell halten</li></ul> <span class="src">[VL03 + „Wo sind wir?“ in VL06; Üb Z.247–248]</span><p class="vlh">Dazugehörige Vorlesungen:</p><ul class="plain">
+  <li><strong>VL05 Anforderungserhebung:</strong> Requirements und Requirements Engineering (Typen/Arten von Requirements), konventionell vs. agil, Spezifikation und Validierung, Requirements Elicitation (Aufgaben, Schwierigkeiten), Erhebungstechniken (Methoden, Darstellungen)</li>
+  <li><strong>VL06 Anwendungsfälle:</strong> Was ist ein Use Case, Parameter (Bereich/SuD, Detailgrad), konventionell vs. agil, schrittweise Präzisierung, Use-Case-Hierarchien (Überblick, Benutzerziele, Details), Warum-Wie-Verbindung, Gesamtvorgehen, Checkliste</li>
+  <li><strong>VL07 Objektmodellierung:</strong> statisches Analysemodell, Abbotts Technik (Nomen → Klassen, Verben → Operationen, Adjektive → Attribute, Eigennamen → Objekte, „is a“ → Vererbung), Checklisten, Analyse- vs. Entwurfsmodell (Rollen, Sichten, Modellunterschiede)</li>
+  <li><strong>VL08 Dynamische Modellierung &amp; Anforderungsdokument:</strong> Sequenzdiagramme, Zustandsdiagramme, dynamische Modellierung zur Validierung und für Benutzeroberflächen, Vorlage des Anforderungsdokuments, konventionell vs. agil, Analysemodell</li>
+</ul> <span class="src">[Agenden der Folien]</span>
+</details><details class="sub"><summary>Entwurf <span class="gloss">— Wie bauen?</span></summary>
+<ul class="plain">
+  <li><strong>Einsicht:</strong> Man sollte vor dem Kodieren über eine günstige Struktur der Software nachdenken und diese als Koordinationsgrundlage schriftlich festhalten (bessere Qualität, arbeitsteilige Realisierung).</li>
+</ul><p class="vlh">Prinzipien:</p><ul class="plain"><li><strong>Trennung von Belangen</strong> (separation of concerns): Belange (insbes. Funktionen) so trennen, dass man sie einzeln verstehen, realisieren und verändern kann</li><li><strong>Architektur:</strong> globale Struktur festlegen (Grobentwurf), insbesondere für nichtfunktionale Anforderungen</li><li><strong>Modularisierung:</strong> Trennung von Belangen durch Module, Kombination der Teile über Schnittstellen (information hiding, Lokalität) — der Belang wird lokal und leichter änderbar</li><li><strong>Wiederverwendung:</strong> Architekturen und Entwurfsmuster nicht immer wieder neu erfinden</li><li><strong>Dokumentation:</strong> Schnittstellen sowie die zugrunde liegenden Entwurfsentscheidungen und deren Begründungen festhalten (jeweils: Zweck, Alternativen, Argumentation)</li></ul> <span class="src">[VL03, VL09; Üb Z.31–40, 249–250]</span><details class="sub"><summary>Wo stehen wir beim Entwurf? (VL09)</summary>
+<ul class="plain">
+  <li><strong>Nach der Anforderungsermittlung</strong> kennt man (mehr oder weniger), was man bauen will: die funktionalen Anforderungen (z. B. durch Use Cases, konkretisiert durch das Analysemodell) und die nichtfunktionalen (Effizienz, Bedienarten, Bedienbarkeit, Robustheit, Sicherheit, Schutz, Erweiterbarkeit, Technologievorgaben, Zuverlässigkeit, Verfügbarkeit, Erlernbarkeit u. a. m.).</li>
+  <li><strong>Als Nächstes:</strong> herausfinden, wie man es bauen kann/sollte. (1) Entscheiden, wie/wo/wodurch die funktionalen Anforderungen umgesetzt werden (Technologieauswahl, Modulzerlegung, Wiederverwendung) — <em>Frage 1: Wie zerlegt man ein System klug in Teile?</em> (2) Herausfinden, wie man dabei die nichtfunktionalen Anforderungen alle erfüllen kann; sie haben meist globalen Charakter — <em>Frage 2: Wie findet man eine Gesamtstruktur mit den gewünschten globalen Eigenschaften?</em></li>
+  <li><strong>Systemzerlegung:</strong> Ist eine Architektur gewählt, wird das System hierarchisch in Teile zerlegt — <em>Module</em> (neuerdings auch Komponenten; auf oberen Ebenen oft Subsysteme). Ziel: möglichst geringe Kopplung. Mittel: Module nach Zuständigkeiten und Entwurfsentscheidungen bilden (Zusammengehöriges zusammenfassen).</li>
+</ul> <span class="src">[VL09; Üb Z.41]</span>
+</details><p class="vlh">Dazugehörige Vorlesungen:</p><ul class="plain">
+  <li><strong>VL09 Architektur:</strong> Architektur = Gesamtstruktur (nichtfunktionale/funktionale Anforderungen, globale Eigenschaften), wiederverwendbare Architekturideen (Architekturstile, Standard-Architekturen), Modularisierung (Modulbegriff: Schnittstelle, Vertrag, Geheimnis; Kriterien für die Aufteilung)</li>
+  <li><strong>VL10 Modularisierung:</strong> Modulbegriff, Kriterien für die Aufteilung, Fallstudie KWIC (KWIC 1: Datenflusskette, KWIC 2: zentrale Steuerung, KWIC 3: Datenabstraktion), Einschätzen der Entwurfsqualität, Verhalten bei Änderungen, Verwandtschaft mit Architekturstilen, Analyse vs. Entwurf, konventionell vs. agil</li>
+  <li><strong>VL11 Entwurfsmuster:</strong> „difficult“ vs. „simple“, Muster als Vereinfachung und Wiederverwendung; Composite, Adapter, Bridge, Facade</li>
+  <li><strong>VL12 Entwurfsmuster II:</strong> Mustertypen (Kategorien), Proxy, Command, Observer, Strategy, Abstract Factory, Builder</li>
+  <li><strong>VL13 Schnittstellenspezifikation:</strong> Sichtbarkeit, Typinformation, Verträge mit OCL (Vorbedingung, Nachbedingung, Invariante; includes, asSet, forAll, exists), Abbildung von Assoziationen auf Code</li>
+  <li><strong>VL25 Dokumentation</strong> (Prinzip „Dokumentation“ des Entwurfs — die Folie führt sie unter eigener Überschrift): Arten und Qualitätseigenschaften von Dokumentation (übersichtlich, präzise, korrekt, hilfreich), Prinzipien Selbst- und Minimaldokumentation, Rationale Management (Issues, Proposals, Criteria, Arguments, Resolutions)</li>
+</ul> <span class="src">[Agenden der Folien]</span><details class="sub"><summary>Dokumentation — Prinzipien (VL25)</summary>
+<ul class="plain">
+  <li><strong>Einsicht:</strong> Der Nutzen von SW entfaltet sich nur, wenn viel Information schriftlich weitergegeben wird, schon innerhalb eines Projekts, erst recht darüber hinaus.</li>
+  <li><strong>Mehrwert:</strong> vor allem die Information, die ohne sie nicht offensichtlich ist.</li>
+  <li><strong>Nützlichkeit:</strong> hauptsächlich Information, die für Leser tatsächlich hilfreich ist.</li>
+  <li><strong>Nachvollziehbarkeit:</strong> interne Dokumentation soll die Überlegungen der Erbauer nachvollziehbar machen.</li>
+  <li><strong>Lokalität:</strong> möglichst eng mit dem Dokumentierten verbunden (JavaDoc u. ä.).</li>
+  <li><strong>Integration:</strong> zeitnah zur Entstehung des Dokumentierten anfertigen.</li>
+  <li><strong>Redundanzarmut:</strong> eine Information möglichst nicht an mehreren Stellen dokumentieren.</li>
+</ul> <span class="src">[VL25]</span>
+</details>
+</details><details class="sub"><summary>Qualitätssicherung <span class="gloss">— Fehlern vorbeugen und sie finden</span></summary>
+<ul class="plain">
+  <li><strong>Einsicht:</strong> Man macht beim Bau von SW zahlreiche Fehler, die häufig zu schwerwiegenden Mängeln führen — solchen Mängeln sollte man vorbeugen.</li>
+  <li>Qualitätssicherung = Gesamtheit aller Maßnahmen, die darauf zielen, ein Produkt in guter Qualität fertigzustellen. <span class="src">[Üb Z.128–129, 251–252]</span></li>
+</ul><details class="sub"><summary>Konstruktive QS</summary>
+<ul class="plain">
+  <li>Vorbeugende Maßnahmen, die vermeiden helfen, dass überhaupt etwas falsch gemacht wird; oft auch Qualitätsmanagement (evtl. inkl. prüfende Maßnahmen) oder <em>Prozessmanagement</em> genannt.</li>
+  <li>Laut Übersicht: Test- und Durchsicht-Management · Prozessmanagement · Projekt- und Risikomanagement. <span class="src">[Üb Z.140–142]</span></li>
+  <li>Arten von Prozessmanagement-Leitlinien: <em>Prozessstandards</em> (wie Prozesse strukturiert und durchgeführt werden sollen), <em>Qualitätsstandards</em> (wie Prozessergebnisse beschaffen sein sollen), <em>Prozessreifemodelle</em> (welche Aspekte für einen erfolgreichen Prozess optimiert werden müssen, nicht wie der Prozess aussieht). <span class="src">[Üb Z.314–322]</span></li>
+</ul><p class="vlh">Dazugehörige Vorlesungen:</p><ul class="plain">
+  <li><strong>VL16 Konstruktive QS</strong> (Qualitätsmgmt., Prozessmgmt.): Projekt- vs. Prozessmgmt., konventionell vs. agil, Arten von Prozessmgmt.-Leitlinien, CMM-SW, CMMI, ISO 9000, TQM, agile Retrospektiven</li>
+</ul> <span class="src">[Agenda VL16]</span>
+</details><details class="sub"><summary>Analytische QS</summary>
+<ul class="plain">
+  <li>Zusätzlich zur Vorbeugung <em>prüfende</em> Maßnahmen, die entstandene Mängel aufdecken, damit man sie beheben kann. Wichtigste Vertreter: Test, Durchsichten.</li>
+  <li><strong>Dynamisch:</strong> Softwaretest (Code läuft). Laut Übersicht: Defekttest, Benutzbarkeitstest, Lasttest, Akzeptanztest (Z.130–135); dazu Leistungs- und Stresstest (Z.201–206).</li>
+  <li><strong>Statisch:</strong> manuell (Durchsichten, Review, Peer Review, Inspektion) und automatisch (Modellprüfung, Quelltextanalyse); kein ausführbarer Code nötig, Mängel früher, fördert Kommunikation und Bildung (Üb Z.296–302).</li>
+  <li>Testfallauswahl: Funktionstest (Black Box) und Strukturtest (White Box) (Üb Z.144–165).</li>
+</ul> <span class="src">[VL14; Üb]</span><p class="vlh">Dazugehörige Vorlesungen:</p><ul class="plain">
+  <li><strong>VL14 Analytische QS 1:</strong> QS: was, wann, warum; analytische QS (statisch, dynamisch); Testen (Ziele); Testfallauswahl (Funktionstest/Black Box, Strukturtest/White Box); Testreihenfolge; Ermitteln des erwarteten Verhaltens; Wiederholung von Tests, insbes. Testautomatisierung</li>
+  <li><strong>VL15 Analytische QS 2:</strong> Testautomatisierung (Testframeworks, Test-Modularisierung, Aufnahme-/Wiedergabe-Werkzeuge); Sonstiges über Testen (Heuristiken zur Defektortung, Leistungs-, Benutzbarkeits-, Abnahmetests); manuelle statische Prüfung (Durchsichten und Inspektionen, perspektivenbasiertes Lesen, empirische Ergebnisse); automatische statische Prüfung (Modellprüfung, Quelltextanalyse)</li>
+</ul> <span class="src">[Agenden der Folien]</span>
+</details>
+</details><details class="sub"><summary>Projektmanagement <span class="gloss">— Planen, leiten, Risiken beherrschen</span></summary>
+<ul class="plain">
+  <li><strong>Einsicht:</strong> Ein Projekt läuft nicht von allein gut ab, sondern benötigt Planung, Leitung und Risikomanagement (Üb Z.254: „Bau einer größeren SW verlangt nach Planung, Leitung, Koordination“).</li>
+</ul><p class="vlh">Prinzipien (VL19–VL22):</p><ul class="plain"><li><strong>Zielsetzung:</strong> Ziele und Prioritäten bekannt und akzeptiert machen</li><li><strong>Stabile Anforderungen:</strong> übermäßige Anforderungsänderungen verhindern</li><li><strong>Iteration:</strong> in kurzen Abständen wohldefinierte Ergebnisse (Meilensteine) erzeugen</li><li><strong>Planung und Koordination:</strong> klare Aufgaben und Zeitvorgaben vergeben, überwachen, bei Abweichungen früh eingreifen</li><li><strong>Kommunikation:</strong> allen die benötigte Information rechtzeitig bekannt machen</li><li><strong>Konflikt:</strong> Konflikte rechtzeitig erkennen und sinnvoll auflösen</li><li><strong>Risikomanagement:</strong> regelmäßig vorbeugend wichtige Gefahren entdecken, Eintreten vermeiden, Reparaturmaßnahmen vorbereiten</li><li><strong>Normales Vorgehen:</strong> radikales Vorgehen möglichst vermeiden</li></ul> <span class="src">[VL03, VL19; Üb Z.253–254]</span><p class="vlh">Dazugehörige Vorlesungen:</p><ul class="plain">
+  <li><strong>VL19 Projektmanagement:</strong> was und wofür; Aufgabenfelder (integrierende Aufgaben, Umfangs-, Zeit-, Kosten-, Qualitäts-, Personalmanagement, Kommunikations-, Risiko-, Beschaffungsmanagement); Schätzen (Schätzverfahren, Funktionspunktschätzung, Todesmarschprojekte)</li>
+  <li><strong>VL20 Projektmanagement 2:</strong> Zeit- und Ressourcenplanung (MS-Project, Critical Path Method); Risikomanagement (Prinzipien, Risikolisten, DOs and DON’Ts)</li>
+  <li><strong>VL21 Projektmanagement 3:</strong> Teams (Kollaboration, Rollen, Selbstorganisation, Kommunikation, Entscheidungen); psychologische Faktoren (Schätzen von Wahrscheinlichkeiten, Motivation, Attribution, Haltungen, selbsterfüllende Prophezeiungen, soziale Einflüsse)</li>
+  <li><strong>VL22 Projektmanagement 4:</strong> Projektplan, Projektleitung, nichtlineare Dynamik (Brooks Gesetz, Selbstverstärkung von Qualitätsmängeln, Teufelskreis von Qualität und Zeitdruck); Kommunikation (geplant/ungeplant, synchron/asynchron, Medien, Besprechungen); Unterschiede zwischen planendem und agilem PM</li>
+  <li><strong>VL18 Persönlichkeitstypen</strong> (Einsicht dort: verschiedene Menschen haben unterschiedliche Stärken und Vorlieben, daraus entstehen Konflikte → Prinzip <em>Konflikt</em>): MBTI-Dimensionen (E/I, S/N, T/F, J/P), Keirsey-Temperamente, Typen und SW-Engineering, eigenen Typ herausfinden</li>
+</ul> <span class="src">[Agenden der Folien]</span><details class="sub"><summary>Prozessmodelle (VL17) — Zuordnung abgeleitet</summary>
+<ul class="plain">
+  <li>Die Folie VL17 führt unter eigener Überschrift „Prozessmodelle“; in der Taxonomie von VL03 steht kein Eintrag dieses Namens. Ihre Prinzipien überlappen mit Projektmanagement („Planung und Koordination“, „Iteration“), deshalb hier einsortiert — <em>die Zuordnung ist nicht von den Folien belegt</em>.</li>
+  <li><strong>Einsicht:</strong> Man sollte die Gesamt-Vorgehensweise nicht in jedem Projekt neu erfinden, sondern sich auf vorhandene Erfahrungen abstützen.</li>
+  <li><strong>Planung und Koordination:</strong> senkt das Risiko, wenn die Beteiligten im Voraus erkennen können, was wann getan werden muss.</li>
+  <li><strong>Korrekturen:</strong> den Prozess so gestalten, dass die unvermeidlich auftretenden Fehler gut ausgeglichen werden können.</li>
+  <li><strong>Iteration:</strong> senkt das Risiko, wenn das Projekt in kurzen Abständen evaluierbare Versionen der Software hervorbringt.</li>
+  <li>Agenda VL17: Elemente von Prozessmodellen (Rollen, Artefakte, Aktivitäten), Wasserfallmodell, Reparatur 1: Iteration (Prototypmodell, evolutionäre Modelle), Prozessmodell-Auswahlkriterien, anpassbare Prozessmodelle (Rational Unified Process, V-Modell XT), „Was bedeutet agile Methode?“, Beispiel.</li>
+</ul> <span class="src">[VL17]</span>
+</details>
+</details>
+</details>
+</details>
+
+<details class="top"><summary>Nicht eindeutig im Baum verankert</summary>
+<ul class="plain">
+  <li><strong>VL01 Einführung</strong> und <strong>VL26 Schluss</strong> stellen die „6 Aufgaben der SWT“ auf: <em>OB</em> (Kosten/Nutzen-Analyse) · <em>WAS</em> (Anforderungen: funktional, nichtfunktional) · <em>WIE</em> (Entwurf: Architektur, Modulzerlegung) · <em>Bauen</em> (Implementierung) · <em>Validieren</em> (analytische QS) · <em>Verwalten</em> (Management). „Alle 6 Aufgaben sind eng miteinander verwoben.“ — passt zu Anforderungsermittlung, Entwurf, Qualitätssicherung und Projektmanagement im Baum; „OB“ und „Bauen“ haben keinen eigenen Ast. <span class="src">[VL01, VL26; Üb Z.1–6]</span></li>
+  <li><strong>VL04 UML</strong> (Buchkapitel 2): Modellieren, statische Sicht (Klassendiagramme), dynamische Sicht (Sequenz-, Zustands-, Aktivitätsdiagramme), weitere Diagrammtypen (Komponenten-, Kollaborations-, Use-Case-, Verteilungs-, Kommunikations-, Interaktionsübersichtsdiagramm), UML-Metamodell, Profile, Notationsdetails. Hat keine eigene „Wo sind wir?“-Folie; die Modelle werden in Anforderungsermittlung (Analysemodell) und Entwurf (Entwurfsmodell) verwendet.</li>
+  <li><strong>VL02 eGK</strong>: Fallstudie (elektronische Gesundheitskarte), kein Taxonomie-Eintrag.</li>
+</ul>
+</details>
+
+<script>
+document.getElementById('expand-all').onclick=function(){document.querySelectorAll('details').forEach(function(d){d.open=true;});};
+document.getElementById('collapse-all').onclick=function(){document.querySelectorAll('details').forEach(function(d){d.open=false;});};
+</script>
+</body>
+</html>
