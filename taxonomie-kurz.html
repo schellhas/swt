@@ -2,52 +2,94 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<title>Taxonomie kurz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taxonomie – Die Welt der Softwaretechnik</title>
 <style>
-  :root { --bg:#fff; --fg:#1a1a1a; --muted:#888; --red:#d32f2f; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#181818; --fg:#e8e8e8; --muted:#999; --red:#ff5252; } }
-  body { background:var(--bg); color:var(--fg); font-family:ui-monospace,Menlo,Consolas,monospace; margin:1.5rem; line-height:1.45; }
-  pre { font:inherit; margin:0; overflow-x:auto; }
-  @media (max-width: 800px) { body { font-size:10px; margin:.6rem; } }
-  .r { color:var(--red); font-weight:700; }
-  .m { color:var(--muted); }
+  :root { --bg:#f6f7f9; --card:#fff; --fg:#1b1f24; --muted:#7a828c; --line:#cfd5dc; --red:#d32f2f; --redbg:#fdecec; --tech:#2e7d32; --meth:#1565c0; --prob:#ad6800; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#15171a; --card:#1e2125; --fg:#e8eaed; --muted:#9aa1ab; --line:#3a3f46; --red:#ff6b6b; --redbg:#3a1f1f; --tech:#66bb6a; --meth:#64b5f6; --prob:#ffb74d; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:1.5rem 1rem 3rem; background:var(--bg); color:var(--fg);
+         font:16px/1.5 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; }
+  main { max-width:860px; margin:0 auto; background:var(--card); border-radius:14px; padding:1.4rem 1.6rem 1.8rem;
+         box-shadow:0 1px 3px rgba(0,0,0,.12); }
+  h1 { font-size:1.35rem; margin:0 0 .2rem; }
+  .sub { color:var(--muted); font-size:.88rem; margin:0 0 1.2rem; }
+  ul { list-style:none; margin:.25rem 0 .25rem .35rem; padding:0 0 0 1.1rem; border-left:2px solid var(--line); }
+  main > ul { margin-left:0; padding-left:0; border-left:0; }
+  li { margin:.3rem 0; position:relative; }
+  ul ul li::before { content:""; position:absolute; left:-1.1rem; top:.85em; width:.8rem; border-top:2px solid var(--line); }
+  .top { font-weight:700; font-size:1.08rem; }
+  .prob > .top { color:var(--prob); }
+  .tech > .top { color:var(--tech); }
+  .meth > .top { color:var(--meth); }
+  .grp { font-weight:600; }
+  .note { color:var(--muted); font-size:.86rem; }
+  .arrow { color:var(--muted); margin:0 .2rem; }
+  .r { display:inline-block; color:var(--red); background:var(--redbg); font-weight:700; border-radius:6px;
+       padding:0 .45rem; margin:.1rem .15rem .1rem 0; white-space:nowrap; }
+  .abg { color:var(--muted); font-size:.78rem; font-style:italic; margin-left:.15rem; }
+  footer { margin-top:1.4rem; padding-top:.9rem; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem; }
 </style>
 </head>
 <body>
-<pre>
-<b>DIE WELT DER SOFTWARETECHNIK</b>
-│
-├─ <b>WELT DER PROBLEMSTELLUNGEN</b>
-│  ├─ Produktprobleme (Komplexität)
-│  │   ├─ Anforderungsprobleme → Problemraum (WAS)          ← löst: <span class="r">① Anforderungen / Anwendungsfälle</span>
-│  │   │     <span class="m">(Domäne komplex, widersprüchliche Wünsche, Änderungen)</span>
-│  │   └─ Entwurfsprobleme → Lösungsraum (WIE)              ← lösen: <span class="r">② Entwurfsmuster</span>, <span class="r">③ UML/OCL</span>, <span class="r">⑥ Architekturstile</span>
-│  └─ Prozessprobleme (psycho-sozial)
-│      ├─ Kognitive Beschränkungen
-│      ├─ Mängel der Urteilskraft                            ← betrifft: <span class="r">⑤ Prozessmodelle / agil / konventionell</span>
-│      ├─ Kommunikation, Koordination                        ← betrifft: <span class="r">⑤ Prozessmodelle / agil / konventionell</span>
-│      ├─ Gruppendynamik
-│      ├─ Verborgene Ziele
-│      └─ Fehler (Fehler → Defekt → Versagen)                ← löst: <span class="r">④ QA / Tests</span>
-│
-└─ <b>WELT DER LÖSUNGSANSÄTZE</b>
-   ├─ <b>TECHNISCHE ANSÄTZE („hart“)</b>
-   │   ├─ Abstraktion
-   │   ├─ Wiederverwendung                                   ← <span class="r">② Entwurfsmuster</span> <span class="m">(abgeleitet)</span>, <span class="r">⑥ Architekturstile</span> <span class="m">(abgeleitet)</span>
-   │   └─ Automatisierung                                    ← <span class="r">④ Testautomatisierung</span> <span class="m">(abgeleitet)</span>
-   │
-   └─ <b>METHODISCHE ANSÄTZE („weich“)</b>
-       ├─ <b>ANFORDERUNGSERMITTLUNG</b>                            ← <span class="r">① Anforderungen / Anwendungsfälle</span>
-       │     <span class="m">VL05 Anforderungen, VL06 Use Cases,</span>               <span class="r">③ UML</span> (Klassen-, Sequenz-, Zustandsdiagramm)
-       │     <span class="m">VL07 Objektmodell, VL08 dynamisches Modell</span>
-       ├─ <b>ENTWURF</b>                                           ← <span class="r">② Entwurfsmuster</span> (VL11/12)
-       │     <span class="m">Architektur, Modularisierung,</span>                     <span class="r">③ OCL</span> (VL13, Object design)
-       │     <span class="m">Wiederverwendung, Dokumentation</span>                   <span class="r">⑥ Architekturstile</span> (VL09)
-       ├─ <b>QUALITÄTSSICHERUNG</b>                                ← <span class="r">④ QA / Tests</span>
-       │     ├─ analytisch: dynamisch (Tests), statisch (Durchsichten)
-       │     └─ konstruktiv: Test-/Durchsicht-, Prozess-, Projekt-/Risikomanagement
-       └─ <b>PROJEKTMANAGEMENT</b>                                 ← <span class="r">⑤ Softwareprozesse, Prozessmodelle, agil / konventionell</span> <span class="m">(teils abgeleitet)</span>
-</pre>
-<p class="m">rot = deine Begriffe · grau „abgeleitet“ = nicht ausdrücklich in den Folien belegt · UML hat keinen eigenen Ast (Notation für Anforderungsermittlung und Entwurf)</p>
+<main>
+  <h1>Die Welt der Softwaretechnik</h1>
+  <p class="sub">Taxonomie aus VL03 – die <span class="r">roten</span> Begriffe zeigen, wo deine Themen im Baum stehen.</p>
+
+  <ul>
+    <li class="prob"><span class="top">Welt der Problemstellungen</span>
+      <ul>
+        <li><span class="grp">Produktprobleme (Komplexität)</span>
+          <ul>
+            <li>Anforderungsprobleme <span class="note">→ Problemraum (WAS)</span> <span class="arrow">←</span> <span class="r">① Anforderungen / Anwendungsfälle</span></li>
+            <li>Entwurfsprobleme <span class="note">→ Lösungsraum (WIE)</span> <span class="arrow">←</span> <span class="r">② Entwurfsmuster</span> <span class="r">③ UML / OCL</span> <span class="r">⑥ Architekturstile</span></li>
+          </ul>
+        </li>
+        <li><span class="grp">Prozessprobleme (psycho-sozial)</span>
+          <ul>
+            <li>Kognitive Beschränkungen</li>
+            <li>Mängel der Urteilskraft <span class="arrow">←</span> <span class="r">⑤ Prozessmodelle / agil / konventionell</span></li>
+            <li>Kommunikation, Koordination <span class="arrow">←</span> <span class="r">⑤ Prozessmodelle / agil / konventionell</span></li>
+            <li>Gruppendynamik</li>
+            <li>Verborgene Ziele</li>
+            <li>Fehler <span class="note">(Fehler → Defekt → Versagen)</span> <span class="arrow">←</span> <span class="r">④ QA / Tests</span></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <li class="tech"><span class="top">Welt der Lösungsansätze – Technische Ansätze („hart“)</span>
+      <ul>
+        <li>Abstraktion</li>
+        <li>Wiederverwendung <span class="arrow">←</span> <span class="r">② Entwurfsmuster</span><span class="abg">(abgeleitet)</span> <span class="r">⑥ Architekturstile</span><span class="abg">(abgeleitet)</span></li>
+        <li>Automatisierung <span class="arrow">←</span> <span class="r">④ Testautomatisierung</span><span class="abg">(abgeleitet)</span></li>
+      </ul>
+    </li>
+
+    <li class="meth"><span class="top">Welt der Lösungsansätze – Methodische Ansätze („weich“)</span>
+      <ul>
+        <li><span class="grp">Anforderungsermittlung</span> <span class="arrow">←</span> <span class="r">① Anforderungen / Anwendungsfälle</span> <span class="r">③ UML</span>
+          <div class="note">VL05 Anforderungen · VL06 Use Cases · VL07 Objektmodell (Klassendiagramm) · VL08 dynamisches Modell (Sequenz-, Zustandsdiagramm)</div>
+        </li>
+        <li><span class="grp">Entwurf</span> <span class="arrow">←</span> <span class="r">② Entwurfsmuster</span> <span class="r">③ OCL</span> <span class="r">⑥ Architekturstile</span>
+          <div class="note">VL09 Architektur · VL10 Modularisierung · VL11/12 Entwurfsmuster · VL13 Schnittstellenspezifikation (OCL, Object Design)</div>
+        </li>
+        <li><span class="grp">Qualitätssicherung</span> <span class="arrow">←</span> <span class="r">④ QA / Tests</span>
+          <ul>
+            <li>analytisch: dynamisch (Tests), statisch (Durchsichten)</li>
+            <li>konstruktiv: Test-/Durchsicht-, Prozess-, Projekt-/Risikomanagement</li>
+          </ul>
+        </li>
+        <li><span class="grp">Projektmanagement</span> <span class="arrow">←</span> <span class="r">⑤ Softwareprozesse / Prozessmodelle / agil / konventionell</span><span class="abg">(teils abgeleitet)</span></li>
+      </ul>
+    </li>
+  </ul>
+
+  <footer>
+    „(abgeleitet)“ = nicht ausdrücklich in den Folien belegt. UML hat keinen eigenen Ast – es ist die Notation für Anforderungsermittlung <em>und</em> Entwurf.
+  </footer>
+</main>
 </body>
 </html>
