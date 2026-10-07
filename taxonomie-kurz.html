@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Taxonomie kurz</title>
+<style>
+  :root { --bg:#fff; --fg:#1a1a1a; --muted:#888; --red:#d32f2f; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#181818; --fg:#e8e8e8; --muted:#999; --red:#ff5252; } }
+  body { background:var(--bg); color:var(--fg); font-family:ui-monospace,Menlo,Consolas,monospace; margin:1.5rem; line-height:1.45; }
+  pre { font:inherit; margin:0; overflow-x:auto; }
+  @media (max-width: 800px) { body { font-size:10px; margin:.6rem; } }
+  .r { color:var(--red); font-weight:700; }
+  .m { color:var(--muted); }
+</style>
+</head>
+<body>
+<pre>
+<b>DIE WELT DER SOFTWARETECHNIK</b>
+│
+├─ <b>WELT DER PROBLEMSTELLUNGEN</b>
+│  ├─ Produktprobleme (Komplexität)
+│  │   ├─ Anforderungsprobleme → Problemraum (WAS)          ← löst: <span class="r">① Anforderungen / Anwendungsfälle</span>
+│  │   │     <span class="m">(Domäne komplex, widersprüchliche Wünsche, Änderungen)</span>
+│  │   └─ Entwurfsprobleme → Lösungsraum (WIE)              ← lösen: <span class="r">② Entwurfsmuster</span>, <span class="r">③ UML/OCL</span>, <span class="r">⑥ Architekturstile</span>
+│  └─ Prozessprobleme (psycho-sozial)
+│      ├─ Kognitive Beschränkungen
+│      ├─ Mängel der Urteilskraft                            ← betrifft: <span class="r">⑤ Prozessmodelle / agil / konventionell</span>
+│      ├─ Kommunikation, Koordination                        ← betrifft: <span class="r">⑤ Prozessmodelle / agil / konventionell</span>
+│      ├─ Gruppendynamik
+│      ├─ Verborgene Ziele
+│      └─ Fehler (Fehler → Defekt → Versagen)                ← löst: <span class="r">④ QA / Tests</span>
+│
+└─ <b>WELT DER LÖSUNGSANSÄTZE</b>
+   ├─ <b>TECHNISCHE ANSÄTZE („hart“)</b>
+   │   ├─ Abstraktion
+   │   ├─ Wiederverwendung                                   ← <span class="r">② Entwurfsmuster</span> <span class="m">(abgeleitet)</span>, <span class="r">⑥ Architekturstile</span> <span class="m">(abgeleitet)</span>
+   │   └─ Automatisierung                                    ← <span class="r">④ Testautomatisierung</span> <span class="m">(abgeleitet)</span>
+   │
+   └─ <b>METHODISCHE ANSÄTZE („weich“)</b>
+       ├─ <b>ANFORDERUNGSERMITTLUNG</b>                            ← <span class="r">① Anforderungen / Anwendungsfälle</span>
+       │     <span class="m">VL05 Anforderungen, VL06 Use Cases,</span>               <span class="r">③ UML</span> (Klassen-, Sequenz-, Zustandsdiagramm)
+       │     <span class="m">VL07 Objektmodell, VL08 dynamisches Modell</span>
+       ├─ <b>ENTWURF</b>                                           ← <span class="r">② Entwurfsmuster</span> (VL11/12)
+       │     <span class="m">Architektur, Modularisierung,</span>                     <span class="r">③ OCL</span> (VL13, Object design)
+       │     <span class="m">Wiederverwendung, Dokumentation</span>                   <span class="r">⑥ Architekturstile</span> (VL09)
+       ├─ <b>QUALITÄTSSICHERUNG</b>                                ← <span class="r">④ QA / Tests</span>
+       │     ├─ analytisch: dynamisch (Tests), statisch (Durchsichten)
+       │     └─ konstruktiv: Test-/Durchsicht-, Prozess-, Projekt-/Risikomanagement
+       └─ <b>PROJEKTMANAGEMENT</b>                                 ← <span class="r">⑤ Softwareprozesse, Prozessmodelle, agil / konventionell</span> <span class="m">(teils abgeleitet)</span>
+</pre>
+<p class="m">rot = deine Begriffe · grau „abgeleitet“ = nicht ausdrücklich in den Folien belegt · UML hat keinen eigenen Ast (Notation für Anforderungsermittlung und Entwurf)</p>
+</body>
+</html>
